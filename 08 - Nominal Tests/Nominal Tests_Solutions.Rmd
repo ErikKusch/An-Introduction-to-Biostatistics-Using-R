@@ -1,0 +1,344 @@
+---
+title: "" # needs to be empty since it is specified in Title.Rmd
+author: ""
+date: ""
+documentclass: "book"
+fontsize: 10pt
+output: 
+  pdf_document:
+    includes:
+      in_header: Style_Exercise.tex
+subparagraph: true # this is needed as a workaround to get titlesec to work
+geometry: "left= 2cm,right = 2cm, bottom = 1.5cm, top = 2cm"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=80),tidy=TRUE, fig.height=4)
+options(digits=2, width = 90)
+```
+
+<!--- ####### PREAMBLE -----------
+--------------------------------------------->
+```{r child = 'Title.Rmd'}
+```
+\clearpage
+
+<!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
+\pagestyle{plain}
+\pagenumbering{roman}
+
+\begingroup
+\let\clearpage\relax
+\let\cleardoublepage\relax
+\begin{LARGE}
+ \textbf{Summary:}\\
+ \vspace{0.2cm}
+\end{LARGE}
+
+Welcome to our second practical experience in R. Throughout the following notes, I will introduce you to a couple nominal statistical test approaches that might be useful to you and are often used in biology.  
+To do so, I will enlist the sparrow data set we handled in our last exercise.
+
+\setcounter{secnumdepth}{3} 
+\setcounter{tocdepth}{4} 
+\tableofcontents
+\endgroup
+
+<!--- ####### DOCUMENT ---------------------------------------------------------->
+\pagestyle{fancy}
+\pagenumbering{arabic}
+
+# Preparing Our Procedure
+To ensure others can reproduce our analysis we run the following three lines of code at the beginning of our `R` coding file.
+```{r Preparation}
+rm(list=ls()) # clearing environment
+Dir.Base <- getwd() # soft-coding our working directory
+Dir.Data <- paste(Dir.Base, "Data", sep="/") # soft-coding our data directory 
+```
+
+
+## Packages
+Using the following, user-defined function, we install/load all the necessary packages into our current `R` session.
+```{r Packages}
+# function to load packages and install them if they haven't been installed yet
+install.load.package <- function(x) {
+  if (!require(x, character.only = TRUE))
+    install.packages(x)
+  require(x, character.only = TRUE)
+}
+package_vec <- c("nonpar" # needed for Cochran's Q
+                 )
+sapply(package_vec, install.load.package)
+```
+
+## Loading Data
+During our last exercise (Data Mining and Data Handling - Fixing The Sparrow Data Set) we saved our clean data set as an RDS file. To load this, we use the `readRDS()` command that comes with base `R`.
+```{r DataLoading}
+Data_df_base <- readRDS(file = paste(Dir.Data, "/1 - Sparrow_Data_READY.rds", sep=""))
+Data_df <- Data_df_base # duplicate and save initial data on a new object
+```
+
+
+# Binomial Test
+As the name would suggest, a binomial test can only accommodate variables on a binomial scale. A binomial test is used to test whether both values of the binomial variable are present in equal proportions within the data set. The only binomial variables contained within the *Passer domesticus* data set are `Sex` (Male, Female) and `Predator.Presence` (Yes, No). The `R` function to carry out a binomial test comes with base `R` and is called `binom.test()`. The **Null Hypothesis** we operate on is that **both data values are equally likely to occur** although one can specify a different expectations using the `p = ` statement within the `binom.test()` function.
+
+## Sexual Dimorphism
+
+\begin{center}
+\textit{Are the sexes represented in equal proportions?}
+\end{center}
+
+First, we want to test whether our data has a bias leaning towards either sex of the surveyed sparrows. To do so, we may wish to first convert the binomial data into count records using the `table()` command of R as follows. The result of this can then be feed to `binom.test()`.
+```{r Binomial1}
+table(Data_df$Sex)
+binom.test(table(Data_df$Sex))
+```
+As we can see, there is no skew towards either male or female abundance of individuals of *Passer domesticus* and so we have to **accept the null hypothesis**. Note that, although our data is recorded in terms of Male and Female, the `binom.test()` function works with records of success and failure.  
+
+This is to be expected. After all no bias for sex is known in *Passer domesticus* and indeed the species does reproduce monogamously so a skew between the sexes wouldn't go anywhere as far as evolution is concerned.
+
+\clearpage
+
+## Predation
+
+\begin{center}
+\textit{Are the sites dominated by predators?}
+\end{center}
+
+Now, let's see if there is a skew towards predators being present at our sites or not. This time, however we make use of a different syntax for the `binom.test()` function. We do this for no reason of functionality but simply to show that there are multiple ways to using it.
+```{r Binomial2}
+table(Data_df$Predator.Presence)
+binom.test(x = sum(Data_df$Predator.Presence == "Yes"), n = length(Data_df$Predator.Presence))
+```
+Quite obviously, these proportions aren't as equal as the ones of the sex example. In fact, they exhibit statistically significant proportion sizes within our data set (p $\approx$ `r round(binom.test(x = sum(Data_df$Predator.Presence == "Yes"), n = length(Data_df$Predator.Presence))$p.value, 2)`).  
+
+This is in concordance with what we'd expect from the natural world since predation is common in nature after all and so we **reject the null hypothesis**.
+
+# McNemar
+
+The McNemar Test (sometimes referred to as McNemar's Chi-Square test because the test statistic has a chi-square distribution) is used when you are interested in finding a change in proportion for paired data. This is very common in repeated sampling analyses.  
+
+The **null hypothesis** reads: **Class assignment probablities do not change within different treatments**.  
+
+## Preparing The Data
+
+\begin{center}
+\textit{Do sex ratios change over time?}
+\end{center}
+
+Unfortunately, our data does not allow for these types of analyses and so we will need to create some additional data here.  
+
+Let's say we wanted to resample the sex ratio of *Passer domesticus* in Australia (AU) a year after our initial survey because of an especially hostile winter and we'd like to see whether this resulted in an alteration of the sex ratio.  
+
+What is our sex ratio before the winter?
+```{r McNemar1}
+table(Data_df$Sex[which(Data_df$Index == "AU")])
+Sexes_AU_Now_vec <- Data_df$Sex[which(Data_df$Index == "AU")]
+```
+The sex ratio is not skewed. So let's hypothesise about what might happen to the sex ratio when a strong winter hits our population. The sex ratio could either (1) stay the same or (2) change. Although it would make sense to assume that the population would shrink, McNemar tests can't account for that and so we assume that our population size will stay the same and only the sex ratio might change. Let's create some new data for a changed sex ratio that is male biased:
+
+```{r McNemar2}
+Sexes <- c("Male", "Female") # creating a vector of sexes to sample from
+set.seed(42) # making it reproducible
+Sexes_AU_Next_vec <- sample(Sexes, sum(Data_df$Index=="AU"), replace = TRUE, prob = c(0.8,0.2))
+```
+
+Here's the data we will be testing:
+```{r McNemar3}
+table(Sexes_AU_Now_vec) 
+table(Sexes_AU_Next_vec)
+```
+
+\clearpage
+
+## Running The Test
+Now let's go on to test the unbiased vs. the male-skewed sex ratio:
+```{r McNemar4}
+mcnemar_matrix_change <- matrix(rbind(table(Sexes_AU_Now_vec), table(Sexes_AU_Next_vec)), 2)
+mcnemar.test(mcnemar_matrix_change)
+```
+Obviously, with this data we would record a statistically significant change and **reject the null hypothesis**.
+
+## Making Sense Of The Results
+
+Unfortunately, McNemar only tells us *that* there is a difference without any information about the *direction* of the difference. For now, we will have to settle on a visualisation of the sexes to shed some light on the difference.
+```{r McNemar6}
+# preparing plotting
+probs <- cbind(
+  prop.table(mcnemar_matrix_change[1,]),
+  prop.table(mcnemar_matrix_change[2,])
+)
+colnames(probs) <- c("Now", "Next Year")
+# plotting
+barplot(probs, main="Abundances of the sexes among study organisms",
+        xlab="Years", ylab = "Proportions", col=c("Red", "Blue"))
+```
+  
+The above plot is very crude and should only ever be used for data exploration and not for publishing purposes. Clearly, we can see the change in sex ratio towards a male-biased state (blue colour represents males).
+
+# Cochran's Q
+Cochran's Q is a non parametric test for finding differences in matched sets of three or more frequencies or proportions.  
+
+As such, the Cochran's Q Test is an extension of the McNemar test - the two tests are equal if Cochran's Q is calculated for two groups.  
+
+The **null hypothesis** for Cochran's Q postulates an **equal proportion of class assignents for all treatments**.
+
+## Preparing The Data
+
+\begin{center}
+\textit{Are colours related to sex or predator parameters?}
+\end{center}
+
+When exploring our data, we can clearly see a pattern concerning the colour polymorphism of house sparrows arise which is dependant on the value of Predator Presence.
+```{r ChochranPrep}
+counts <- table(Data_df$Colour, Data_df$Predator.Presence)
+
+probs <- cbind(
+  prop.table(counts[,1]),
+  prop.table(counts[,2])
+)
+colnames(probs) <- c("No", "Yes")
+
+barplot(probs, main="Colour Variations of the common House Sparrow",
+        xlab="Predator Presence", ylab = "Proportion", col=c("Black", "saddlebrown", "Grey"))
+```
+
+This might lead us to believe that the presence of predators cause an evolutionary change of the plumage colour of *Passer domesticus* (we will have a more in-depth look on this in later seminars) and we might even postulate that "Black" and "Grey" serve as camouflage.  
+
+\clearpage
+
+Cochran's Q requires data to be delivered as binomial records. Therefore, we prepare colour as a binary variable of "Brown" and "Camouflage" (which we postulate to encompass "Grey" and "Black"). Since Colour is of type `factor` within our data set, we need to take some precautions in changing the data records. Predator Presence and Sex don't need any additional preparation.
+```{r Chochran1}
+# Colour 
+CochColour <- Data_df_base$Colour
+# adding new level to factor list
+levels(CochColour) <- c(levels(CochColour), "Camouflage") 
+# defining black and grey to be camouflage
+CochColour[which(CochColour == "Grey")] <- "Camouflage" 
+CochColour[which(CochColour == "Black")] <- "Camouflage" 
+# dropping unnecessary factor levels
+CochColour <- droplevels(CochColour) 
+
+# Predator Presence
+CochPredator.Presence <- Data_df_base$Predator.Presence
+
+# Sex
+CochSex <- Data_df_base$Sex
+
+# Making vectors into a matrix
+CochMatrix <- matrix(c(CochColour, CochPredator.Presence, CochSex), ncol = 3) - 1
+colnames(CochMatrix) <- c("Colour", "Predator Presence", "Sex")
+head(CochMatrix)
+```
+## Runing The Test
+Now let's run our test using the `cochrans.q()` function that comes with the `nonpar` package:
+```{r Chochran2}
+cochrans.q(CochMatrix)
+```
+As we can see, the output from this function is extremely user friendly. Additionally, as was to be expected the assignment probabilities for each class in each treatment are not equal thus forcing us to **reject the null hypothesis**.
+
+## Making Sense Of The Results
+Where are the differences coming from?  
+
+As you may recall from just a few pages ago, using the binomial test, we can identify the assignment proportions for any binomial variable individually.  
+
+*Firstly*, let's test the **binary version** of the **colour** variable:
+```{r Chochran3}
+table(CochColour)
+binom.test(table(CochColour))
+```
+Based on this result, we **reject the null hypothesis** of binary colour records being equally likely to occur.  
+
+*Secondly*, let's test the **predator presence** variable:
+```{r Chochran4}
+table(CochPredator.Presence)
+binom.test(table(CochPredator.Presence))
+```
+Based on this result, we **reject the null hypothesis** of opredator presence records being equally likely to occur.  
+
+*Lastly*, recall the binomial test run on the **sex** data records which exhibit an almost even 50/50 split.  
+
+Whilst none of these test give us any idea about the overlap of similar assignments along these variable vectors, a 50/50 split (sex) can never link up comparably with a roughly 30/70 split (predator presence and binary colour). Therefore, wo could hypothesize a linkage of predator presence and colour rather than sex and colour morphs.
+
+# Chi-Squared
+The Chi-Squared (also known as Chi\textsuperscript{2}) Test can be regarded as a functional extension of the binomial test and is used to test the similarity of class assignment proportions for a categorical/nominal variable. Unlike the binomial test, however, this test is not constrained to binomial records alone.  
+
+The null hypothesis states that: **Every class assignment conatined within a given variable is equally likely**.  
+
+The Chi-Squared Test can be applied in a one or two sample situation. One sample represents one variable in this setting.
+
+## One Sample Situation
+
+### Binary Colour
+Let's asses the proportions of one variable we have already looked at - the **binary version** of the **colour** variable:
+```{r Chi1}
+table(CochColour)
+chisq.test(table(CochColour))
+```
+Based on this result, we **reject the null hypothesis** of binary colour records being equally likely to occur. Note how the Chi-Squared test returns the same p-value as the binomial test above (within the Cochran's Q section).  
+
+### Colour
+Now let's run the same test on the non-binary **colour** data:
+```{r Chi2}
+table(Data_df$Colour)
+chisq.test(table(Data_df$Colour))
+```
+Again, we **reject the null hypothesis** thus concluding differing class proportions for every possible class of "Colour".
+
+\clearpage
+
+## Two Sample Situation
+The two sample Chi-Squared approach let's us identify whether class assignment proportions of one variable differ when they are considered in a dependency of another nominal variable.  
+
+### Sexual Dimorphism
+
+\begin{center}
+\textit{Are colours of Passer domesticus related to their sexes?}
+\end{center}
+
+*Firstly*, let's see if males and females share the same likelihoods of being of a certain colour:
+```{r Chi3}
+table(Data_df$Colour, Data_df$Sex)
+chisq.test(table(Data_df$Colour, Data_df$Sex))
+```
+Clearly, they don't and we **reject the null hypothesis**.  
+
+### Predation
+
+\begin{center}
+\textit{Are colours of Passer domesticus related to predator parameters?}
+\end{center}
+
+*Secondly*, we test whether colour proportions change when considering predator presence. Although we partially considered this already in the Cochran's Q section. This time, however, we use a non-binary version of the colour variable:
+```{r Chi4}
+table(Data_df$Colour, Data_df$Predator.Presence)
+chisq.test(table(Data_df$Colour, Data_df$Predator.Presence))
+```
+The statement holds. Predator presence seems likely to be a driver of the colour polymorphism in *Passer domesticus* and we **reject the null hypothesis**.  
+
+\clearpage
+
+So what about a possible link of sparrow colour and predator type?
+```{r Chi4.5}
+table(Data_df$Colour, Data_df$Predator.Type)
+chisq.test(table(Data_df$Colour, Data_df$Predator.Type))
+```
+Nope, no link here. We have to **accept the null hypotesis** and conclude that there may be no causal link of predator type and sparrow colour.  
+
+\hfill \linebreak
+\begin{center}
+\textit{Are nesting sites of Passer domesticus related to predator parameters?}
+\end{center}
+
+*Third*, let's test whether nesting site assignments might differ based on predator presence:
+```{r Chi5}
+table(Data_df$Nesting.Site, Data_df$Predator.Presence)
+chisq.test(table(Data_df$Nesting.Site, Data_df$Predator.Presence))
+```
+There seems to be a link here and we **reject the null hypothesis**.  
+
+So what about a link of predator type and nesting site?
+```{r Chi5.5}
+table(Data_df$Nesting.Site, Data_df$Predator.Type)
+chisq.test(table(Data_df$Nesting.Site, Data_df$Predator.Type))
+```
+Apparently, there is a really strong one and we **reject the null hypothesis**.

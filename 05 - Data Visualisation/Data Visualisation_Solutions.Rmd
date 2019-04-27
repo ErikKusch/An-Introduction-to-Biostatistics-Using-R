@@ -1,0 +1,138 @@
+---
+title: "" # needs to be empty since it is specified in Title.Rmd
+author: ""
+date: ""
+documentclass: "book"
+fontsize: 10pt
+output: 
+  pdf_document:
+    includes:
+      in_header: Style_Exercise.tex
+subparagraph: true # this is needed as a workaround to get titlesec to work
+geometry: "left= 2cm,right = 2cm, bottom = 1.5cm, top = 2cm"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=90),tidy=TRUE, fig.height=4, fig.width = 12)
+options(digits=2, width = 90)
+```
+
+<!--- ####### PREAMBLE -----------
+--------------------------------------------->
+```{r child = 'Title.Rmd'}
+```
+\clearpage
+
+<!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
+\pagestyle{plain}
+\pagenumbering{roman}
+
+\begingroup
+\let\clearpage\relax
+\let\cleardoublepage\relax
+\begin{LARGE}
+ \textbf{Summary:}\\
+ \vspace{0.2cm}
+\end{LARGE}
+These are the solutions to the exercises contained within the handout to “Data Visulaisation” which walks you through the basics of data visualisation in `R`using `ggplot2`. The plots presented here are using data from the `iris` data set supplied through the `datasets` package. 
+
+Keep in mind that there is probably a myriad of other ways to reach the same conclusions as presented in these solutions.
+
+
+\setcounter{secnumdepth}{3} 
+\setcounter{tocdepth}{4} 
+\tableofcontents
+\endgroup
+
+<!--- ####### DOCUMENT ---------------------------------------------------------->
+\pagestyle{fancy}
+\pagenumbering{arabic}
+
+# Packages
+Recall the exercise that went along with the last seminar (Descriptive Statistics) where we learnt the difference between a basic and andvanced preamble for package loading in `R`. Here (and in future exercises) I will only supply you with the advanced version of the preamble.  
+
+Now let's load the `ggplot2` package into our `R` session so we'll be able to use its functionality for data visualisation as well as the `datasets` package to get the `iris` dat set.
+
+```{r Packages}
+# function to load packages and install them if they haven't been installed yet
+install.load.package <- function(x) {
+  if (!require(x, character.only = TRUE))
+    install.packages(x)
+  require(x, character.only = TRUE)
+}
+# packages to load/install if necessary
+package_vec <- c("ggplot2", "datasets")
+# applying function install.load.package to all packages specified in package_vec
+sapply(package_vec, install.load.package)
+```
+
+\let\cleardoublepage\relax
+
+# Loading `R`-internal data sets (`iris`)
+The `iris` data set is included in the `datasets` package in `R`. An `R`-internal data set is loaded through the command `data()`. Take note that you do not have to assign this command's output to a new object (via `<-`). Instead, the dataset is loaded to your current environment by its name (iris, in this case). Keep in mind that this **can override** objects of the same name that are already present in your current session of `R`.
+```{r RLoad}
+data("iris")
+```
+
+\let\cleardoublepage\relax
+
+# Inspect the data set  
+Since we know that `iris` is a dataset, we can be reasonably sure that this object will be complex enough to warrant using the `str()` function for inspection:
+```{r RInspect}
+str(iris)
+```
+
+The `iris` dataset contains four measurements (`Sepal.Length`, `Sepal.Width`, `Petal.Length`, `Petal.Width`) for 150 flowers representing three species of iris (*Iris setosa*, *versicolor* and *virginica*).
+
+\newpage
+
+# **Boxplot** of `Petal.Length` by `Species`  
+```{r PlottingExercise1, fig.height=8, tidy=FALSE}
+ggplot(iris, # the data set
+       aes(x=Species, y=Petal.Length) # aesthetics
+       ) + geom_boxplot() + # this is the end of the bare minimum plot
+  theme_bw() + labs(title="Petal Length of three different species of Iris")
+```
+
+THis boxplot shows us exactly how the distributions of petal length measurements of our three species of Iris are differing from one another. Despite the obvious trend in the data, **be sure not to report results through figures alone!** We will find out how to test whether the pattern we can observe here holds up to scrutiny at a later point in time of our seminars.
+
+\newpage
+
+# **Scatterplot** of `Petal.Length` and `Petal.Width`  
+```{r PlottingExercise2, tidy=FALSE}
+ggplot(iris, # the data set
+       aes(x=Petal.Width, y=Petal.Length) # aesthetics
+       ) + geom_point() + # this is the end of the bare minimum plot
+  theme_bw() + labs(title="Petal Width and Petal Length of three different species of Iris")
+```
+
+
+# **Scatterplot** of `Petal.Length` and `Petal.Width` grouped by `Species`  
+```{r PlottingExercise3, tidy=FALSE}
+ggplot(iris, # the data set
+       aes(x=Petal.Width, y=Petal.Length, colour = Species) # aesthetics
+       ) + geom_point() + # this is the end of the bare minimum plot
+  theme_bw() + labs(title="Petal Width and Petal Length of three different species of Iris") + 
+  theme(legend.justification=c(1,0), legend.position=c(1,0)) + # legend inside
+  scale_color_discrete(name="Iris Species")  # Change legend title
+```
+
+\newpage
+
+# Relationship of `Sepal.Length` and `Sepal.Width`  
+```{r PlottingExercise4, tidy=FALSE}
+ggplot(iris, # the data set
+       aes(x=Sepal.Width, y=Sepal.Length) # aesthetics
+       ) + geom_point() + geom_smooth() + # this is the end of the bare minimum plot
+  theme_bw() + labs(title="Petal Width and Petal Length of three different species of Iris")
+```
+
+# Relationship of `Sepal.Length` and `Sepal.Width` (grouped by `Species`)
+```{r PlottingExercise5, tidy=FALSE}
+ggplot(iris, # the data set
+       aes(x=Sepal.Width, y=Sepal.Length, colour = Species) # aesthetics
+       ) + geom_point() + geom_smooth() + # this is the end of the bare minimum plot
+  theme_bw() + labs(title="Petal Width and Petal Length of three different species of Iris") + 
+  theme(legend.justification=c(1,0), legend.position=c(1,0)) + # legend inside
+  scale_color_discrete(name="Iris Species")  # Change legend title
+```

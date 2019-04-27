@@ -1,0 +1,570 @@
+---
+title: "Descriptive Statistics"
+# subtitle: "An Introduction to the Course and The Importance of Proper Statistics"
+author: "Erik Kusch"
+date: "16/04/2019"
+fontsize: 10pt
+output: 
+  beamer_presentation: # handouts can be established by setting classoption: "handout"
+    keep_tex: false
+    toc: false # this is added through a later command
+    slide_level: 3 # at how many pound signs (#) to assume slide title level
+    includes:
+      in_header: Style.tex
+classoption: t
+---
+
+```{r setup, include=FALSE}
+options(scipen=1, digits=4)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=20),tidy=TRUE, fig.height=8, digits=4)
+```
+
+<!--- ####### TOC (use this if you want ## headers to be included in the toc)--------------------
+---------------------------------------  --->
+
+\tableofcontents[subsubsectionstyle=hide]
+
+<!--- ####### Descriptive Statistics-------------------------------------------------------------
+---------------------------------------  --->
+# Background
+## Introduction
+### Introduction
+\begin{tcolorbox}[colback=bondiblue!5,colframe=bondiblue!40!black,title=]
+\centering Descriptive statistics are used to \textbf{summarize data}.
+\end{tcolorbox}
+
+\vspace{-0.3cm}
+\pause 
+
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \textit{The aim:} &  To describe a given set of data records $n$ in regard to a certain \textbf{variable} $p_j$ or set of variables $p$.\\
+           \pause
+             & \\
+           \textit{The procedure:} & Using an adequately chosen set of methods to \textbf{summarize or visualize} the data at hand. \\
+          \end{tabular}}
+        \label{Des_Stats}
+\end{table}
+
+\vspace{0.2cm}
+
+\pause
+\begin{tcolorbox}[colback=bondiblue!5,colframe=bondiblue!40!black,title=]
+\centering Characteristics of \textbf{variables} are often expressed via \textbf{parameters}.
+\end{tcolorbox}
+
+## Methods Of Descriptive Statistics
+### Methods \& Quirks
+Information is usually handed to descriptive statistics as $n \times p$ (row count $\times$ column count) data frames.
+\pause
+\hfill \linebreak
+This information is used to calculate informative \textbf{parameters}:
+
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+  \visible<3->{\textbf{Location Parameters} (Measures Of Central Tendency):}
+    \begin{itemize}
+    \visible<4->{
+    \item Arithmetic Mean
+    \item Mode
+    \item Median
+    \item Minimum, Maximum, Range
+    \item ...
+    }
+    \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+  \visible<3->{\textbf{Dispersion Parameters} (Measures Of Spread): }
+    \begin{itemize}
+    \visible<5->{
+    \item Variance
+    \item Standard Deviation
+    \item Quantile Range
+    \item ...
+    }
+    \end{itemize}
+  \end{column}
+\end{columns}
+
+\vspace{0.2cm}
+\pause \pause \pause \pause
+\begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title=]
+\centering Descriptive statistics \textbf{do not allow generalisation} beyond the data!
+\end{tcolorbox}
+
+# Parameters In Descriptive Statistics
+## What Are Parameters?
+### Parameters And Their Meaning
+\textbf{What is a parameter?}    
+In the case of descriptive statistics, a \textit{parameter} presents some information on the shape of the distribution of the values of a certain variable.
+
+\vspace{0.4cm}
+\pause
+
+\textbf{What's the fuss?}  
+Parameters can be used to summarise data properties and make large data sets with a multitude of values per variable more accessible. 
+
+\vspace{0.4cm}
+\pause
+
+\textbf{So?}  
+To know which parameters to use one must know which ones there are and how to calculate them.
+
+\vspace{0.4cm}
+\pause
+\begin{tcolorbox}[colback=bondiblue!5,colframe=bondiblue!40!black,title=]
+\centering Parameters are, more or less, \textbf{digested data}.
+\end{tcolorbox}
+
+## Getting Practical
+### Creating Some Data
+For the following computation of descriptive statistics parameters, we will need the following data:
+\footnotesize
+```{r Data, tidy.opts=list(width.cutoff=55)}
+set.seed(42) # making the code reproducible
+data_vec <- rnorm(mean = 20, sd = 2, n = 54)
+matrix(sort(data_vec), nrow = 6)
+```
+\normalsize
+\vspace{.5cm}
+$\rightarrow$ Calculation of parameters of descriptive statistics is reserved almost exclusively for `numeric` data records
+
+## Location Parameters/Measures Of Central Tendency
+### Arithmetic Mean (Theory)
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \textit{Definition:} & Also called average, this metric is the mathematical average of the given data values. \\
+           & \textbf{Non-resistant to outliers and asymmetric distributions.}\\
+             & \\
+           \hline
+             & \\
+           \textbf{\textit{Calculation:}} & $\overline{x} = \mu = \frac{1}{n}\sum\limits_{i=1}^nx_i$ \\
+             & \\
+           $\overline{x} = \mu$  & Arithmetic mean \\
+           $n$  & Number of samples ($=$ number of values for the variable in question) \\
+           $i$  & Index of variable values ($i = 1,2, .., n$) \\
+           $x_i$  & $i$\textsuperscript{th} value of variable $x$ \\
+          \end{tabular}}
+        \label{Des_Stats}
+\end{table}
+
+### Arithmetic Mean (Calculation in `R`)
+The arithmetic mean is calculated using the `mean()` function contained within base `R`.
+\begincols[T]
+  \begincol{.5\linewidth}
+```{r mean, eval=TRUE}
+# calculation
+mean(data_vec)
+```
+  \endcol
+  \begincol{.5\linewidth}
+```{r meanplot, echo=FALSE}
+plot(density(data_vec), main = "Mean of data_vec")
+abline(v = mean(data_vec), col = "red")
+```
+  \endcol
+\endcols
+
+### Median (Theory)
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \textit{Definition:} &  The median is the value separating the higher half of the data values from the lower half.\\
+           & \textbf{Resistant to outliers and asymmetric distributions.}\\
+             & \\
+           \hline
+             & \\
+           \textbf{\textit{Calculation:}} & $median(x) = (\frac{n+1}{2})^{th} \quad \text{odd numbers of data values}$ \\
+            & $median(x) = \frac{\big((\frac{n}{2})^{th} + (\frac{n}{2}+1)^{th} \big)}{2} \quad \text{even numbers of data values}$ \\
+             & \\
+           $median(x)$  & Median of the values available for variable $x$ \\
+           $n$  & Number of observations available for $x$ \\
+          \end{tabular}}
+        \label{Des_Stats}
+\end{table}
+
+### Median (Calculation in `R`)
+The median is calculated using the `median()` function contained within base `R`.
+\begincols[T]
+  \begincol{.5\linewidth}
+```{r median, eval=TRUE}
+# calculation
+median(data_vec)
+```
+  \endcol
+  \begincol{.5\linewidth}
+```{r medianplot, echo=FALSE}
+plot(density(data_vec), main = "Median of data_vec")
+abline(v = median(data_vec), col = "blue")
+```
+  \endcol
+\endcols
+
+### Mode (Theory)
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \textit{Definition:} & The mode of a set of data values is the value that is the most common. \\
+           & \textbf{Resistant to outliers but the shape of the distribution might be crucial.}\\
+             & \\
+           \hline
+             & \\
+           \textbf{\textit{Calculation:}} & $mode(x) = max_{k=1}\big(I_{i=1}(x_i = x_k)\big)$ \\
+             & \\
+           $mode(x)$  & Mode of the values available for variable $x$ \\
+           $max_{k=1}()$  & Maximising argument for $k$ in 1 to $p$ \\
+           $I_{i}()$ & Identifier that returns 1 if the internal statement is true with $i$ in 1 to $n$  \\
+          \end{tabular}}
+        \label{Des_Stats}
+\end{table}
+
+### Mode (Calculation in `R`)
+One may wish to use the `max()` and `table()` function contained within the base `R` or through `mlv(..., method="mfv")` within the `modeest` package:
+\footnotesize
+\begincols[T]
+  \begincol{.5\linewidth}
+```{r mode, eval=TRUE, tidy = FALSE}
+# counts of values in rounded vector
+table <- table(round(data_vec))
+table # counts
+# most common appearance
+max <- max(table)
+max # maximum appearances
+```
+  \endcol
+  \begincol{.5\linewidth}
+```{r mode2, eval=TRUE, tidy = FALSE}
+# position of maximum in table
+pos <- which(table == max) 
+pos # mode position
+# value at maximum position
+mode <- names(table)[pos]
+as.numeric(mode) # mode
+```
+  \endcol
+\endcols
+
+### Minimum, Maximum, Range (Theory)
+Sometimes, one may want to use the following, simple information on data values:
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \textit{Maximum:} &  The highest value available for a given variable.\\
+             & \\
+           \textit{Minimum:} &  The lowest value available for a given variable.\\
+             & \\
+           \textit{Range:} &  The span of values that the data distribution defined by minimum and maximum extends over.\\
+             & \\
+          \end{tabular}}
+        \label{Des_Stats}
+\end{table}
+
+
+### Minimum, Maximum, Range (Calculation in `R`)
+\begincols[T]
+  \begincol{.5\linewidth}
+```{r minmaxrange, eval=TRUE}
+# calculation
+min(data_vec)
+max(data_vec)
+range(data_vec)
+```
+  \endcol
+  \begincol{.5\linewidth}
+```{r minmaxrangeplot, echo=FALSE}
+par(mfrow = c(1, 1))
+plot(density(data_vec), main = "Minimum and Maximum of data_vec")
+abline(v = max(data_vec), col = "orange")
+abline(v = min(data_vec), col = "orange")
+```
+  \endcol
+\endcols
+
+### Which Location Parameter Do I Use?
+All measures of central tendency describe the central position of a frequency distribution of values of a given variable in the data set at hand.
+
+\vspace{0.7cm}
+\pause
+
+The \textit{arithmetic mean} is only really useful when concerned with symmetric distributions of data values.  
+
+\vspace{0.5cm}
+\pause
+
+The \textit{median} exhibits robust behaviour when faced with asymmetric distributions of data values.
+
+\vspace{0.5cm}
+\pause
+
+The \textit{mode} is most applicable to the classification setting and rarely used.
+
+\vspace{0.7cm}
+\pause
+
+\centering $\rightarrow$ The \textbf{median} will usually do.
+
+### You Can Do It Yourself
+
+\centering \textbf{Remember:} You can code most of these basic parameter calculations yourself.
+\visible<2->{
+\centering \includegraphics[width=0.6\linewidth]{Figures/CodeHacker.jpg}}
+
+## Dispersion Parameters/Measures Of Spread
+### Variance (Theory)
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \textit{Definition:} & Variance measures how much data values are spread out from their average value. \\
+             & \textbf{Non-resistant to outliers and asymmetric distributions.}\\
+             & \\
+           \hline
+             & \\
+           \textbf{\textit{Calculation:}} & $s^2 = \frac{1}{n-1}\sum\limits_{i=1}^n(x_i - \overline{x})^2$ \\
+             & \\
+           $s^2$  & Variance \\
+           $n$  & Number of samples ($=$ number of values for the variable in question) \\
+           $i$  & Index of variable values ($i = 1,2, .., n$) \\
+           $x_i$  & $i$\textsuperscript{th} value of variable $x$ \\
+           $\overline{x}$  & Arithmetic mean \\
+          \end{tabular}}
+        \label{Des_Stats}
+\end{table}
+
+### Variance (Calculation in `R`)
+The variance is calculated using the `var()` function contained within base `R`.
+\begincols[T]
+  \begincol{.5\linewidth}
+```{r variance, eval=TRUE}
+# calculation
+var(data_vec)
+```
+  \endcol
+  \begincol{.5\linewidth}
+```{r varianceplot, echo=FALSE}
+par(mfrow = c(1, 1))
+plot(density(data_vec), main = "Variance of data_vec")
+abline(v = mean(data_vec), col = "red")
+abline(v = mean(data_vec)-var(data_vec)/2, col = "purple")
+abline(v = mean(data_vec)+var(data_vec)/2, col = "purple")
+```
+  \endcol
+\endcols
+\centering Note that his plot shows the span of the variation around the mean.
+
+### Standard Deviation (Theory)
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \textit{Definition:} & The standard deviation quantifies the amount of variation or dispersion of a set of data values.\\
+             & \textbf{Non-resistant to outliers and asymmetric distributions.}\\
+             & \\
+           \hline
+             & \\
+           \textbf{\textit{Calculation:}} & $SD = s = \sqrt{s^2}$\\
+             & \\
+           $SD = s$ & Standard Deviation\\
+           $s^2$  & Variance \\
+          \end{tabular}}
+        \label{Des_Stats}
+\end{table}
+
+### Standard Deviation (Calculation in `R`)
+The standard deviation is calculated using the `sd()` function contained within base `R`.
+\begincols[T]
+  \begincol{.5\linewidth}
+```{r SD, eval=TRUE}
+# calculation
+sd(data_vec)
+```
+  \endcol
+  \begincol{.5\linewidth}
+```{r SDplot, echo=FALSE}
+par(mfrow = c(1, 1))
+plot(density(data_vec), main = "Standard Deviation of data_vec")
+abline(v = mean(data_vec), col = "red")
+abline(v = mean(data_vec)-sd(data_vec), col = "purple")
+abline(v = mean(data_vec)+sd(data_vec), col = "purple")
+```
+  \endcol
+\endcols
+\centering Note that his plot shows the span of one standard deviation above and below the mean.
+
+### Quantile Range  (Theory)
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \textit{Definition:} & Quantiles are cut points dividing the range of a distribution of data values into adjacent intervals with equal probabilities. You will always receive one cut-point less than quantiles are produced.\\
+             & \textbf{Resistant to outliers and asymmetric distributions.}\\
+             & \\
+           \hline
+          \end{tabular}}
+        \label{Des_Stats}
+\end{table}
+\pause
+Most often, one uses the following quantiles:
+\begin{itemize}
+\item \textit{Quantile 50:} This is basically the median.
+\item \textit{Quantile 25 and 75:} These are also known as \textit{quartiles}.
+\end{itemize}
+
+
+### Quantile Range  (Calculation in `R`)
+Quantiles are calculated using the `quantile()` function contained within base `R`. A second argument, within this function can be specified to call certain quantiles.
+\begincols[T]
+  \begincol{.5\linewidth}
+```{r quant, eval=TRUE, tidy=FALSE}
+# quantiles we want
+q <- c(0.25, 0.5, 0.95, 0.99)
+# calculation
+quantile(data_vec, q)
+```
+  \endcol
+  \begincol{.5\linewidth}
+```{r quantplot, echo=FALSE}
+par(mfrow = c(1, 1))
+plot(density(data_vec), main = "Quantiles of data_vec")
+abline(v = mean(data_vec), col = "red")
+abline(v = as.numeric(quantile(data_vec, c(0.25, 0.5, 0.95, 0.99))[1]), col = "purple")
+abline(v = as.numeric(quantile(data_vec, c(0.25, 0.5, 0.95, 0.99))[2]), col = "purple")
+abline(v = as.numeric(quantile(data_vec, c(0.25, 0.5, 0.95, 0.99))[3]), col = "purple")
+abline(v = as.numeric(quantile(data_vec, c(0.25, 0.5, 0.95, 0.99))[4]), col = "purple")
+```
+  \endcol
+\endcols
+
+### Which Dispersion Parameter Do I Use?
+All measures of spread describe the spread of a frequency distribution of values of a given variable in the data set at hand.
+
+\vspace{0.7cm}
+\pause
+
+The \textit{variance} is only really useful when concerned with symmetric distributions of data values.  
+
+\vspace{0.5cm}
+\pause
+
+The \textit{standard deviation} is only really useful when concerned with symmetric distributions of data values.  
+
+\vspace{0.5cm}
+\pause
+
+The \textit{quantiles} exhibit robust behaviour when faced with asymmetric distributions of data values.
+
+\vspace{0.7cm}
+\pause
+
+\centering $\rightarrow$ The \textbf{quantiles} will usually do.
+
+
+## Making Life Easier in `R`
+### The `summary()` Function
+```{r summary, eval=TRUE}
+# calculation
+summary(data_vec)
+```
+
+\begincols[T]
+  \begincol{.5\linewidth}
+  \vspace{.5cm}
+  The `summary()`function can be called on a vector object in `R` to return some of the most useful information on measures of central tendency and measures of spread.
+  \endcol
+  \begincol{.5\linewidth}
+```{r summaryplot, echo=FALSE, fig.height=6}
+par(mfrow = c(1, 1))
+plot(density(data_vec), main = "Summary of data_vec")
+abline(v = mean(data_vec), col = "red")
+abline(v = as.numeric(summary(data_vec)[1]), col = "orange")
+abline(v = as.numeric(summary(data_vec)[2]), col = "purple")
+abline(v = as.numeric(summary(data_vec)[3]), col = "blue")
+abline(v = as.numeric(summary(data_vec)[4]), col = "red")
+abline(v = as.numeric(summary(data_vec)[5]), col = "purple")
+abline(v = as.numeric(summary(data_vec)[6]), col = "orange")
+```
+  \endcol
+\endcols
+
+# Exercise
+## Excel data
+### Loading Excel data into `R`
+Excel is a **valuable tool** for **data accquisition** but almost **useless** when it comes to **statistical analyses** or **data visualisation** in biological sciences.
+
+\vspace{0.5cm}
+\pause
+\centering So **how do you get your excel data into `R`**?
+
+\vspace{0.2cm}
+\pause
+
+\raggedright
+Loading procedure depends on **file format**:
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  **.csv** - I recommend using this format as it allows for less alteration and is compressed.  
+  *Functions*: `read.csv()` and `read.table()` (also works on .txt files)  
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  **.xls, .xlsx, etc.** - Go for this if you need to alter your data by hand (which you shouldn't. EVER!).  
+  *Functions*: `read.xlsx()` (included in `xlsx` package)  
+  \endcol
+\endcols
+
+\pause
+\vspace{0.5cm}
+\centering You can also **use `R`** to **save data in excel format**.
+
+### Inspecting Data
+The **most common** form of data is the **`data frame`** which you can:
+
+\vspace{0.5cm}
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  **Inspect** using functions such as:  
+  - `dim()` to access the dimensions  
+  - `str()` to access types and modes  
+  - `colnames()`/`rownames()` to asses column and row names  
+  - `head()`/`tail()` to show only the top or bottom five rows of the data set  
+  - `table()` to show a count of items in a vector
+  
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  **Subset** using the different sub-setting methods:  
+  - `[r,c]` can be used to index rows (r) and columns (c)  
+  - `$` can be used to index column names  
+  
+  \endcol
+\endcols
+
+\pause
+\vspace{.5cm}
+\centering $\rightarrow$ This is also how you **extract data from a `data frame`** (and most objects within `R`).
+
+
+## Parameters
+### Calculating parameters of descriptive statistics
+
+Your **ToDo-List** for this exercise:  
+
+\vspace{.2cm}
+
+* Load the file DescriptiveData.csv into `R`  
+* Identify what kind of information it contains  
+* Calculate the location parameters and parameters of spread for any of the variables contained within the data set that catch your interest.  
+* Question the validity of your findings and the data
+
+\vspace{.5cm}
+\pause
+The solution file will deal with all of the variables contained within the data set so don't worry about which one to pick and just **have fun**.

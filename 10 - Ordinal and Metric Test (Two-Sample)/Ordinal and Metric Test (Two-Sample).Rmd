@@ -1,0 +1,260 @@
+---
+title: "Metric Tests (Two-Sample Situations)"
+# subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
+author: "Erik Kusch"
+date: "??/??/20??"
+fontsize: 10pt
+output: 
+  beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
+    keep_tex: false
+    toc: false # this is added through a later command
+    slide_level: 3 # at how many pound signs (#) to assume slide title level
+    includes:
+      in_header: Style.tex
+classoption: t
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=50),tidy=TRUE, fig.height=8)
+options(digits=2, width = 60)
+
+# function to load packages and install them if they haven't been installed yet
+install.load.package <- function(x) {
+  if (!require(x, character.only = TRUE))
+    install.packages(x)
+  require(x, character.only = TRUE)
+}
+package_vec <- c("nonpar" # needed for Cochran's Q
+                 )
+sapply(package_vec, install.load.package)
+```
+
+<!--- ####### TOC (use this if you want ## headers to be included in the toc)--------------------
+---------------------------------------  --->
+
+\tableofcontents[subsubsectionstyle=hide]
+
+<!--- ####### Inferential Statistics-------------------------------------------------------------
+---------------------------------------  --->
+# Background
+### Introduction
+\begin{center}
+Metric tests are used to compare parameters of metric/ordinal variable values among groups/individuals.
+\end{center}
+\pause
+Prominent metric tests for two-sample situations include:
+\begin{itemize}
+\item \textbf{Mann-Whitney U Test}
+\item \textbf{Wilcoxon Signed Rank Test}
+\item t Test (dealt with in seminar 12)
+\item ...
+\end{itemize}
+
+\pause
+
+Some of these tests rely on the \textbf{assumption of independence}:
+
+\begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title=]
+\centering The assumption of independence is a \textbf{crucial prerequisite} to many statistical procedures!
+\end{tcolorbox}
+
+### Independence
+\small
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+    \textbf{Theory:}
+    \begin{itemize}
+    \pause
+    \item Even the smallest dependence in your data can turn into heavily biased results (which may be undetectable).
+    \pause
+    \item A dependence is a connection between/within the data.
+    \pause
+    \item The assumption of independence relies on the absence of any connection in your data that haven't accounted for in your approach (accounting for it is difficult).
+    \end{itemize} 
+\endcol
+\begincol{.5\linewidth}
+  \pause
+    \textbf{Independent data:}
+    \begin{itemize}
+    \pause
+    \item \textit{Between Groups}\\
+    Groups of data records should be pulled from different individuals.
+    \pause
+    \item \textit{Within Groups}\\
+    Data values within the same group are not to influence one another.
+    \pause
+    \item  \textit{Within Individuals}\\
+    Data values recorded for one individual should not influence each other. This is often an issue with repeated measurement approaches.
+    \end{itemize} 
+\endcol
+\endcols
+\vspace{10pt}
+\pause
+\centering $\rightarrow$ Fixing this \textit{after data collection} is \textbf{almost impossible}!
+
+# Analyses
+## Mann-Whitney U Test / Wilcoxon Rank-Sum Test
+### Purpose And Assumptions
+\textbf{Mann-Whitney U Test} \flushright `wilcox.test(..., paired = FALSE)` in base `R`  
+\vspace{-10pt}
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} &  To identify whether groups of variable values are different from one another. \vspace{5pt} \\
+    \pause
+    $H_0$ & \textit{There is no difference in characteristics of the response variable values in dependence of the classes of the predictor variable.}\\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Predictor variable is binary
+      \item Response variable is ordinal or metric
+      \item Variable values are \textbf{independent} (not paired)
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example
+Let's use the `wilcox.test(..., paired = FALSE)` function to test whether the medians of an unnamed variable of two unconnected populations (`a` and `b`) with 10 individuals each are truly different:
+\scriptsize
+```{r MannWhitney}
+set.seed(42)
+a <- rnorm(n = 10, mean = 10, sd = 3)
+b <- rnorm(n = 10, mean = 5, sd = 3)
+wilcox.test(a, b, paired = FALSE)
+```
+
+```{r p.valMann, echo=FALSE}
+p.val <- wilcox.test(a,b, paired=FALSE)$p.value
+```
+\normalsize
+The medians are significantly different (p = $`r p.val`$ ). Keep in mind that the \textbf{populations do not have to be of the same size} for this!
+
+## Wilcoxon Signed Rank Test
+### Purpose And Assumptions
+\textbf{Wilcoxon Signed Rank Test} \flushright `wilcox.test(..., paired = TRUE)` in base `R`  
+\vspace{-10pt}
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} &  To identify whether groups of variable values in a repeated sampling set-up are different from one another. \vspace{5pt} \\
+    \pause
+    $H_0$ & \textit{There is no difference in characteristics of the response variable values in dependence of the classes of the predictor variable.}\\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Predictor variable is binary
+      \item Response variable is ordinal or metric
+      \item Variable values are \textbf{dependent} (paired)
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example
+Let's use the `wilcox.test(..., paired = FALSE)` function to test whether the medians of an unnamed variable of two connected samples (`a` and `b`) with 10 individuals each (i.e. one re-sampled population) are truly different:
+\scriptsize
+```{r Wilcox}
+set.seed(42)
+a <- rnorm(n = 10, mean = 10, sd = 3)
+b <- rnorm(n = 10, mean = 5, sd = 3)
+wilcox.test(a, b, paired = TRUE)
+```
+
+```{r p.valWilcox, echo=FALSE}
+p.val <- wilcox.test(a,b, paired=TRUE)$p.value
+```
+\normalsize
+The medians are significantly different (p = $`r p.val`$ ). Keep in mind that the \textbf{samples have to be of the same size} for this (i.e. there is one data record in `b` that corresponds to one data record in `a`)!
+
+# Our Data
+## Choice Of Variables
+### Variables We Can Use
+
+\begincols[T]
+  \begincol{.5\linewidth}
+    \textbf{Response variables} (metric/ordinal)
+    \visible<2->{
+    \begin{itemize}
+    \item Weight
+    \item Height
+    \item Wing Chord
+    \item Nesting Height
+    \item Number of Eggs
+    \item Egg Weight
+    \item Home Range
+    \end{itemize} 
+    }
+\endcol
+\begincol{.5\linewidth}
+  \pause \pause
+    \textbf{Predictor variables} (binary)
+    \visible<4->{
+    \begin{itemize}
+    \item Population Status (Introduced vs. Native)
+    \item Sex (Male vs. Female)
+    \item Nesting Site (Tree vs. Shrub)
+    \item Predator Presence (Yes vs. No)
+    \item Predator Type (Avian vs. Non-Avian)
+    \item Climate (Continental vs. Coastal)
+    \end{itemize} 
+    }
+\endcol
+\endcols
+
+## Research Questions
+### Research Questions And Hypotheses
+\begin{center}
+So which of our major research questions (seminar 6) can we answer?
+\end{center}
+
+\small
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+    \textbf{Mann Whitney U Test}
+    \begin{itemize}
+    \item \textit{Climate Warming/Extremes:} Does sparrow morphology depend on climate?
+    \item \textit{Predation:} Does nesting height depend on predator characteristics?
+    \item \textit{Competition:} Does home range depend on climate?
+    \item \textit{Sexual Dimorphism:} Does sparrow morphology depend on sex?
+    \end{itemize} 
+\endcol
+\begincol{.5\linewidth}
+  \pause
+    \textbf{Wilcoxon Signed Rank Test} (suppose a resettling program)
+    \begin{itemize}
+    \item \textit{Climate Warming/Extremes:} Does sparrow morphology change depend on climate?
+    \item \textit{Predation:} Does nesting height depend on predator characteristics?
+    \item \textit{Competition:} Does home range depend on climate?
+    \end{itemize} 
+    \footnotesize
+$\rightarrow$ Find the data in \linebreak \textit{2 - Sparrow\_Resettled\_READY.rds}
+\endcol
+\endcols
+
+# Exercise
+### The `with()` function
+The `with()` function can be used to **make** your **code**:  
+- easier to **write** and **read**  
+- more **accessible**  
+
+\vspace{10pt}
+
+\pause
+
+You might hear someone refer to it as *soft attach* because it **works** a lot **like** the `attach()` function in `R` but **causes none of its problems**
+
+\vspace{10pt}
+
+\pause
+
+You use `with()` to refer to data contained within a data object inside `R`:
+```{r with, eval=FALSE, tidy=FALSE}
+with(data.object, 
+     expression(reference.to.object.within.data.object)
+     )
+```

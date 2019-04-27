@@ -1,0 +1,1098 @@
+---
+title: "Inferential Statistics and Hypothesis Testing"
+# subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
+author: "Erik Kusch"
+date: "??/??/20??"
+fontsize: 10pt
+output: 
+  beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
+    keep_tex: false
+    toc: false # this is added through a later command
+    slide_level: 3 # at how many pound signs (#) to assume slide title level
+    includes:
+      in_header: Style.tex
+classoption: t
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=20),tidy=TRUE, fig.height=8)
+options(digits=2)
+```
+
+<!--- ####### TOC (use this if you want ## headers to be included in the toc)--------------------
+---------------------------------------  --->
+
+\tableofcontents[subsubsectionstyle=hide]
+
+<!--- ####### Inferential Statistics-------------------------------------------------------------
+---------------------------------------  --->
+# Background
+## Introduction
+### Introduction
+\begin{tcolorbox}[colback=bondiblue!5,colframe=bondiblue!40!black,title=]
+\centering Inferential statistics are used to \textbf{draw conclusions from data}.
+\end{tcolorbox}
+
+\vspace{-0.3cm}
+\pause 
+
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \textit{The aim:} &  To formulate hypotheses and test these in order to be able to make generalisations concerning \textbf{populations} from \textbf{samples}.\\
+           \pause
+             & \\
+           \textit{The procedure:} & Using random sampling practices and hypotheses testing procedures to judge validity of previously established hypotheses. \\
+          \end{tabular}}
+        \label{Des_Stats}
+\end{table}
+
+\vspace{0.2cm}
+
+\pause
+\begin{tcolorbox}[colback=bondiblue!5,colframe=bondiblue!40!black,title=]
+\centering Inferential statistics often invoke \textbf{measures of statistical significance}.
+\end{tcolorbox}
+
+## Methods Of Inferential Statistics
+### Methods \& Quirks
+Information is handed to inferential statistics in a multitude of different forms (e.g. vectors, matrices, data frames). This information is used to:
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+  \visible<2->{\textbf{Establish Hypotheses}:}
+    \begin{itemize}
+    \visible<3->{
+    \item Null/Alternative
+    \item (Non-)Directional
+    \item (Non-)Specified
+    \item Difference
+    \item Equivalence
+    \item Relationship
+    }
+    \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+  \visible<2->{\textbf{Test Hypotheses}:}
+    \begin{itemize}
+    \visible<4->{
+    \item \textit{Non-Parametric Tests}
+      \begin{itemize}
+      \item Nominal and Correlation tests
+      \item Ordinal and Metric tests
+      \item ...
+      \end{itemize}
+    \item \textit{Parametric Tests}
+      \begin{itemize}
+      \item t-test
+      \item ANOVA
+      \item ...
+      \end{itemize}
+    }
+    \end{itemize}
+  \end{column}
+\end{columns}
+
+\vspace{0.2cm}
+\pause \pause \pause \pause
+\begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title=]
+\centering Inferential statistics \textbf{allow generalisation} beyond the data at hand!
+\end{tcolorbox}
+
+# Hypotheses
+## What Are Hypotheses?
+### Hypotheses And Their Importance
+\textbf{What is a hypothesis?}    
+In the case of inferential statistics, a \textit{hypothesis} presents some \textit{rationale} about patterns within the natural world and hence the data.
+
+\vspace{0.4cm}
+\pause
+
+\textbf{What's the fuss?}  
+Hypotheses are \textit{simplifications} of possible norms of natural processes and \textit{make things testable}.
+
+\vspace{0.4cm}
+\pause
+
+\textbf{So?}  
+Getting the right answers always comes down to asking the right questions.
+
+\vspace{0.4cm}
+\pause
+\begin{tcolorbox}[colback=bondiblue!5,colframe=bondiblue!40!black,title=]
+\centering Hypotheses are, more or less, \textbf{educated guesses}.
+\end{tcolorbox}
+
+## Types Of Hypotheses
+### Null vs. Alternative Hypotheses (Theory)
+
+\begin{center}
+This is \textbf{the most basic format} of hypotheses upon which every other type of hypothesis is built.
+\end{center}
+\vspace{-1cm}
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \hline
+             & \\
+          \end{tabular}}
+        \label{Line}
+\end{table}
+\vspace{-1.0cm}
+
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Null Hypothesis}:
+    \begin{itemize}
+    \item Represents a \textbf{base assumption} ($X = Y$)
+    \item Can either be \textit{accepted} or \textit{rejected}
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Alternative Hypothesis}:
+    \begin{itemize}
+    \item Represents the \textbf{negation of the null hypothesis} ($X \neq Y$)
+    \item Will be \textit{accepted} or \textit{rejected} based on whether the null hypothesis is found to be correct or not
+    \end{itemize}
+  \endcol
+\endcols
+\pause
+\hfill\linebreak
+\flushright $\rightarrow$ Usually, you will refer to every type of hypothesis in this context.
+
+### Null vs. Alternative Hypotheses (Example)
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+    \begin{itemize}
+    \small
+    \item \textit{"Our null expectation, if climate niche is expanding randomly or equally on all niche peripheries, [...]. This would result in an EI (Expansion Index) value of 0."} \linebreak
+    \tiny Ralston, J. et al. (2016) 'Population trends influence species ability to track climate change', Global Change Biology, pp. 1-10. doi: 10.1111/gcb.13478.
+    \end{itemize}
+    \pause
+    \begin{itemize}
+    \small
+    \item \textit{"[...] detect vegetation cover [...]. Chi squared test was applied to test the null hypothesis of no effects. [...] logistic regression model performs better than the null model [...]"} \linebreak
+    \tiny Nioti, F. et al. (2015) 'A Remote Sensing and GIS Approach to Study the Long-Term Vegetation Recovery of a Fire-Affected Pine Forest in Southern Greece', Remote Sensing, 7(6), pp. 7712-7731. doi: 10.3390/rs70607712.
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+    \visible<1->{
+    \vspace{0.2cm}
+    \centering \includegraphics[width=1\linewidth]{Figures/Null.jpg}
+    \raggedright \tiny{Ralston, J. et al. (2016) 'Population trends influence species ability to track climate change', Global Change Biology, pp. 1-10. doi: 10.1111/gcb.13478.}
+    }
+  \endcol
+\endcols
+
+### Difference Hypotheses
+\begin{center}
+This format of hypotheses is built upon postulated \textbf{differences in variable parameters within samples}.
+\end{center}
+\vspace{-1cm}
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \hline
+             & \\
+          \end{tabular}}
+        \label{Line}
+\end{table}
+\vspace{-1.0cm}
+
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{In Theory}:
+    \begin{itemize}
+    \item A difference in certain variable parameters (see seminar 4) between multiple samples is postulated
+    \item $X \neq Y$
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{In Practice}:
+    \begin{itemize}
+    \small
+    \item \textit{"[...] difference in the rate of treated bleeding events [...] between [...] prophylaxis (group A) and [...] no prophylaxis (group B) [...]"} \linebreak
+    \tiny Oldenberg, J. et al. (2017) 'Emicizumab prophylaxis in hemophilia A with inhibitors', N.Engl.J Med., pp. 1-10. doi: 10.1056/NEJMoa1703068.
+    \end{itemize}
+    \begin{itemize}
+    \small
+    \item \textit{"[...] could enable the plant to react differently to the next frost spell"} \linebreak
+    \tiny Walter, J. et al. (2013) 'Ecological stress memory and cross stress tolerance in plants in the face of climate extremes', Environmental and Experimental Botany. Elsevier B.V., 94, pp. 3-8. doi: 10.1016/j.envexpbot.2012.02.009.
+    \end{itemize}
+  \endcol
+\endcols
+
+### Equivalence Hypotheses
+\begin{center}
+This format of hypotheses is built upon postulated \textbf{equivalence of variable parameters within samples}.
+\end{center}
+\vspace{-1cm}
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \hline
+             & \\
+          \end{tabular}}
+        \label{Line}
+\end{table}
+\vspace{-1.0cm}
+
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{In Theory}:
+    \begin{itemize}
+    \item An equivalence of certain variable parameters (see seminar 4) between multiple samples is postulated
+    \item $X \approx Y$
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{In Practice}:
+    \begin{itemize}
+    \small
+    \item \textit{"Thresholds are equivalent to tipping points [...]"} \linebreak
+    \tiny Angeler, D. G. and Allen, C. R. (2016) 'Quantifying Resilience', Applied Ecology, pp. 617-624. doi: 10.1111/1365-2664.12649.
+    \end{itemize}
+    \begin{itemize}
+    \small
+    \item \textit{"Just as LAI is the canopy equivalent of leaf area, so $\epsilon^*_g$ is the canopy equivalent of the quantum yield."} \linebreak
+    \tiny Prince, S. D. and Goward, S. N. (1995) 'Global primary production: a remote sensing approach', Journal of Biogeography, pp. 815-835. doi: Doi 10.2307/2845983.
+    \end{itemize}
+  \endcol
+\endcols
+
+### Relationship Hypotheses
+\begin{center}
+This format of hypotheses is built upon postulated \textbf{relationships of variables within a population}.
+\end{center}
+\vspace{-1cm}
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \hline
+             & \\
+          \end{tabular}}
+        \label{Line}
+\end{table}
+\vspace{-1.0cm}
+
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{In Theory}:
+    \begin{itemize}
+    \item A relationship of multiple variables within a population is postulated
+    \item $X \sim Y$
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{In Practice}:
+    \begin{itemize}
+    \small
+    \item \textit{"[...] yield significant relationships between GPP and tree diversity."} \linebreak
+    \tiny Nightingale, J. M. et al. (2008) 'PREDICTING TREE DIVERSITY ACROSS THE UNITED STATES AS A FUNCTION OF MODELED GROSS PRIMARY PRODUCTION', Ecological Applications, 18(1), p. 93. Available at: http://dx.doi.org/10.1890/07-0693.1.
+    \end{itemize}
+    \begin{itemize}
+    \small
+    \item \textit{"[...] test for a series of hypothetical relationships (i.e., linear through to threshold) between ecological response variable and environment [...]"} \linebreak
+    \tiny Seddon, A. et al. (2014) 'A quantitative framework for analysis of regime shifts in a Galapagos coastal lagoon', Ecology, 95(11), pp. 3046-3055. doi: 10.1890/13-1974.1.
+    \end{itemize}
+  \endcol
+\endcols
+
+### Directional vs. Non-Directional Hypotheses (Theory)
+\begin{center}
+This format of hypotheses is built on postulated \textbf{connections and/or differences of variables within samples}.
+\end{center}
+\vspace{-1cm}
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \hline
+             & \\
+          \end{tabular}}
+        \label{Line}
+\end{table}
+\vspace{-1.0cm}
+
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Directional Hypothesis}:
+    \begin{itemize}
+    \item Statement about the direction these connections or differences are postulated to function along
+    \item $X > Y$; $X \leq Y$; $X < Y$; $X \geq Y$
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Non-Directional Hypothesis}:
+    \begin{itemize}
+    \item No statement about the direction these connections or differences are postulated to function along
+    \item $X \neq Y$ with $X \quad ? \quad Y$
+    \end{itemize}
+  \endcol
+\endcols
+
+### Directional vs. Non-Directional Hypotheses (Example)
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+    \begin{itemize}
+    \small
+    \item \textit{"[...] a tenfold variation in mineralization rates from sand dunes to fertilized meadows (Ellenberg 1977) was associated with a 12-fold increase in ANPP (Poorter \& de Jong 1999) [...]"} \linebreak
+    \tiny Lavorel, S. and Garnier, E. (2002) 'Predicting changes in community composition and ecosystem functioning from plant traits: revisiting the Holy Grail', Functional Ecology, 16(Essay Review), pp. 545-556. doi: Doi 10.1046/J.1365-2435.2002.00664.X.
+    \end{itemize}
+    \pause
+    \begin{itemize}
+    \small
+    \item \textit{"Individual tropical trees show incredibly strong and persistent variation in long-term growth rates, resulting in a fourfold variation in the ages of similarly sized trees."} \linebreak
+    \tiny Brienen, R. J. W., Sch, J. and Zuidema, P. A. (2016) 'Tree Rings in the Tropics: Insights into the Ecology and Climate Sensitivity of Tropical Trees', in Tropical Tree Physiology. doi: 10.1007/978-3-319-27422-5.
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+    \visible<1->{
+    \vspace{1.2cm}
+    \centering \includegraphics[width=1\linewidth]{Figures/Direction.jpg}
+    \raggedright \tiny{Lavorel, S. and Garnier, E. (2002) 'Predicting changes in community composition and ecosystem functioning from plant traits: revisiting the Holy Grail', Functional Ecology, 16(Essay Review), pp. 545-556. doi: Doi 10.1046/J.1365-2435.2002.00664.X.}
+    }
+  \endcol
+\endcols
+
+
+### Specified vs. Non-Specified Hypotheses (Theory)
+\begin{center}
+This format is built on postulated \textbf{effect sizes} of treatments/groupings in experimental/observational set-up.
+\end{center}
+\vspace{-1cm}
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \hline
+             & \\
+          \end{tabular}}
+        \label{Line}
+\end{table}
+\vspace{-1.0cm}
+
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Specified Hypothesis}:
+    \begin{itemize}
+    \item Statement about an expected effect size/intensity within a set of response variables based upon a set of predictor variables.
+    \item $X = \beta*Y$ with $\beta$ being some pre-defined coefficient
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Non-Specified Hypothesis}:
+    \begin{itemize}
+    \item Statement about an expected effect within a set of response variables based upon a set of predictor variables without a notion of an effect size/intensity.
+    \item $X = \beta*Y$ with $\beta$ being some undefined coefficient
+    \end{itemize}
+  \endcol
+\endcols
+
+### Specified vs. Non-Specified Hypotheses (Example)
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+    \begin{itemize}
+    \small
+    \item \textit{"The effect size of diversity (natural log response ratio; LRR) is based on the comparison of high and low species richness levels [...]"} \linebreak
+    \tiny De Boeck, H. J. et al. (2017) 'Patterns and drivers of biodiversity-stability relationships under climate extremes', Journal of Ecology, (October), pp. 1-13. doi: 10.1111/1365-2745.12897.
+    \end{itemize}
+    \pause
+    \begin{itemize}
+    \small
+    \item \textit{"[...] a sample of 51 participants with a withdrawal rate of 10\% in the control group would provide a power of more than 95\% at a two-sided significance level of 0.05 to detect an effect size of 4/18 = 0.22 (null hypothesis: rate ratio = 1)."} \linebreak
+    \tiny Oldenberg, J. et al. (2017) 'Emicizumab prophylaxis in hemophilia A with inhibitors', N.Engl.J Med., pp. 1-10. doi: 10.1056/NEJMoa1703068.
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+    \visible<1->{
+    \centering \includegraphics[width=1\linewidth]{Figures/Eff_Size.jpg}
+    \raggedright \tiny{De Boeck, H. J. et al. (2017) 'Patterns and drivers of biodiversity-stability relationships under climate extremes', Journal of Ecology, (October), pp. 1-13. doi: 10.1111/1365-2745.12897.}
+    }
+  \endcol
+\endcols
+
+
+
+
+
+# Hypothesis Testing
+## Basic Workflow
+### How To Go About Testing Hypotheses
+This process is highly variable but can be broken down into the following general, consecutive steps:
+\pause
+\begincols[c]
+  \begincol{.5\linewidth}
+    \begin{enumerate}
+    \item Establish a hypothesis (in terms of \textit{Null} and \textit{Alternative})
+    \pause
+    \item Plan study and collect data
+    \pause
+    \item \textbf{Testing}
+      \begin{itemize}
+      \item \textit{Assumption check}
+      \item \textit{Exploratory analyses} (seminar 4)
+      \item \textit{Data visualisation} (seminar 5)
+      \item \textit{Final analysis}
+      \end{itemize}
+    \pause
+    \item \textbf{Exporting results} and final plotting
+    \end{enumerate}
+  \endcol
+  \begincol{.5\linewidth}
+  \visible<6->{
+  \centering \includegraphics[width=1\linewidth]{Figures/29136209_574037319635232_5434563101930291200_n.png}
+  }
+  \endcol
+\endcols
+
+### Planning A Study And Collecting Data
+\begincols[T]
+  \begincol{.5\linewidth}
+  \textbf{Study design} is part of many other courses. \pause A few personal tips:
+    \begin{itemize}
+    \pause
+    \item Establish a \textbf{schedule} for your project
+    \pause
+    \item Use \textbf{journal(s)} to record:
+      \begin{itemize}
+      \item Weekly ToDo lists 
+      \item Important talks with supervisors/co-authors
+      \item Note down spontaneous ideas for the project
+      \end{itemize}  
+    \pause
+    \item \textbf{Talk} about it
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  When \textbf{collecting data} ensure that
+  \pause
+    \begin{itemize}
+    \item \textbf{Relevant standards} and \textbf{standardised measuring schemes} are used (e.g.: \footnotesize{Pérez-Harguindeguy, N. et al. (2013) 'New handbook for standardized measurement of plant functional traits worldwide', Australian Journal of Botany, 61, pp. 167-234. doi: http://dx.doi.org/10.1071/BT12225.} \normalsize for plant functional traits)
+    \pause
+    \item \textbf{Relevant details} about data collection make it to the \textbf{final manuscript}
+    \end{itemize}
+  \endcol
+\endcols
+
+
+### Sampling
+Depending on how your project is structured, you will need to draw samples from your data. The most common sampling practices are:
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Random sampling}:
+  \pause
+    \begin{itemize}
+    \item Most commonly used
+    \item Applicable when \textit{true randomness} is desired
+  \end{itemize}
+  Use the `sample()` function in `R` (see seminar 1)
+  \vspace{0.2cm}
+  \visible<6->{
+  \begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title=]
+  \centering{Remember to make the sampling \textbf{reproducible!}}
+  \end{tcolorbox}
+  }
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Stratified sampling}:
+  \pause
+  \begin{itemize}
+    \item Applicable when \textit{pseudo-randomness} is desired
+      \begin{itemize}
+      \item Population is divided into groups (\textbf{strata})
+      \item Random sampling is carried out for each strata
+      \item Strata samples are combined
+      \end{itemize}
+  \end{itemize}
+  Use the `stratified()` function  in `R` or in-built functions of certain statistical test functions
+  \endcol
+\endcols
+
+### Assumptions
+Statistical test rely on individual \textit{statistical assumptions}. Most prominent:
+\begincols[c]
+  \begincol{.5\linewidth}
+  \begin{itemize}
+  \pause
+  \item \textbf{Normality}: Data follow a normal distribution (see seminar 3)
+  \pause
+  \item \textbf{Randomness}: Data are truly random (see seminar 1)
+  \pause
+  \item \textbf{Independence}: Data are independent
+  \pause
+  \item \textbf{Homogeneity of variances}: Data from separate groups have same variance
+  \pause
+  \item \textbf{Linearity}: Data have linear relationship
+  \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \visible<2->{
+  \centering \includegraphics[width=1\linewidth]{Figures/FB_IMG_1508796028117.jpg}
+  }
+  \endcol
+\endcols
+
+### Testing
+\begincols[c]
+  \begincol{.5\linewidth}
+  General procedure:
+    \begin{enumerate}
+    \pause
+    \item Select appropriate test based on (this should happen \textbf{before data collection})
+      \begin{itemize}
+      \item Data structure
+      \item Variable scale
+      \item Statistical assumptions
+      \item Applicability to the hypothesis
+      \end{itemize}
+    \pause
+    \item Choose an appropriate test statistic (often pre-determined by the choice of test)
+    \pause
+    \item Test \textit{statistical significance} (usually $p$-value)
+    \end{enumerate}
+  \endcol
+  \begincol{.5\linewidth}
+  \visible<5->{
+  \centering \includegraphics[width=1\linewidth]{Figures/Guys.png}
+  }
+  \endcol
+\endcols
+
+## Statistical Tests
+### Overview Of Tests
+Test come in a variety of forms. Too much to cover all of them in one seminar series.\linebreak
+\pause
+$\rightarrow$ We will focus on a select few.\linebreak
+\hfill \linebreak
+\pause
+Tests can be classified according to their use of \textit{parameters}:
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Parametric Tests}
+    \begin{itemize}
+    \item More \textit{restrictive}
+    \item Make \textit{strict assumptions}
+    \item \textbf{Easy to interpret}
+    \item Require \textit{less data}
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Non-Parametric Tests}
+    \begin{itemize}
+    \item Less \textit{restrictive}
+    \item Make \textit{little to no assumptions}
+    \item Often a \textbf{black box}
+    \item Require \textit{more data}
+    \end{itemize}
+  \endcol
+\endcols
+\vspace{0.4cm}
+\pause
+$\rightarrow$ We will focus on the \textbf{more basic tests of both categories}.
+
+### Choosing The Appropriate Test I
+\vspace{-0.2cm}
+\small
+\begincols[T]
+  \begincol{.4\linewidth}
+  The choice of test depends on:
+  \begin{itemize}
+  \pause
+  \item The \textbf{dependent variable(s)} ($\approx$ \textit{Response})
+    \begin{itemize}
+    \small
+    \item Scale/Distribution (Type)
+    \item Number
+    \end{itemize}
+  \pause
+  \item The \textbf{independent variable(s)} ($\approx$ \textit{Predictor(s)})
+    \begin{itemize}
+    \small
+    \item Scale/Distribution (Type)
+    \item Number
+    \end{itemize}
+  \pause
+  \item The \textbf{measure} employed by descriptive statistics which is to be tested on (seminar 4)
+  \end{itemize}
+  \endcol
+  \begincol{.6\linewidth}
+  \centering \includegraphics[width=1\linewidth]{Figures/choosing-the-correct-statistical-test.jpg}
+  \endcol
+\endcols
+
+
+### Choosing The Appropriate Test II
+\centering \includegraphics[width=0.8\linewidth]{Figures/decision.png}
+
+
+## Statistical Significance
+### The $p$-value: Abstraction, Distraction And Action I
+  \begincols[T]
+  \begincol{.5\linewidth}
+    \begin{tcolorbox}[colback=bondiblue!5,colframe=bondiblue!40!black,title=]
+    \centering{The $p$-value is \textbf{the} measure of statistical significance in contemporary science!}
+    \end{tcolorbox}
+  \pause
+  A $p$-value \textbf{below} the significance \textbf{cut-off value} (usually $0.05$) indicates a \textbf{significant test metric}\linebreak
+  \hfill\linebreak
+  \pause
+  $p$-values are \textbf{subject to} a heated \textbf{debate} (seminar 1) as everyone wants significant results and the concept of the $p$-value is \textbf{often misunderstood}
+  \endcol
+  \begincol{.5\linewidth}
+  \vspace{0.2cm}
+  \visible<4->{
+  \centering \includegraphics[width=0.8\linewidth]{Figures/Mirror.jpg}
+  }
+  \endcol
+\endcols
+
+### The $p$-value: Abstraction, Distraction And Action II
+\begincols[T]
+  \begincol{.5\linewidth}
+  The common \textbf{misconceptions}:
+  \pause
+    \begin{itemize}
+    \item \small \textit{"The $p$-value is the probability that the null hypothesis is true"}
+    \item \small \textit{"The $p$-value is the probability that the observed effects were produced by random chance alone."}
+    \item \small \textit{"The $p$-value does indicate the size or importance of the observed effect."}
+    \end{itemize}
+  \pause
+  \normalsize The \textbf{right interpretation}:
+  \pause
+    \begin{itemize}
+    \item \small \textit{"The $p$-value is the probability of randomly obtaining an effect at least as extreme as the one in your sample data, given the null hypothesis."}
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \vspace{-0.2cm}
+  \visible<5->{
+  \centering \includegraphics[width=1\linewidth]{Figures/P_Over_time.png}
+  }
+  \visible<6->{
+  \centering \includegraphics[width=0.8\linewidth]{Figures/22555053_505152276523737_1180066076167435422_n.png}
+  }
+  \pause
+    \begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title=]
+    \centering{The $0.05$ significance level is an arbitrary convention!}
+    \end{tcolorbox}
+  \endcol
+\endcols
+
+### Errors I
+\begin{center}
+\textbf{Uncertainty} is an \textbf{inherent property} of any statistical method.
+\end{center}
+\pause
+\begincols[c]
+  \begincol{.5\linewidth}
+  Statistical errors can be of:
+  \pause
+  \begin{itemize}
+  \item \textbf{Type I} (\textit{"True Negative"})
+  \pause
+  \item \textbf{Type II} (\textit{"False Positive"})
+  \end{itemize}
+  \pause
+    \begin{tcolorbox}[colback=bondiblue!5,colframe=bondiblue!40!black,title=]
+    \centering{Statistical errors are \textbf{impossible to avoid} but we can aim to \textbf{make as few as possible}.}
+    \end{tcolorbox}
+  \endcol
+  \begincol{.5\linewidth}
+  \centering \includegraphics[width=1\linewidth]{Figures/Errors.png}
+  \endcol
+\endcols
+\vspace{0.4cm}
+\centering $\rightarrow$ Optimise $\alpha$ and $\beta$ cut-off values (there is a trade off between them)
+
+### Errors II
+\centering \includegraphics[width=0.55\linewidth]{Figures/FB_IMG_1508938584125.jpg}
+
+# Our Research Project
+###
+\centering
+\bigskip \vspace{0.2cm}
+  \usebeamerfont{title}\MakeUppercase{Our Research Project}\par
+  \bigskip \vspace{0.2cm}
+  \usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}{Evolution of \textit{Passer domesticus} in Response to Climate Change}\par
+  \bigskip \vspace{1cm}
+  \usebeamercolor[fg]{titlegraphic}\inserttitlegraphic
+
+\vfill
+
+\begin{table}[b!]
+  \centering
+    \begin{tabular}{L{0.47\textwidth} R{0.47\textwidth}}
+    \usebeamerfont{author}\insertauthor  &  \\
+    \usebeamerfont{institute}\url{erik.kusch@uni-leipzig.de} & \\
+     & \\
+    	\pbox{20cm}{\usebeamerfont{institute}\insertinstitute} & \usebeamerfont{date}\insertdate \\
+    \end{tabular}
+\end{table}
+
+### Motivation
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Climate Change}:
+    \begin{itemize}
+    \item Increasingly warming temperatures 
+    \item Increasing frequency and intensity of climate extremes
+    \end{itemize}
+    \tiny \textit{De Boeck, H. J. et al. Patterns and drivers of biodiversity-stability relationships under climate extremes. J. Ecol. 1-13 (2017). doi:10.1111/1365-2745.12897}
+  \visible<4->{
+    \vspace{15pt}
+    \begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title=]
+    \normalsize\centering Understanding patterns of evolution caused by climate change is vital for mankind.
+    \end{tcolorbox}
+  }
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Biological Consequences}:
+    \begin{itemize}
+    \item Pole-ward range shifts of species have been observed
+    \end{itemize}
+    \tiny \textit{Ralston, J. et al. Population trends influence species ability to track climate change. Glob. Chang. Biol. 1-10 (2016). doi:10.1111/gcb.13478}
+    \begin{itemize}
+    \normalsize
+    \item Recent evolutionary processes can be linked to climate change
+    \end{itemize}
+    \tiny \textit{Parmesan, C. Ecological and Evolutionary Responses to Recent Climate Change. Annu. Rev. Ecol. Evol. Syst. 37, 637-669 (2006).}
+    \begin{itemize}
+    \normalsize
+    \item Mankind relies on ecosystem services which may be affected by climate change
+    \end{itemize}
+    \tiny \textit{Truchy, A. et al. Linking biodiversity, ecosystem functioning and services, and ecological resilience: Towards an integrative framework for improved management. Advances in Ecological Research 53, (Elsevier Ltd., 2015).}
+  \endcol
+\endcols
+
+### Studying Climate Change
+\pause
+\begin{itemize}
+\item Climate change is a \textbf{temporal} phenomenon\\
+\pause
+$\rightarrow$ Usually studied through \textit{time-series based} approaches
+\pause
+\item What if we don't have time-series data?\\
+\pause
+$\rightarrow$ We can \textit{trade} \textbf{time} for \textbf{space} making use of the \textbf{spatial aspect} of climate change
+\end{itemize}
+\pause
+\begincols[T]
+  \begincol{.5\linewidth}
+  \textbf{Warming Effects}:
+    \begin{itemize}
+    \item The spatial equivalent to temporal warming effects of climate change manifests on \textbf{latitudinal gradients}. Equatorward placement of organisms imposes a warming effect.
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Climate Extremes}:
+    \begin{itemize}
+    \item The spatial equivalent to temporal changes in frequency and intensity of climate extremes can be expressed via \textbf{continental} (extreme) \textbf{and coastal} (moderate) \textbf{climate} patterns
+    \end{itemize}
+  \endcol
+\endcols
+
+### Studying Evolution
+\pause
+\begin{itemize}
+\item Evolution is an inherently \textbf{temporal} as well as \textbf{spatial} phenomenon\\
+\pause
+$\rightarrow$ Studied through \textit{time-series based} approaches, \textbf{phylogenies}, etc.
+\end{itemize}
+\pause
+\begincols[T]
+  \begincol{.5\linewidth}
+  \textbf{Temporal Aspects}:
+    \begin{itemize}
+    \item What if we don't have time-series data at one location?\\
+    \pause 
+    $\rightarrow$ We can \textit{trade} \textbf{time} for \textbf{space} as long as there are gradients representing evolutionary forcing
+    \pause
+    \item \textbf{Latitudinal and longitudinal gradients} can be regarded as representative of glimpses into future or past environmental conditions of species.
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Spatial Aspects}:
+    \begin{itemize}
+    \item Evolution relies on the separation of populations for differences to arise (divergent evolution)\\
+    \pause
+    $\rightarrow$ We need to select \textbf{populations} that are \textbf{in no feasible reproductive contact}
+    \pause
+    \item \textbf{Invasive} vs. \textbf{Non-Invasive Populations} can be used to draw conclusions about divergent evolutionary patterns
+    \end{itemize}
+  \endcol
+\endcols
+
+### Our Study Organism
+\begin{center}
+\textit{Passer domesticus} - The Common House Sparrow
+\end{center}
+\pause
+\begincols[T]
+  \begincol{.5\linewidth}
+  \begin{itemize}
+  \item Present globally\\
+  \pause
+  $\rightarrow$ Lends itself to \textbf{gradient-based approaches}
+  \pause
+  \item Non-migratory \& Invasive species in some parts of the world\\
+  \pause
+  $\rightarrow$ Studies of \textbf{divergent evolution} are possible
+  \pause
+  \item Well-researched\\
+  \pause
+  $\rightarrow$ \textbf{Comparative analyses} are possible
+  \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \centering \includegraphics[width=0.7\linewidth]{Figures/Passer_male.jpg}
+  \centering \includegraphics[width=0.7\linewidth]{Figures/Passer_female.jpg}
+  \endcol
+\endcols
+
+## Majour Research Questions (Hypotheses)
+### Warming Effects
+\begin{center}
+\textit{Equatoward location driven warming effects alter the size and bodyweight of individual sparrows.}
+\end{center}
+\vspace{-15pt}
+\pause
+\begin{table}[t!]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.15\linewidth}L{0.85\linewidth}}
+           \hline
+           \textit{\textbf{Variables}} &  \vspace{5pt}\\
+           \textit{Weight:} & Weight is a reliable indicator of how much resources have been amassed by an individual sparrow. \\
+           \textit{Height:} & Height influences exposure to surrounding temperatures through stature and surface area thus indicating heat loss potential of an individual sparrow. \\
+           \textit{Wing Span:} & Wing span is the horizontal analogue to height measurements and can be indicative of heat loss potential of individual sparrows. \\\hline
+          \end{tabular}}
+        \label{H_V}
+\end{table}
+\pause
+\footnotesize According to Bergmann's rule, organisms of the same species tend to grow bigger and heavier in colder climates since larger animals have a lower surface area to volume ratio thus radiating less body heat per unit of mass and conserving energy.
+
+### Climate Extremes
+\begin{center}
+\textit{Sparrows residing in areas characterised by extreme climate events will differ from sparrows in more stable environments.}
+\end{center}
+\vspace{-15pt}
+\pause
+\begin{table}[t!]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \hline
+           \textit{\textbf{Variables}} &  \vspace{5pt}\\
+           \textit{Weight:} & Weight of individual sparrows is representative of energy resources. \\
+           \textit{Population Size:} & Population size is an important factor of carrying capacity of habitats. \\
+           \textit{No. Eggs:} & Number of eggs reflects investment in offspring. \\
+           \textit{Egg Weight:} & Weight of individual eggs is representative of investment in individual offspring. \\\hline
+          \end{tabular}}
+        \label{H_V}
+\end{table}
+\pause
+\footnotesize We expect sparrows in more extreme climatic conditions to have stored vast amounts of energy whilst the habitats themselves exhibit lower carrying capacities.
+
+### Competition 
+\begin{center}
+\textit{Competition is more pronounced in certain areas leading to changes in sparrow physiology and behaviour.}
+\end{center}
+\vspace{-15pt}
+\pause
+\begin{table}[t!]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \hline
+           \textit{\textbf{Variables}} &  \vspace{5pt}\\
+           \textit{Flock Size:} & Flock size is an indicator of the rate of resource depletion and resource availability. \\
+           \textit{Home Range:} & Home range is a measure of how far an individual will fly to forage. \\
+           \textit{Weight:} & Individual weight is a measure of how well an individual does in competing for food. \\
+           \textit{Sex:} & Differences in fitness due to competition may be a result of sexual differences. \\\hline
+          \end{tabular}}
+        \label{H_V}
+\end{table}
+\pause
+\footnotesize We expect sparrows in less hospitable habitats to group in smaller flocks with bigger home ranges.
+
+### Predation
+\begin{center}
+\textit{Presence and type of predator will influence sparrow behaviour and physiology.}
+\end{center}
+\vspace{-15pt}
+\pause
+\begin{table}[t!]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.3\linewidth}L{0.7\linewidth}}
+           \hline
+           \textit{\textbf{Variables}} &  \vspace{5pt}\\
+           \textit{Predator Presence:} & Indicating whether a predator is present. \\
+           \textit{Predator Type:} & Indicating the kind of predator that is present. \\
+           \textit{Nesting Site:} & Where a sparrow nest is located. \\
+           \textit{Nesting Height:} & How height the nesting site is from the ground. \\
+           \textit{Colour:} & Colour is one of the main factors to conspicuousness. \\
+           \textit{Flock Size:} & Flock size is one of the main factors to conspicuousness. \\\hline
+          \end{tabular}}
+        \label{H_V}
+\end{table}
+\pause
+\footnotesize We expect sparrows which are under pressure from predation to nest differently than ones which are not.
+
+### Sexual Dimorphism
+\begin{center}
+\textit{Sexual dimorphism is less/more pronounced in invasive or non-invasive species.}
+\end{center}
+\vspace{-15pt}
+\pause
+\begin{table}[t!]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \hline
+           \textit{\textbf{Variables}} &  \vspace{5pt}\\
+           \textit{Weight:} & Differences in weight of individuals of different sexes are key to uncovering sexual dimorphism. \\
+           \textit{Colour:} & Displays of colour greatly influence competition for mates which is often subject to a structure of sexual dimorphism. \\\hline
+          \end{tabular}}
+        \label{H_V}
+\end{table}
+\pause
+\footnotesize We expect sexual dimorphism to be more pronounced in invasive populations of sparrows as these are located in environments which are much less hostile to them due to an initial lack of predators and thus increased fitness (and ability to invest in sexually dimorphic displays).
+
+## Data Collection And Study Plan
+### Study Setup I
+Set-up of \textbf{11 Sites} chosen according to \textbf{three factors/treatments} (latitude, climate and population status):
+\vspace{-10pt}
+\pause
+\begin{table}[t!]
+  \centering
+  \resizebox{\textwidth}{!}{%
+    \begin{tabular}{L{0.25\linewidth}L{0.1\linewidth}L{0.1\linewidth}L{0.1\linewidth}L{0.2\linewidth}L{0.25\linewidth}}
+     \textit{\textbf{Site}} &  \textbf{Index} & \textbf{Lat [$^\circ$]} & \textbf{Lon [$^\circ$]} & \textbf{Climate} & \textbf{Population Status}\\\hline
+     \textit{Siberia} & SI & 60 & 100 & Continental & Native\\
+     \textit{United Kingdom} & UK & 54 & -2 & Coastal & Native\\
+     \textit{Australia} & AU & -25 & 135 & Continental & Introduced\\
+     \textit{Reunion} & RE & -21.1 & 55.6 & Coastal & Introduced\\\hdashline
+     \textit{Nunavut} & NU & 70 & -90 & Coastal & Introduced\\
+     \textit{Manitoba} & MA & 55 & -97 & Semi-Coastal & Introduced\\
+     \textit{Louisiana} & LO & 31 & -92 & Coastal & Introduced\\
+     \textit{Belize} & BE & 17.25 & -88.75 & Coastal & Introduced\\
+     \textit{French Guiana} & FG & 4 & -53 & Coastal & Introduced\\
+     \textit{South America} & SA & -14.6 & -57.7 & Coastal & Introduced\\
+     \textit{Falkland Isles} & FI & -51.75 & -59.17 & Coastal & Introduced\\\hline
+    \end{tabular}}
+  \label{Stations}
+\end{table}
+\vspace{-5pt}
+\flushright \tiny Source: \url{https://www.cabi.org/isc/datasheet/38975}, retrieved 21/01/2018
+
+### Study Setup II
+\centering \includegraphics[width=1\linewidth]{Figures/Passer_Sites_Labeled.jpg}
+
+## Testing The Hypotheses
+### Using Our Data I
+
+\begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title=ATTENTION!]
+\centering\textbf{All the data we will use is simulated!}
+\end{tcolorbox}
+\pause
+Data Management and data cleaning will be done throughout seminar 7 (Data Handling and Data Mining).
+
+\vspace{5pt}
+
+\pause
+The actual analyses will be done in the following seminars (8-12) using these statistical approaches:
+
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Nominal Tests} (Seminar 8)
+  \begin{itemize}
+  \item Binomial
+  \item McNemar
+  \item Cochqran's Q
+  \item Chi$^2$
+  \end{itemize}
+\endcol
+\begincol{.5\linewidth}
+  \pause
+  \textbf{Correlation Tests} (Seminar 9)
+  \begin{itemize}
+  \item Pearson
+  \item Rank
+  \item Spearman, Kendall's Tau, Contingency C
+  \end{itemize}
+  \endcol
+\endcols
+
+### Using Our Data II
+
+Analyses covered in this seminar series (continued):
+\vspace{2pt}
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Ordinal/Metric tests for two-sample situations} (Seminar 10)
+  \begin{itemize}
+  \item Mann-Whitney U
+  \item Wilcoxon signed-rank test
+  \end{itemize}
+  \pause
+\endcol
+\begincol{.5\linewidth}
+  \pause
+  \textbf{Ordinal/Metric tests for more than two-sample situations} (Seminar 11)
+  \begin{itemize}
+  \item Kruskal-Wallis H test
+  \item Friedman test
+  \end{itemize} 
+  \endcol
+\endcols
+\vspace{15pt}
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Parametric Tests} (Seminar 12)
+  \begin{itemize}
+  \item t-test
+  \item ANOVA
+  \item (M)AN(C)OVA
+  \end{itemize}
+\endcol
+\begincol{.5\linewidth}
+  \pause
+  Some \textbf{advanced statistical methods} will be touched on in seminar 13 (\textbf{Summary, Manuscript Workflow and an Outlook on Advanced Statistics})
+  \endcol
+\endcols
+\vspace{7pt}
+\pause
+\centering A finalised script (of `R` code) will be produced in seminar 13 (\textbf{Summary, Manuscript Workflow and an Outlook on Advanced Statistics})

@@ -1,0 +1,397 @@
+---
+title: "Simple Parametric Tests"
+# subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
+author: "Erik Kusch"
+date: "??/??/20??"
+fontsize: 10pt
+output: 
+  beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
+    keep_tex: false
+    toc: false # this is added through a later command
+    slide_level: 3 # at how many pound signs (#) to assume slide title level
+    includes:
+      in_header: Style.tex
+classoption: t
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=50),tidy=TRUE, fig.height=8)
+options(digits=2, width = 60)
+
+# function to load packages and install them if they haven't been installed yet
+install.load.package <- function(x) {
+  if (!require(x, character.only = TRUE))
+    install.packages(x)
+  require(x, character.only = TRUE)
+}
+package_vec <- c("nonpar" # needed for Cochran's Q
+                 )
+sapply(package_vec, install.load.package)
+```
+
+<!--- ####### TOC (use this if you want ## headers to be included in the toc)--------------------
+---------------------------------------  --->
+
+\tableofcontents[subsubsectionstyle=hide]
+
+<!--- ####### Inferential Statistics-------------------------------------------------------------
+---------------------------------------  --->
+# Background
+### Introduction
+\begin{center}
+Parametric test are those statistical approaches which rely on \textbf{assumptions} about the parameters which define a population.
+\end{center}
+\pause
+Prominent parametric tests include:
+\begin{itemize}
+\item Pearson correlation (Seminar 9 - Correlation Tests)
+\item \textbf{t-Test}
+\item \textbf{An}alysis \textbf{O}f \textbf{Va}riance (ANOVA)
+\item Linear regression
+\item Multivariate extensions of parametric methods
+\item ...
+\end{itemize}
+
+### Terminology
+A reminder about the distinction of parametric and non-parametric tests (taken from Seminar 6):
+\pause
+\vspace{0.4cm}
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Non-Parametric Tests}
+    \begin{itemize}
+    \item Less \textit{restrictive}
+    \item Make \textit{little to no assumptions}
+    \item Often a \textbf{black box}
+    \item Require \textit{more data}
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Parametric Tests}
+    \begin{itemize}
+    \item More \textit{restrictive}
+    \item Make \textit{strict assumptions}
+    \item \textbf{Easy to interpret}
+    \item Require \textit{less data}
+    \end{itemize}
+  \endcol
+\endcols
+\vspace{0.8cm}
+\pause
+$\rightarrow$ Parametric tests are \textbf{numerous}!
+
+# Analyses
+## t-Test (unpaired)
+### Purpose And Assumptions
+\textbf{t-Test} (unpaired) \flushright `t.test(..., paired = FALSE)` in base `R`  
+\vspace{-10pt}
+\small
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} &  To identify whether groups of variable values are different from one another. \vspace{5pt} \\
+    \pause
+    $H_0$ & \textit{There is no difference in characteristics of the response variable values in dependence of the classes of the predictor variable.}\\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Predictor variable is binary
+      \item Response variable is metric and \textbf{normal distributed} within their groups
+      \item Variable values are \textbf{independent} (not paired)
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+\pause
+\scriptsize
+$\rightarrow$ Test whether variance of response variable values in groups are equal (`var.test()`) and adjust `t.test()` argument `var.equal` accordingly.
+
+### Minimal Working Example
+\small
+Let's feed data to our `t.test(..., paired = FALSE)` function that holds two groups with clearly differing means:
+\scriptsize
+```{r tTest1}
+data <- c(
+  rnorm(10,5,1),
+  rnorm(10,10,1)
+)
+factors <- as.factor(rep(c("A", "B"), each = 10))
+t.test(data ~ factors, paired = FALSE)
+```
+\small
+The output above tells us that the means of our two groups are significantly different.
+
+
+## t-Test (paired)
+### Purpose And Assumptions
+\textbf{t-Test} (paired) \flushright `t.test(..., paired = TRUE)` in base `R`  
+\vspace{-10pt}
+\small
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} &  To identify whether groups of variable values are different from one another. \vspace{5pt} \\
+    \pause
+    $H_0$ & \textit{There is no difference in characteristics of the response variable values in dependence of the classes of the predictor variable.}\\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Predictor variable is binary
+      \item Response variable is metric 
+      \item \textit{Difference of response variable pairs} is \textbf{normal distributed}
+      \item Variable values are \textbf{dependent} (paired)
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example
+\small
+Let's feed data to our `t.test(..., paired = TRUE)` function that holds two connected groups with clearly differing means:
+\scriptsize
+```{r tTest2}
+data <- c(
+  rnorm(10,5,1),
+  rnorm(10,10,1)
+)
+factors <- as.factor(rep(c("A", "B"), each = 10))
+t.test(data ~ factors, paired = TRUE)
+```
+\small
+The output above tells us that the means of our two connected groups are significantly different.
+
+## Analysis of Variance (ANOVA)
+### Introduction to ANOVA
+\begin{center}
+ANOVAs are used to test whether there is a difference between groups of variable values.
+\end{center}
+\pause
+There are \textbf{multiple versions of ANOVAs}:
+\begin{itemize}
+\item One-way ANOVA (one predictor variable)
+\item Two-Way ANOVA (multiple predictor variables)
+\item MANOVA (multivariate ANOVA/multiple response variables)
+\item ANCOVA (categorical and continuous predictor variables)
+\item MANCOVA (multivariate ANCOVA)
+\end{itemize}
+
+### Data for ANOVA
+We will use the `crabs` data set from the `MASS` package
+
+```{r ANOVACrabs}
+library(MASS)
+data(crabs)
+head(crabs)
+```
+
+## One-Way ANOVA
+### Purpose And Assumptions
+\textbf{One-Way ANOVA} \flushright `anova()` in base `R`  
+\vspace{-10pt}
+\small
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} & To explain the variance of a continuous response variable in relation to one predictor variables. \vspace{5pt} \\
+    \pause
+    $H_0$ & \textit{Variance of response variable values is equal between levels of predictor variable.}\\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Predictor variable is categorical
+      \item Response variable is metric
+      \item \textit{Response variable residuals} are \textbf{normal distributed}
+      \item Variance of populations/samples are equal (\textbf{homogeneity})
+      \item Variable values are \textbf{independent} (not paired)
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example
+\small
+Let's test whether body depth (BD) of crabs are varying when grouped by sex:
+\scriptsize
+```{r One-Way}
+OneWay <- with(crabs,  lm(BD ~ sex))
+anova(OneWay)
+```
+\small
+As we can see, sex does not make for a statistically significant predictor of crab body depth.  
+
+Take note that we do not deal with testing the assumptions here.
+
+## Two-Way ANOVA
+### Purpose And Assumptions
+\textbf{Two-Way ANOVA} \flushright `anova()` in base `R`  
+\vspace{-10pt}
+\small
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} & To explain the variance of a continuous response variable in relation to multiple predictor variables. \vspace{5pt} \\
+    \pause
+    $H_0$ & \textit{Variance of response variable values is equal between levels of predictor variables.}\\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Predictor variables are categorical
+      \item Response variable is metric
+      \item \textit{Response variable residuals} are \textbf{normal distributed}
+      \item Variance of populations/samples are equal (\textbf{homogeneity})
+      \item Variable values are \textbf{independent} (not paired)
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example
+\small
+Let's test whether body depth (BD) of crabs are varying when grouped by sex and species as well as their interaction:
+\scriptsize
+```{r Two-Way}
+TwoWay <- with(crabs,  lm(BD ~ sex*sp))
+anova(TwoWay)
+```
+\small
+The output above tells us that species and the interaction effect of sex and species are meaningful for understanding body depth of crabs.
+
+
+## ANCOVA
+### Purpose And Assumptions
+\textbf{ANCOVA} \flushright `anova()` in base `R`  
+\vspace{-10pt}
+\small
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} & To explain the variance of a continuous response variable in relation to mixed (continuous and categorical) predictor variables. \vspace{5pt} \\
+    \pause
+    $H_0$ & \textit{Adjusted variance and means of response variable values is equal between levels of predictor variables.}\\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Predictor variables are categorical or continuous
+      \item Response variable is metric
+      \item \textit{Response variable residuals} are \textbf{normal distributed}
+      \item Variance of populations/samples are equal (\textbf{homogeneity})
+      \item Variable values are \textbf{independent} (not paired)
+      \item Relationship between the response and covariate is linear.
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example
+\small
+Let's test whether body depth (BD) of crabs are varying when grouped by species and the carapace width as a covariate:
+\scriptsize
+```{r ANCOVA}
+Ancova <- with(crabs,  lm(BD ~ sp*CW))
+anova(Ancova)
+```
+\small
+The output above tells us that all of our model coefficients are significant.
+
+
+
+# Our Data
+## Choice Of Variables
+### Variables We Can Use
+\begincols[T]
+  \begincol{.5\linewidth}
+    \textbf{Response variables} (metric)
+    \visible<2->{
+    \begin{itemize}
+    \item Weight
+    \item Height
+    \item Wing Chord
+    \item Nesting Height
+    \item Number of Eggs
+    \item Egg Weight
+    \end{itemize} 
+    }
+\endcol
+\begincol{.5\linewidth}
+  \pause \pause
+    \textbf{Predictor variables} (categorical)
+    \visible<4->{
+    \begin{itemize}
+    \item Sex (binary)
+    \item Climate (binary)
+    \item Climate (3 levels - Continental, Semi-Coastal, Coastal)
+    \item Home Range (3 levels - Small, Medium, Large)
+    \item Site Index (11 levels)
+    \item Predator Presence/Type (3 levels - Avian vs. Non-Avian vs. None)
+    \end{itemize} 
+    }
+\endcol
+\endcols
+
+## Research Questions
+### Research Questions And Hypotheses
+\begin{center}
+So which of our major research questions (seminar 6) can we answer?
+\end{center}
+
+\scriptsize
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+    \textbf{unpaired t-Test}
+    \begin{itemize}
+    \item \textit{Climate Warming/Extremes:} Does sparrow morphology change depend on climate?
+    \item \textit{Sexual Dimorphism:} Does sparrow morphology change depend on Sex?
+    \end{itemize} 
+  \pause
+    \textbf{paired t-Test} (suppose a resettling program)
+    \begin{itemize}
+    \item \textit{Climate Warming/Extremes:} Does sparrow morphology change depend on climate?
+    \end{itemize} 
+  \pause
+    \textbf{One-Way ANOVA}
+    \begin{itemize}
+    \item \textit{Climate Warming/Extremes:} Does sparrow morphology depend on climate?
+    \item \textit{Predation:} Does nesting height depend on predator characteristics?
+    \item \textit{Site-wise variation:} Does sparrow morphology depend on sites?
+    \end{itemize} 
+\endcol
+\begincol{.5\linewidth}
+  \pause
+    \textbf{Two-Way ANOVA}
+    \begin{itemize}
+    \item \textit{Climate Warming/Extremes:} Does sparrow morphology depend on climate and sex?
+    \item \textit{Sexual Dimorphism:} Does sparrow morphology depend on population status and sex?
+    \end{itemize}
+  \pause
+    \textbf{ANCOVA}
+    \begin{itemize}
+    \item \textit{Climate Warming/Extremes:} Do sparrow characteristics depend on climate and latitude?
+    \end{itemize} 
+  \pause
+  \small
+  \vspace{0.4cm}
+    \begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title=]
+    \centering \textit{Remember to \textbf{check assumptions} and find ways to circumvent violations of assumptions!}
+    \end{tcolorbox}
+\endcol
+\endcols
+
+# Exercise
+### Analysing Our Data
+\begincols[T]
+  \begincol{.5\linewidth}
+  \vspace{60pt}
+  \centering Use the exercise in `UL_Sem10_2018_Ex.pdf`
+\endcol
+\begincol{.5\linewidth}
+  \centering \includegraphics[width=.9\linewidth]{Figures/Exer.jpg}
+\endcol
+\endcols

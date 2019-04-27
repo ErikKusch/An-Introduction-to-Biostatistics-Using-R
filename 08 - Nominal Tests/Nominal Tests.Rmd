@@ -1,0 +1,327 @@
+---
+title: "Nominal Tests"
+# subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
+author: "Erik Kusch"
+date: "??/??/20??"
+fontsize: 10pt
+output: 
+  beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
+    keep_tex: false
+    toc: false # this is added through a later command
+    slide_level: 3 # at how many pound signs (#) to assume slide title level
+    includes:
+      in_header: Style.tex
+classoption: t
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=50),tidy=TRUE, fig.height=8)
+options(digits=2, width = 60)
+
+# function to load packages and install them if they haven't been installed yet
+install.load.package <- function(x) {
+  if (!require(x, character.only = TRUE))
+    install.packages(x)
+  require(x, character.only = TRUE)
+}
+package_vec <- c("nonpar" # needed for Cochran's Q
+                 )
+sapply(package_vec, install.load.package)
+```
+
+<!--- ####### TOC (use this if you want ## headers to be included in the toc)--------------------
+---------------------------------------  --->
+
+\tableofcontents[subsubsectionstyle=hide]
+
+<!--- ####### Inferential Statistics-------------------------------------------------------------
+---------------------------------------  --->
+# Background
+### Introduction
+\begin{center}
+These approaches only allow for the use of \textbf{categorical} (nominal) \textbf{variables}!
+\end{center}
+\pause
+Prominent nominal tests include:
+\begin{itemize}
+\item \textbf{Binomial Test}
+\item \textbf{McNemar}
+\item Fisher's Exact
+\item \textbf{Cochran's Q}
+\item \textbf{Chi-Squared}
+\item ...
+\end{itemize}
+
+
+### The `table()` function
+In reality, you will need to convert your data to fit the various nominal test specifications. To do so, you may wish to enlist the help of the `table()` function of base `R` which converts nominal records into count data.
+
+\scriptsize
+```{r Table}
+Samples <- c("A", "B")
+set.seed(42)
+counts <- sample(Samples, size = 1000, replace = TRUE)
+table(counts)
+```
+
+# Analyses
+## Binomial Test
+### Purpose And Assumptions
+\textbf{Binomial Test} \flushright `binom.test()` in base `R`  
+\vspace{-10pt}
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} &  To test whether the observed distribution of data values of a binomial variable differ from what was expected. \vspace{5pt} \\
+    \pause
+    $H_0$ & \textit{The observed binomial data proportions do not differ significantly from the expected proportions.}\\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Variable values are binomial.
+      \item The population is significantly larger than the sample.
+      \item The sample accurately represents the population.
+      \item Sampled values are independent (one value does not influence another).
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example
+We feed the `binom.test()` function a 1/4 (`c(200, 800)`) data set whilst expecting the distribution to be 1 to 1 (`p = 0.5`).  
+
+\scriptsize
+```{r Binomial}
+binom.test(c(200, 800), p = 0.5)
+```
+\normalsize
+The result is significant (p $\approx$ `r round(binom.test(c(200, 800), p = 0.5)$p.value,2)`).
+
+## McNemar
+### Purpose And Assumptions
+\textbf{McNemar} \flushright `mcnemar.test()` in base `R`  
+\vspace{-10pt}
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} &  To test whether there is a change in proportion of paired data.  \vspace{5pt} \\
+   \pause
+    $H_0$ & \textit{The observed binomial data proportions do not differ significantly between treatments/paired sets.}\\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Variable values are binomial.
+      \item The population is significantly larger than the sample.
+      \item The sample accurately represents the population.
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example
+We feed the `mcnemar.test()` function a 1 to 1 (`c(500, 500)`) as well as a a 1 to 4 (`c(200, 800)`) data set for the paired data sets.  
+
+\scriptsize
+```{r McNemar}
+Performance <- matrix(c(500, 500, 200, 800),nrow = 2)
+Performance
+mcnemar.test(Performance)
+```
+\normalsize
+With a p-value of $\approx$ `r round(mcnemar.test(Performance)$p.value,2)` the test concludes significantly.
+
+
+## Cochran's Q
+### Purpose And Assumptions
+\textbf{Cochran's Q} \flushright `cochrans.q()` in the `nonpar` package  
+\vspace{-10pt}
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} &  To test whether there are differences in matched sets of three or more frequencies or proportions. \vspace{5pt}\\
+    \pause
+    $H_0$ & \textit{The observed proportions of data values in treatments is equal among the matched sets.} \\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item The first (dependent/response) variable is binomial.
+      \item The second (independent/predictor) variable is nominal/categorical with three values.
+      \item The population is significantly larger than the sample.
+      \item The sample accurately represents the population.
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example
+We feed the `cochrans.q()` function a 6 by 4 matrix of binomial values. The first column represents our dependent, binomial variable. The remaining columns represent our independent variable on three levels expressed as binomial values.  
+
+\tiny
+```{r CochransQ}
+CochranMatrix <- matrix(c(1,1,1,1,1,1,
+              1,1,0,1,1,1,
+              0,0,0,1,0,0,
+              0,1,0,0,1,1), 6, 4)
+cochrans.q(CochranMatrix)
+```
+
+## Chi-Squared
+### Purpose And Assumptions
+\textbf{Chi-Squared} \flushright `chisq.test()` in base `R`  
+\vspace{-10pt}
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} &  To tests whether distributions of categorical variables differ from one another thus identifying whether they are related. \vspace{5pt}\\
+    \pause
+    $H_0$ & \textit{The distributions of nominal variables are equal.} \\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Variable values are nominal/categorical.
+      \item The population is significantly larger than the sample.
+      \item The sample accurately represents the population.
+      \item Sampled values are independent (one value does not influence another).
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example - One Sample Situation I
+We feed the `chisq.test()` function an unbiased nominal set of three levels:
+
+\tiny
+```{r ChiSquared1}
+set.seed(42)
+ChiMat1 <- table(sample(c("A", "B", "C"), 1000, replace = TRUE))
+ChiMat1
+chisq.test(ChiMat1)
+```
+
+\normalsize
+Obviously, the observed distribution does not differ from our expectation of equally distributed proportions and so the test concludes non-significantly.
+
+### Minimal Working Example - One Sample Situation II
+We feed the `chisq.test()` function a skewed (towards `"A"`) nominal set of three levels:
+
+\tiny
+```{r ChiSquared2}
+set.seed(42)
+ChiMat2 <- table(sample(c("A", "B", "C"), 1000, replace = TRUE, prob = c(0.8, 0.1, 0.1)))
+ChiMat2
+chisq.test(ChiMat2)
+```
+
+\normalsize
+Obviously, the observed distribution does differ from our expectation of equally distributed proportions and so the test concludes significantly.
+
+### Minimal Working Example - Two Sample Situation
+We feed the `chisq.test()` our unbiased as well as our skewed (towards `"A"`) nominal set of three levels to see whether their distributions differ significantly.
+
+\tiny
+```{r ChiSquared3}
+ChiMatrix <- cbind(ChiMat1, ChiMat2)
+ChiMatrix
+chisq.test(ChiMatrix)
+```
+
+\normalsize
+Clearly, they do differ significantly.
+
+
+# Our Data
+## Choice Of Variables
+### Variables We Can Use
+\begin{center}
+Which variables in our \textit{Passer domesticus} data set are nominal?
+\end{center}
+
+\begincols[T]
+\begincol{.5\linewidth}
+\begin{itemize}
+\visible<2->{
+\item Site Index
+}
+\visible<3->{
+\item Climate
+}
+\visible<4->{
+\item Population Status
+}
+\visible<5->{
+\item Colour
+}
+\visible<6->{
+\item Sex
+}
+\end{itemize}
+\endcol
+\begincol{.5\linewidth}
+\begin{itemize}
+\visible<7->{
+\item Nesting Site
+}
+\visible<8->{
+\item Flock
+}
+\visible<9->{
+\item Home Range
+}
+\visible<10->{
+\item Predator Presence
+}
+\visible<11->{
+\item Predator Type
+}
+\end{itemize}
+\endcol
+\endcols
+
+\vspace{20pt}
+
+\visible<12>{
+\begin{center}
+All of these are nominal but some are binomial.
+\end{center}
+}
+
+## Research Questions
+### Research Questions And Hypotheses
+\begin{center}
+So which of our major research questions (seminar 6) can we answer?
+\end{center}
+
+\small
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+    \textbf{Binomial Test}
+    \begin{itemize}
+    \item \textit{Sexual Dimorphism:} Are the sexes represented in equal proportions? 
+    \item \textit{Predation:} Are our sites dominated by predators or not?
+    \end{itemize} 
+  \pause
+    \textbf{McNemar}
+    \begin{itemize}
+    \item \textit{Sexual Dimorphism:} Compare sex ratio over time (we need to generate some new data for this using the sample function).
+    \end{itemize} 
+\endcol
+\begincol{.5\linewidth}
+  \pause
+    \textbf{Cochran's Q}
+    \begin{itemize}
+    \item \textit{Sexual Dimorphism:} Are colours related to sex?
+    \item \textit{Predation:} Are colours related to predators?
+    \end{itemize} 
+  \pause
+    \textbf{Chi-Squared}
+    \begin{itemize}
+    \item \textit{Sexual Dimorphism:} Are colours related to sex?
+    \item \textit{Predation:} Are colours or nesting sites related to predators?
+    \end{itemize} 
+\endcol
+\endcols

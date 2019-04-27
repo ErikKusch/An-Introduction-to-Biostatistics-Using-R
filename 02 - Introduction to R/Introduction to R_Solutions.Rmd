@@ -1,0 +1,224 @@
+---
+title: "" # needs to be empty since it is specified in Title.Rmd
+author: ""
+date: ""
+documentclass: "book"
+fontsize: 10pt
+output: 
+  pdf_document:
+    includes:
+      in_header: Style_Exercise.tex
+subparagraph: true # this is needed as a workaround to get titlesec to work
+geometry: "left= 2cm,right = 2cm, bottom = 1.5cm, top = 2cm"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=70),tidy=TRUE, fig.height=4, fig.width = 12)
+options(digits=2, width = 90)
+```
+
+<!--- ####### PREAMBLE -----------
+--------------------------------------------->
+```{r child = 'Title.Rmd'}
+```
+\clearpage
+
+<!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
+\pagestyle{plain}
+\pagenumbering{roman}
+
+\begingroup
+\let\clearpage\relax
+\let\cleardoublepage\relax
+\begin{LARGE}
+ \textbf{Summary:}\\
+ \vspace{0.2cm}
+\end{LARGE}
+These are the solutions to the exercises contained within the handout to "Introduction to R" which walks you through the basics of the `R` machinery. `R` is a coding language that can be highly individualised and hence there are often multiple solutions to the same problem. Within these solutions, I shall only present you with one solution for every given task. However, do keep in mind that there is probably a myriad of other ways to achieve your goal.
+
+\setcounter{secnumdepth}{3} 
+\setcounter{tocdepth}{4} 
+\tableofcontents
+\endgroup
+
+<!--- ####### DOCUMENT ---------------------------------------------------------->
+\pagestyle{fancy}
+\pagenumbering{arabic}
+
+# Creating and Inspecting Objects
+## Vector
+- A vector reading: "A", "B", "C"  
+```{r createVectors1}
+Letters_vec <- c("A", "B", "C")
+Letters_vec
+length(Letters_vec)
+```
+- A vector reading: 1, 2, 3  
+```{r createVectors2}
+Numbers_vec <- c(1, 2, 3)
+Numbers_vec
+length(Numbers_vec)
+```
+- A vector reading: `TRUE`, `FALSE`  
+```{r createVectors3}
+Logic_vec <- c(TRUE, FALSE)
+Logic_vec
+length(Logic_vec)
+```
+- A vector of the elements of the first three vectors
+```{r createVectors4}
+Big_vec <- c(Letters_vec, Numbers_vec, Logic_vec)
+Big_vec
+length(Big_vec)
+```
+- A vector reading as a sequence of full numbers from 1 to 20
+```{r createVectors5}
+Seq_vec <- c(1:20)
+Seq_vec
+length(Seq_vec)
+```
+
+## Factor
+- A factor reading: "A", "B", "C"  
+```{r createFactors1}
+Letters_fac <- factor(x = c("A", "B", "C"))
+Letters_fac
+length(Letters_fac)
+```
+- A factor reading: 1, 2, 3  
+```{r createFactors2}
+Numbers_fac <- factor(x = c(1, 2, 3))
+Numbers_fac
+length(Numbers_fac)
+```
+- A factor reading: 1, 2, 3 but only levels 1 and 2 are allowed  
+```{r createFactors5}
+Constrained_fac <- factor(x = c(1,2,3), levels = c(1,2))
+Constrained_fac
+length(Constrained_fac)
+```
+
+- A factor reading: 1, 2, 3 levels 1 - 4 are allowed  
+```{r createFactors6}
+Expanded_fac <- factor(x = c(1,2,3), levels = c(1,2,3,4))
+Expanded_fac
+length(Expanded_fac)
+```
+
+\newpage
+
+## Matrix
+- The first two vectors we established in distinct columns of a matrix
+```{r createMatrices1}
+Combine_mat <- matrix(data = c(Numbers_vec, Letters_vec), ncol = 2)
+Combine_mat
+dim(Combine_mat)
+```
+- The first two vectors we established in distinct rows of a matrix
+```{r createMatrices2}
+Pivot_mat <- matrix(data = c(Numbers_vec, Letters_vec), nrow = 2, byrow = TRUE)
+Pivot_mat
+dim(Pivot_mat)
+```
+- The above matrix with meaningful names
+```{r createMatrices3}
+Names_mat <- Pivot_mat
+dimnames(Names_mat) <- list(c("Numbers", "Letters"))
+Names_mat
+dim(Names_mat)
+```
+
+\newpage
+
+## Data Frame
+- The first matrix we established as a data frame
+```{r createDFs1}
+Combine_df <- data.frame(Combine_mat)
+Combine_df
+dim(Combine_df)
+```
+- The previous data frame with meaningful names
+```{r createDFs2}
+Names_df <- Combine_df
+colnames(Names_df) <- c("Numbers", "Letters") 
+Names_df
+dim(Names_df)
+```
+
+## List
+  - The first two vectors we created  
+```{r createLists1}
+Vectors_ls <- list(Numbers_vec, Letters_vec)
+Vectors_ls
+length(Vectors_ls)
+```
+
+# Statements and Loops
+## Statements
+- `Numbers_vec` contains more elements than `Letters_fac`?
+```{r Sate1}
+length(Numbers_vec) > length(Letters_fac)
+```
+- The first column of `Combine_df` is shorter than `Vectors_ls`?
+```{r Sate2}
+length(Combine_df[,1]) < length(Vectors_ls)
+```
+- The elements of `Letters_vec` are the same as the elements of `Letters_fac`?
+```{r Sate3}
+Letters_vec == Letters_fac
+```
+
+## Loops
+- Print each element of `Vectors_ls`  
+```{r Loop1}
+for(i in 1:length(Vectors_ls)){
+  print(Vectors_ls[[i]])
+}
+```
+- Print each element of `Numbers_vec` + 1  
+```{r Loop2}
+Numbers_veca <- Numbers_vec +1
+for(i in 1:length(Numbers_veca)){
+  print(Numbers_veca[i])
+}
+```
+- Subtract 1 from each element of the first column of `Combine_mat` and print each element separately
+```{r Loop3}
+Mat_column <- Combine_mat[,1] # extract data
+Mat_column <- as.numeric(Mat_column) # convert to numeric
+Mat_column <- Mat_column-1 # substract 1
+for(i in 1:length(Mat_column)){
+  print(Mat_column[i])
+}
+```
+# Useful Commands
+- Read out your current working directory (not showing you the result as it is different on every machine, it should start like this "C:/Users/....")
+```{r Useful1, eval=FALSE}
+getwd()
+```
+- Inspect the `Vectors_ls` object using the `View()` function (again, I am not showing you the result as this only works directly in `R` or Rstudio)
+```{r Useful2, eval=FALSE}
+View(Vectors_ls)
+```
+- Inspect the `Combine_df` object using the `View()` function (again, I am not showing you the result as this only works directly in `R` or Rstudio)
+```{r Useful3, eval=FALSE}
+View(Combine_df)
+```
+- Get the help documentation for the `as.matrix()` function (again, I am not showing you the result as this only works directly in `R` or Rstudio)
+```{r Useful4, eval=FALSE}
+?as.matrix
+```
+- Install and load the `dplyr` package  
+```{r Useful5, eval=FALSE}
+install.packages("dplyr")
+library(dplyr)
+```
+- Remove the `Logic_vec` object from your working environment  
+```{r Useful6}
+rm(Logic_vec)
+```
+- Clear your entire working environment 
+```{r Useful7}
+ls() # this command shows you all the object in the environment
+rm(list=ls())
+```

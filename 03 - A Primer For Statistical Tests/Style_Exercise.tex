@@ -1,0 +1,46 @@
+\usepackage{lscape}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\graphicspath{{img/}}
+\usepackage{fancyhdr}
+\usepackage{lmodern}
+\usepackage{titlesec}
+\usepackage{float}
+% ============= Header and Footer =============
+\pagestyle{fancy}
+\fancyhf{}
+%% set page header
+\fancyhead[OL]{BASIC STATISTICS FOR BIOLOGISTS}
+\fancyhead[ER]{BASIC STATISTICS FOR BIOLOGISTS}
+\fancyhead[OR]{\thepage}
+\fancyhead[EL]{\thepage}
+%%
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+
+
+
+%% eliminating the word "chapter" in headers
+\titleformat{\chapter}[hang]{\bf\huge}{\thechapter .}{2pc}{}
+
+%% reducing spacing around chapter headings
+\titlespacing*{\chapter}{0pt}{10pt}{10pt}
+
+%% eliminating page break on part
+\titleclass{\part}{top}
+\titleformat{\part}[display]
+  {\normalfont\huge\bfseries}{\centering\partname\ \thepart}{20pt}{\Huge\centering}
+\titlespacing*{\part}{0pt}{50pt}{40pt}
+
+\usepackage{float}
+\let\origfigure\figure
+\let\endorigfigure\endfigure
+\renewenvironment{figure}[1][2] {
+    \expandafter\origfigure\expandafter[H]
+} {
+    \endorigfigure
+}
+
+\let\cleardoublepage=\clearpage

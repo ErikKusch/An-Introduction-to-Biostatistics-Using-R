@@ -1,0 +1,221 @@
+---
+title: "Metric Tests (More-Than-Two-Sample Situations)"
+# subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
+author: "Erik Kusch"
+date: "??/??/20??"
+fontsize: 10pt
+output: 
+  beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
+    keep_tex: false
+    toc: false # this is added through a later command
+    slide_level: 3 # at how many pound signs (#) to assume slide title level
+    includes:
+      in_header: Style.tex
+classoption: t
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=50),tidy=TRUE, fig.height=8)
+options(digits=2, width = 60)
+
+# function to load packages and install them if they haven't been installed yet
+install.load.package <- function(x) {
+  if (!require(x, character.only = TRUE))
+    install.packages(x)
+  require(x, character.only = TRUE)
+}
+package_vec <- c("nonpar" # needed for Cochran's Q
+                 )
+sapply(package_vec, install.load.package)
+```
+
+<!--- ####### TOC (use this if you want ## headers to be included in the toc)--------------------
+---------------------------------------  --->
+
+\tableofcontents[subsubsectionstyle=hide]
+
+<!--- ####### Inferential Statistics-------------------------------------------------------------
+---------------------------------------  --->
+# Background
+### Introduction
+\begin{center}
+Metric tests are used to compare parameters of metric/ordinal variable values among groups/individuals.
+\end{center}
+\pause
+Prominent metric tests for more-than-two-sample situations include:
+\begin{itemize}
+\item \textbf{Kruskal-Wallis Test}
+\item \textbf{Friedman Test}
+\item t Test (dealt with in Seminar 12)
+\item ...
+\end{itemize}
+
+### Terminology
+
+Remember:
+\begin{itemize}
+\item \textbf{Got two samples?}
+  \begin{itemize}
+  \item \textit{Independent.} $\rightarrow$ Mann-Whitney U Test
+  \item \textit{Dependent.} $\rightarrow$ Wilcoxon Signed Rank Test
+  \end{itemize}
+\item \textbf{Got more than two samples?}
+  \begin{itemize}
+  \item \textit{Independent.} $\rightarrow$ Kruskal-Wallis Test
+  \item \textit{Dependent.} $\rightarrow$ Friedman Test
+  \end{itemize}
+\end{itemize}
+
+# Analyses
+## Kruskal-Wallis Test
+### Purpose And Assumptions
+\textbf{Kruskal-Wallis Test} \flushright `kruskal.test()` in base `R`  
+\vspace{-10pt}
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} &  To identify whether groups of variable values are different from one another. \vspace{5pt} \\
+    \pause
+    $H_0$ & \textit{There is no difference in characteristics of the response variable values in dependence of the classes of the predictor variable.}\\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Predictor variable is categorical (not binary!)
+      \item Response variable is ordinal or metric
+      \item Variable values are \textbf{independent} (not paired)
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example
+Let's use the `kruskal.test()` function to test whether the medians of an unnamed variable of three unconnected populations (`a`, `b` and `c`) with 10 individuals each are truly different:
+\scriptsize
+```{r Kruskal}
+set.seed(42)
+a <- rnorm(n = 10, mean = 15, sd = 3)
+b <- rnorm(n = 10, mean = 10, sd = 3)
+c <- rnorm(n = 10, mean = 5, sd = 3)
+groups <- as.factor(rep(c("a", "b", "c"), each = 10))
+
+kruskal.test(x = c(a, b, c), g = groups)
+```
+
+## Friedman Test
+### Purpose And Assumptions
+\textbf{Friedman Test} \flushright `friedman.test()` in base `R`  
+\vspace{-10pt}
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} &  To identify whether groups of variable values are different from one another. \vspace{5pt} \\
+    \pause
+    $H_0$ & \textit{There is no difference in characteristics of the response variable values in dependence of the classes of the predictor variable.}\\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Predictor variable is categorical (not binary!)
+      \item Response variable is ordinal or metric
+      \item Variable values are \textbf{dependent} (paired)
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example
+Let's use the `friedman.test()` function to test whether the medians of an unnamed variable of three connected samples (`a`, `b` and `c`) with 10 individuals each (i.e. one re-sampled population) are truly different:
+\scriptsize
+```{r Friedman}
+set.seed(42)
+a <- rnorm(n = 10, mean = 15, sd = 3)
+b <- rnorm(n = 10, mean = 10, sd = 3)
+c <- rnorm(n = 10, mean = 5, sd = 3)
+TestData <- matrix(c(a,b,c), nrow = 10, byrow = FALSE, dimnames = list(1:10, c("a", "b", "c")))
+
+friedman.test(y = TestData)
+```
+
+# Our Data
+## Choice Of Variables
+### Variables We Can Use
+
+\begincols[T]
+  \begincol{.5\linewidth}
+    \textbf{Response variables} (metric/ordinal)
+    \visible<2->{
+    \begin{itemize}
+    \item Weight
+    \item Height
+    \item Wing Chord
+    \item Nesting Height
+    \item Number of Eggs
+    \item Egg Weight
+    \item Home Range
+    \end{itemize} 
+    }
+\endcol
+\begincol{.5\linewidth}
+  \pause \pause
+    \textbf{Predictor variables} (categorical but not binary)
+    \visible<4->{
+    \begin{itemize}
+    \item Home Range (3 levels - Small, Medium, Large)
+    \item Site Index (11 levels)
+    \item Predator Presence/Type (3 levels - Avian vs. Non-Avian vs. None)
+    \item Climate (3 levels - Continental, Semi-Coastal, Coastal)
+    \end{itemize} 
+    }
+\endcol
+\endcols
+
+## Research Questions
+### Research Questions And Hypotheses
+\begin{center}
+So which of our major research questions (seminar 6) can we answer?
+\end{center}
+
+\small
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+    \textbf{Kruskal-Wallis Test}
+    \begin{itemize}
+    \item \textit{Site-wise variation:} Do characteristics of \textit{Passer domesticus} depend on the site they are recorded at?
+    \item \textit{Climate Warming/Extremes:} Does sparrow morphology depend on climate?
+    \item \textit{Predation:} Does nesting height depend on predator characteristics?
+    \item \textit{Competition:} Does home range depend on climate?
+    \end{itemize} 
+\endcol
+\begincol{.5\linewidth}
+  \pause
+    \textbf{Friedman Test} (suppose a resettling program)
+    \begin{itemize}
+    \item \textit{Climate Warming/Extremes:} Does sparrow morphology change depend on climate?
+    \item \textit{Predation:} Does nesting height depend on predator characteristics?
+    \item \textit{Competition:} Does home range depend on climate?
+    \end{itemize} 
+    \footnotesize
+    $\rightarrow$ Find the data in \linebreak \textit{2a - Sparrow\_ResettledSIMA\_READY.rds} \linebreak and 
+    \textit{2b - Sparrow\_ResettledSIUK\_READY.rds}
+\endcol
+\endcols
+
+# Exercise
+
+### Writng A Function In `R`
+\begin{center}
+Establishing \textit{user-defined} functions is at the \textbf{heart of `R`}!
+\end{center}
+
+A function requires:  
++ A **name**  
++ **Arguments**  
++ to be **called**
+```{r Func}
+Fun <- function(argument){
+  print(argument)
+}
+Fun(argument = "Test")
+```

@@ -1,0 +1,88 @@
+name,height,mass,hair_color,skin_color,eye_color,birth_year,gender
+Luke Skywalker,172,77,blond,fair,blue,19,male
+C-3PO,167,75,,gold,yellow,112,
+R2-D2,96,32,,"white, blue",red,33,
+Darth Vader,202,136,none,white,yellow,41.9,male
+Leia Organa,150,49,brown,light,brown,19,female
+Owen Lars,178,120,"brown, grey",light,blue,52,male
+Beru Whitesun lars,165,75,brown,light,blue,47,female
+R5-D4,97,32,,"white, red",red,,
+Biggs Darklighter,183,84,black,light,brown,24,male
+Obi-Wan Kenobi,182,77,"auburn, white",fair,blue-gray,57,male
+Anakin Skywalker,188,84,blond,fair,blue,41.9,male
+Wilhuff Tarkin,180,,"auburn, grey",fair,blue,64,male
+Chewbacca,228,112,brown,unknown,blue,200,male
+Han Solo,180,80,brown,fair,brown,29,male
+Greedo,173,74,,green,black,44,male
+Jabba Desilijic Tiure,175,1358,,"green-tan, brown",orange,600,hermaphrodite
+Wedge Antilles,170,77,brown,fair,hazel,21,male
+Jek Tono Porkins,180,110,brown,fair,blue,,male
+Yoda,66,17,white,green,brown,896,male
+Palpatine,170,75,grey,pale,yellow,82,male
+Boba Fett,183,78.2,black,fair,brown,31.5,male
+IG-88,200,140,none,metal,red,15,none
+Bossk,190,113,none,green,red,53,male
+Lando Calrissian,177,79,black,dark,brown,31,male
+Lobot,175,79,none,light,blue,37,male
+Ackbar,180,83,none,brown mottle,orange,41,male
+Mon Mothma,150,,auburn,fair,blue,48,female
+Arvel Crynyd,,,brown,fair,brown,,male
+Wicket Systri Warrick,88,20,brown,brown,brown,8,male
+Nien Nunb,160,68,none,grey,black,,male
+Qui-Gon Jinn,193,89,brown,fair,blue,92,male
+Nute Gunray,191,90,none,mottled green,red,,male
+Finis Valorum,170,,blond,fair,blue,91,male
+Jar Jar Binks,196,66,none,orange,orange,52,male
+Roos Tarpals,224,82,none,grey,orange,,male
+Rugor Nass,206,,none,green,orange,,male
+Ric Olié,183,,brown,fair,blue,,male
+Watto,137,,black,"blue, grey",yellow,,male
+Sebulba,112,40,none,"grey, red",orange,,male
+Quarsh Panaka,183,,black,dark,brown,62,male
+Shmi Skywalker,163,,black,fair,brown,72,female
+Darth Maul,175,80,none,red,yellow,54,male
+Bib Fortuna,180,,none,pale,pink,,male
+Ayla Secura,178,55,none,blue,hazel,48,female
+Dud Bolt,94,45,none,"blue, grey",yellow,,male
+Gasgano,122,,none,"white, blue",black,,male
+Ben Quadinaros,163,65,none,"grey, green, yellow",orange,,male
+Mace Windu,188,84,none,dark,brown,72,male
+Ki-Adi-Mundi,198,82,white,pale,yellow,92,male
+Kit Fisto,196,87,none,green,black,,male
+Eeth Koth,171,,black,brown,brown,,male
+Adi Gallia,184,50,none,dark,blue,,female
+Saesee Tiin,188,,none,pale,orange,,male
+Yarael Poof,264,,none,white,yellow,,male
+Plo Koon,188,80,none,orange,black,22,male
+Mas Amedda,196,,none,blue,blue,,male
+Gregar Typho,185,85,black,dark,brown,,male
+Cordé,157,,brown,light,brown,,female
+Cliegg Lars,183,,brown,fair,blue,82,male
+Poggle the Lesser,183,80,none,green,yellow,,male
+Luminara Unduli,170,56.2,black,yellow,blue,58,female
+Barriss Offee,166,50,black,yellow,blue,40,female
+Dormé,165,,brown,light,brown,,female
+Dooku,193,80,white,fair,brown,102,male
+Bail Prestor Organa,191,,black,tan,brown,67,male
+Jango Fett,183,79,black,tan,brown,66,male
+Zam Wesell,168,55,blonde,"fair, green, yellow",yellow,,female
+Dexter Jettster,198,102,none,brown,yellow,,male
+Lama Su,229,88,none,grey,black,,male
+Taun We,213,,none,grey,black,,female
+Jocasta Nu,167,,white,fair,blue,,female
+Ratts Tyerell,79,15,none,"grey, blue",unknown,,male
+R4-P17,96,,none,"silver, red","red, blue",,female
+Wat Tambor,193,48,none,"green, grey",unknown,,male
+San Hill,191,,none,grey,gold,,male
+Shaak Ti,178,57,none,"red, blue, white",black,,female
+Grievous,216,159,none,"brown, white","green, yellow",,male
+Tarfful,234,136,brown,brown,blue,,male
+Raymus Antilles,188,79,brown,light,brown,,male
+Sly Moore,178,48,none,pale,white,,female
+Tion Medon,206,80,none,grey,black,,male
+Finn,,,black,dark,dark,,male
+Rey,,,brown,light,hazel,,female
+Poe Dameron,,,brown,light,brown,,male
+BB8,,,none,none,black,,none
+Captain Phasma,,,unknown,unknown,unknown,,female
+Padmé Amidala,165,45,brown,light,brown,46,female

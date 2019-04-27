@@ -1,0 +1,289 @@
+---
+title: "Correlation Tests"
+# subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
+author: "Erik Kusch"
+date: "??/??/20??"
+fontsize: 10pt
+output: 
+  beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
+    keep_tex: false
+    toc: false # this is added through a later command
+    slide_level: 3 # at how many pound signs (#) to assume slide title level
+    includes:
+      in_header: Style.tex
+classoption: t
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=50),tidy=TRUE, fig.height=8)
+options(digits=2, width = 60)
+
+# function to load packages and install them if they haven't been installed yet
+install.load.package <- function(x) {
+  if (!require(x, character.only = TRUE))
+    install.packages(x)
+  require(x, character.only = TRUE)
+}
+package_vec <- c("DescTools" # needed for Contingency Coefficient
+                 )
+sapply(package_vec, install.load.package)
+```
+
+<!--- ####### TOC (use this if you want ## headers to be included in the toc)--------------------
+---------------------------------------  --->
+
+\tableofcontents[subsubsectionstyle=hide]
+
+<!--- ####### Inferential Statistics-------------------------------------------------------------
+---------------------------------------  --->
+# Background
+### Introduction
+\begin{center}
+These approaches are extremely useful in data exploration and for preliminary analyses!
+\end{center}
+
+\begincols[T]
+\begincol{.5\linewidth}
+  \pause
+  Prominent correlation tests include:
+  \begin{itemize}
+  \item \textbf{Contingency Coefficient}
+  \item \textbf{Kendall's Tau}
+  \item \textbf{Spearman Correlation}
+  \item \textbf{Pearson Correlation}
+  \item Cramer's V
+  \item ...
+  \end{itemize}
+\endcol
+\begincol{.5\linewidth}
+  \centering \includegraphics[width=.9\linewidth]{Figures/Correl.png}
+\endcol
+\endcols
+
+
+
+
+### Terminology
+
+\begin{center}
+Correlation is \textbf{not} necessarily \textbf{causation}.
+\end{center}
+
+\begincols[T]
+\begincol{.5\linewidth}
+  \pause
+  Correlation tests yield two measurements:
+  \begin{itemize}
+  \item \textit{r} value (measure of correlation)
+    \begin{itemize}
+    \item $r \approx 1$ (strong, positive correlation)
+    \item $r \approx 0$ (no correlation)
+    \item $r \approx -1$ (strong, negative correlation)
+    \end{itemize}
+  \item \textit{p} value (measure of statistical significance)
+  \end{itemize}
+\endcol
+\begincol{.5\linewidth}
+\vspace{30pt}
+  \centering \includegraphics[width=.9\linewidth]{Figures/coeffs.png}
+\endcol
+\endcols
+\pause
+\vspace{.5cm}
+$\rightarrow$ Get a feeling for it here \url{http://guessthecorrelation.com/}
+
+
+
+# Analyses
+## Contingency Coefficient
+### Purpose And Assumptions
+\textbf{Contingency Coefficent} \flushright `ContCoef()` in the `DescTools` package  
+\vspace{-10pt}
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} &  To test whether variables are associated. \vspace{5pt} \\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Variables must be categorical.
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+\pause
+\flushleft This test does not yield a significance assessment and only makes a statement of whether variables are associated ($|c| \approx 1$) or not ($|c| \approx 0$).
+
+### Minimal Working Example
+Let's see if the `ContCoef()` function will identify the association between two categorical variables whose records are identical.
+
+\scriptsize
+```{r ContCoeff}
+Samples <- c("Yes", "No")
+set.seed(42)
+counts <- sample(Samples, size = 1000, replace = TRUE)
+table(counts, counts)
+ContCoef(table(counts, counts))
+```
+\normalsize
+
+The association has been identified.
+
+## Kendall's Tau (Rank Correlation)
+### Purpose And Assumptions
+\textbf{Kendall's Tau} \flushright `cor.test()` in base `R` using the `method = "kendall"` specification  
+\vspace{-10pt}
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} &  To test whether the ranks of values of two variables are correlated. \vspace{5pt} \\
+    \pause
+    $H_0$ & \textit{Ranks of variable values are not correlated.}\\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Variable value ranks are recorded as `numeric`.
+      \item Variable values are ordinal, interval or ratio scaled.
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example
+Let's have a look at what happens when we supply the `cor.test(..., method = "kendall")` with two correlated data sets:
+
+\scriptsize
+```{r Kendal}
+cor.test(x = 1:1000, y = 1:1000, method = "kendall")
+```
+\normalsize
+
+As expected, a strong correlation can be found.
+
+## Spearman's Rank Correlation
+### Purpose And Assumptions
+\textbf{Spearman Correlation} \flushright `cor.test()` in base `R` using the `method = "spearman"` specification  
+\vspace{-10pt}
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} &  To test whether the values of two variables are correlated in a \textbf{non-parametric} way. \vspace{5pt} \\
+    \pause
+    $H_0$ & \textit{Values of variables are not correlated.}\\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Variable values are recorded as `numeric`.
+      \item Variable values are ordinal, interval or ratio scaled.
+      \item Pairs of variable values are monotonically related.
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example I
+Let's have a look at what happens when we supply the `cor.test(..., method = "spearman")` with two non-correlated data sets:
+
+\scriptsize
+```{r Spearman}
+set.seed(42)
+cor.test(x = c(1:1000), y = sample(c(1:1000), size = 1000, replace = FALSE), method = "spearman")
+```
+\normalsize
+
+As expected, no correlation can be found.
+
+
+
+
+## Pearson Correlation
+### Purpose And Assumptions
+\textbf{Pearson Correlation} \flushright `cor.test()` in base `R` (`method = "pearson"` is the default)  
+\vspace{-10pt}
+\begin{table}[c]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+    \textit{Purpose:} &  To test whether the values of two variables are correlated in a \textbf{parametric} way. \vspace{5pt} \\
+    \pause
+    $H_0$ & \textit{Values of variables are not correlated.}\\
+    \pause
+    \textit{Assumptions:} & 
+      \begin{itemize}
+      \item Values of each variable follow a \textbf{normal distribution}.
+      \item Variable values are recorded as `numeric`.
+      \item Variable values are ordinal, interval or ratio scaled.
+      \item Pairs of variable values are monotonically related.
+      \end{itemize}
+     \\
+  \end{tabular}}
+\end{table}
+
+### Minimal Working Example
+Let's have a look at what happens when we supply the `cor.test()` with two identical (hence correlated) data sets:
+
+\scriptsize
+```{r Pearson}
+set.seed(42)
+Data <- rnorm(n = 1000, mean = 500, sd = 50)
+cor.test(x = Data, y = Data)
+```
+\normalsize
+
+As expected, a strong correlation can be found.
+
+
+
+# Our Data
+## Choice Of Variables
+### Variables We Can Use
+\begin{center}
+Which variables in our \textit{Passer domesticus} data set are nominal?
+\end{center}
+\pause
+\vspace{5pt}
+In general, correlation analyses can make use of all kinds of data as long as they are recorded as `numeric` and we are able to convert categorical values into `numerical` records if need be.
+\pause
+
+\vspace{5pt}
+\textit{What about Pearson correlation and normal distributed data?}  
+We need to check whether the assumption of normal distributed data records holds true for each variable before applying Pearson correlation. If that is not the case, we may wish to use Spearman correlation.
+
+## Research Questions
+### Research Questions And Hypotheses
+\begin{center}
+So which of our major research questions (seminar 6) can we answer?
+\end{center}
+
+\scriptsize
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+    \textbf{Contingency Coefficient}
+    \begin{itemize}
+    \item \textit{Competition:} Are home ranges related to their stations?
+    \item \textit{Predation:} Are colour/nesting site and predators associated?
+    \item \textit{Sexual Dimorphism:} Are climate records and sex ratios associated?
+    \end{itemize} 
+  \pause
+    \textbf{Kendall's Tau}
+    \begin{itemize}
+    \item \textit{Climate Warming/Extremes:} Do heavier sparrows have heavier/less eggs? 
+    \item \textit{Competition:} Do heavier sparrows flock together?
+    \end{itemize} 
+\endcol
+\begincol{.5\linewidth}
+  \pause
+    \textbf{Spearman \& Pearson}
+    \begin{itemize}
+    \item \textit{Climate Warming/Extremes:} Do sparrow weight/height and wing chord correlate with latitude?
+    \item \textit{Climate Warming/Extremes:} Do egg weight/number of eggs correlate with latitude?
+    \item \textit{Competition:} Do population/flock size correlate with latitude?
+    \end{itemize} 
+\endcol
+\endcols
+

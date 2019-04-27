@@ -1,0 +1,26 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!*_Handout.pdf
+!*_Solutions.pdf
+!*_EX.*
+!Style_Exercise.tex
+!*.csv
+!*.xlsx
+!*.rds
+!/Y - CheatSheets/*
+!*.rmd
+!*/Data/*.RData
+!*SparrowData.xls
+!*SparrowProject_README.txt
+!*.rar
+
+# ...even if they are in subdirectories
+!*/
+!*/*/
+!*/*/*/
+
+*/Data/Sparrow_Data_RGenerated.csv
+.Rproj.user

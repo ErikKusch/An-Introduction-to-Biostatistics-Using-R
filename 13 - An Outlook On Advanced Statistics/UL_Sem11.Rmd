@@ -1,0 +1,119 @@
+---
+title: "Summary, GGPlot, RMarkdown and An Outlook On Advanced Statistics"
+# subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
+author: "Erik Kusch"
+date: "05/07/2018"
+fontsize: 10pt
+output: 
+  beamer_presentation: # handouts can be established by going into the intermediate .tex file and adding [handout] to \documentclass[]{beamer}, remember to compilate that file often enough to receive a TOC
+    keep_tex: true
+    toc: false # this is added through a later command
+    slide_level: 3 # at how many pound signs (#) to assume slide title level
+    includes:
+      in_header: Style.tex
+classoption: t
+---
+  
+```{r setup, include=FALSE}
+options(scipen=1, digits=4)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=20),tidy=TRUE, fig.height=8, digits=4)
+```
+
+<!--- ####### TOC (use this if you want ## headers to be included in the toc)--------------------
+---------------------------------------  --->
+  
+\tableofcontents[subsubsectionstyle=hide]
+
+<!--- ####### Descriptive Statistics-------------------------------------------------------------
+---------------------------------------  --->
+
+# Summary of Our Research Project
+## Answering The Questions
+
+# Data Visualisation Using GGPlot
+
+# Manuscript Workflow Using RMarkdown
+  
+# Bayesian vs. Frequentists Statistics
+### Frequentist Statistics
+\begincols[T]
+\begincol{.5\linewidth}
+\begin{itemize}
+\item Purely data-driven
+\item Relies heavily on:
+  \begin{itemize}
+\pause
+\item \textbf{p-values} (disregard the prior sensibility of a hypothesis) \linebreak
+$\rightarrow$ "The earth is round" is a \textit{very} sensible hypothesis
+\pause
+\item \textbf{Confidence intervals (CIs)} (are often misinterpreted) \linebreak
+$\rightarrow$ The statement "Using a 95\% CI, there is a 95\% chance that the true $\mu$ is contained within it" is \textbf{FALSE}
+\end{itemize}
+\end{itemize}
+\pause
+$\rightarrow$ We only cover frequentist methods
+\endcol
+\begincol{.5\linewidth}
+\centering \centering \includegraphics[width=0.7\linewidth]{Figures/FreqBayes.png}
+\endcol
+\endcols
+
+### Why Change?
+\centering \includegraphics[width=0.7\linewidth]{Figures/Signif_Comic.jpg}
+
+### Bayesian Statistics
+\begincols[T]
+\begincol{.5\linewidth}
+\begin{itemize}
+\item Driven by data and the \textbf{prior probability}
+\item Relies heavily on:
+  \begin{itemize}
+\pause
+\item \textbf{posterior} (a distribution instead of a point estimate) \linebreak
+$\rightarrow$ Captures the inherent natural \textit{uncertainty}
+\pause
+\item \textbf{credible intervals CI\textsubscript{Bayes}s} (much more intuitive than confidence intervals) \linebreak
+$\rightarrow$ The statement "Using a 95\% CI\textsubscript{Bayes}, there is a 95\% chance that the true $\mu$ is contained within it" is \textbf{TRUE}
+\end{itemize}
+\end{itemize}
+\endcol
+\begincol{.5\linewidth}
+\pause
+\begin{tcolorbox}[colback=white!5,colframe=burgundy!40!black,title=]
+\centering{Know when to go Bayesian. A bad study design can't be saved through fancy analyses.}
+  \end{tcolorbox}
+  \hfill \linebreak
+  \hfill \linebreak
+  \centering \includegraphics[width=1\linewidth]{Figures/Bayes.jpg}
+  \endcol
+  \endcols
+  
+  
+  ### The Future Is Now
+  \begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Bayesian} statistics are \textbf{on the rise}
+  \begin{itemize}
+  \item Computational capabilities finally support Bayesian processes
+  \item Still not understood by a majority
+  \item Publishing Bayesian is \textbf{currently} relatively easy
+  \end{itemize}
+  \vspace{0.2cm}
+  \pause
+  \textbf{Frequentist} statistics surely \textbf{won't disappear}
+    \begin{itemize}
+    \item Long history of Frequentist analyses
+    \item Understood by a majority
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \vspace{0.5cm}
+  \pause
+  \centering \includegraphics[width=1\linewidth]{Figures/FB_IMG_1508938375087.jpg}
+  \hfill \linebreak
+  \begin{tcolorbox}[colback=white!5,colframe=burgundy!40!black,title=]
+  \centering{What we need is \textbf{synergy}!}
+  \end{tcolorbox}
+  \endcol
+\endcols
