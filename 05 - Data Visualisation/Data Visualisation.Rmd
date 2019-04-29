@@ -11,7 +11,7 @@ output:
     slide_level: 3 # at how many pound signs (#) to assume slide title level
     includes:
       in_header: Style.tex
-classoption: "handout"
+classoption: t
 ---
 
 ```{r setup, include=FALSE}
@@ -362,7 +362,7 @@ ggplot(diamonds, aes(x=carat, y=price))
 ggplot(diamonds,aes(x=carat, y=price)) + geom_point()
 ``` 
 \pause
-You can find a `ggplot` cheatsheet in the course repository (\url{https://github.com/ErikKusch/BioStat1}).
+You can find a `ggplot` cheatsheet in the course repository (\url{https://github.com/ErikKusch/An-Introduction-to-Biostatistics-Using-R}).
 
 ### How To Make A Plot In `R` (Basic Scatterplot)
 We start off by plotting data contained within the `diamonds` data set that comes with the `ggplot2` package. We will be assessing how carats and price of individual diamonds influence each other.

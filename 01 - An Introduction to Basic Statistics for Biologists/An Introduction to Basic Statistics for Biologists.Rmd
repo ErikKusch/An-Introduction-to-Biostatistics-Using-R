@@ -107,7 +107,7 @@ options(digits=2)
     \pause
     \item Work through basic biostatistical methods in a research project using simulated data
     \pause
-    \item Fully reproducible analyses (located here: \url{https://github.com/ErikKusch/BioStat1})
+    \item Fully reproducible analyses (located here: \url{https://github.com/ErikKusch/An-Introduction-to-Biostatistics-Using-R})
     \end{itemize}
   \end{column}
   \begin{column}{.5\linewidth}
