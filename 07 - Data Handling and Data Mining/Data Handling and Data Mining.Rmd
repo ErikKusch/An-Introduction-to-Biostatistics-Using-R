@@ -2,7 +2,7 @@
 title: "Data Handling And Data Mining"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "??/??/20??"
+date: "30/04/2019"
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
@@ -262,7 +262,7 @@ For data mining, one may wish to enlist the use of methods contained in seminar 
 \pause
   \textbf{Data Loading}
     \begin{itemize}
-    \item The data is located at \url{https://github.com/ErikKusch/BioStat1}
+    \item The data is located at \url{https://github.com/ErikKusch/An-Introduction-to-Biostatistics-Using-R}
     \item The file is called SparrowData.xls
     \end{itemize}
 \pause

@@ -2,7 +2,7 @@
 title: "Inferential Statistics and Hypothesis Testing"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "??/??/20??"
+date: "30/04/2019"
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
@@ -129,7 +129,7 @@ Getting the right answers always comes down to asking the right questions.
 \begin{center}
 This is \textbf{the most basic format} of hypotheses upon which every other type of hypothesis is built.
 \end{center}
-\vspace{-1cm}
+
 \begin{table}[c]
         \centering
           \resizebox{\textwidth}{!}{%
@@ -139,8 +139,7 @@ This is \textbf{the most basic format} of hypotheses upon which every other type
           \end{tabular}}
         \label{Line}
 \end{table}
-\vspace{-1.0cm}
-
+\vspace{-.5cm}
 \begincols[T]
   \begincol{.5\linewidth}
   \pause
@@ -192,7 +191,6 @@ This is \textbf{the most basic format} of hypotheses upon which every other type
 \begin{center}
 This format of hypotheses is built upon postulated \textbf{differences in variable parameters within samples}.
 \end{center}
-\vspace{-1cm}
 \begin{table}[c]
         \centering
           \resizebox{\textwidth}{!}{%
@@ -202,7 +200,7 @@ This format of hypotheses is built upon postulated \textbf{differences in variab
           \end{tabular}}
         \label{Line}
 \end{table}
-\vspace{-1.0cm}
+\vspace{-.5cm}
 
 \begincols[T]
   \begincol{.5\linewidth}
@@ -233,7 +231,6 @@ This format of hypotheses is built upon postulated \textbf{differences in variab
 \begin{center}
 This format of hypotheses is built upon postulated \textbf{equivalence of variable parameters within samples}.
 \end{center}
-\vspace{-1cm}
 \begin{table}[c]
         \centering
           \resizebox{\textwidth}{!}{%
@@ -243,7 +240,7 @@ This format of hypotheses is built upon postulated \textbf{equivalence of variab
           \end{tabular}}
         \label{Line}
 \end{table}
-\vspace{-1.0cm}
+\vspace{-.5cm}
 
 \begincols[T]
   \begincol{.5\linewidth}
@@ -274,7 +271,6 @@ This format of hypotheses is built upon postulated \textbf{equivalence of variab
 \begin{center}
 This format of hypotheses is built upon postulated \textbf{relationships of variables within a population}.
 \end{center}
-\vspace{-1cm}
 \begin{table}[c]
         \centering
           \resizebox{\textwidth}{!}{%
@@ -284,7 +280,7 @@ This format of hypotheses is built upon postulated \textbf{relationships of vari
           \end{tabular}}
         \label{Line}
 \end{table}
-\vspace{-1.0cm}
+\vspace{-.5cm}
 
 \begincols[T]
   \begincol{.5\linewidth}
@@ -315,7 +311,6 @@ This format of hypotheses is built upon postulated \textbf{relationships of vari
 \begin{center}
 This format of hypotheses is built on postulated \textbf{connections and/or differences of variables within samples}.
 \end{center}
-\vspace{-1cm}
 \begin{table}[c]
         \centering
           \resizebox{\textwidth}{!}{%
@@ -325,7 +320,7 @@ This format of hypotheses is built on postulated \textbf{connections and/or diff
           \end{tabular}}
         \label{Line}
 \end{table}
-\vspace{-1.0cm}
+\vspace{-.5cm}
 
 \begincols[T]
   \begincol{.5\linewidth}
@@ -376,7 +371,6 @@ This format of hypotheses is built on postulated \textbf{connections and/or diff
 \begin{center}
 This format is built on postulated \textbf{effect sizes} of treatments/groupings in experimental/observational set-up.
 \end{center}
-\vspace{-1cm}
 \begin{table}[c]
         \centering
           \resizebox{\textwidth}{!}{%
@@ -386,7 +380,7 @@ This format is built on postulated \textbf{effect sizes} of treatments/groupings
           \end{tabular}}
         \label{Line}
 \end{table}
-\vspace{-1.0cm}
+\vspace{-.5cm}
 
 \begincols[T]
   \begincol{.5\linewidth}
@@ -532,7 +526,7 @@ Depending on how your project is structured, you will need to draw samples from 
 \endcols
 
 ### Assumptions
-Statistical test rely on individual \textit{statistical assumptions}. Most prominent:
+Statistical tests rely on individual \textit{statistical assumptions}. Most prominent:
 \begincols[c]
   \begincol{.5\linewidth}
   \begin{itemize}
@@ -583,7 +577,7 @@ Statistical test rely on individual \textit{statistical assumptions}. Most promi
 
 ## Statistical Tests
 ### Overview Of Tests
-Test come in a variety of forms. Too much to cover all of them in one seminar series.\linebreak
+Tests come in a variety of forms. Too much to cover all of them in one seminar series.\linebreak
 \pause
 $\rightarrow$ We will focus on a select few.\linebreak
 \hfill \linebreak
@@ -623,7 +617,7 @@ $\rightarrow$ We will focus on the \textbf{more basic tests of both categories}.
   The choice of test depends on:
   \begin{itemize}
   \pause
-  \item The \textbf{dependent variable(s)} ($\approx$ \textit{Response})
+  \item The \textbf{dependent variable(s)} ($\approx$ \textit{Response(s)})
     \begin{itemize}
     \small
     \item Scale/Distribution (Type)
@@ -707,6 +701,7 @@ $\rightarrow$ We will focus on the \textbf{more basic tests of both categories}.
 \begin{center}
 \textbf{Uncertainty} is an \textbf{inherent property} of any statistical method.
 \end{center}
+ßvspace{.5cm}
 \pause
 \begincols[c]
   \begincol{.5\linewidth}
@@ -883,7 +878,7 @@ $\rightarrow$ Studied through \textit{time-series based} approaches, \textbf{phy
 \begin{center}
 \textit{Equatoward location driven warming effects alter the size and bodyweight of individual sparrows.}
 \end{center}
-\vspace{-15pt}
+\vspace{-10pt}
 \pause
 \begin{table}[t!]
         \centering
@@ -904,7 +899,7 @@ $\rightarrow$ Studied through \textit{time-series based} approaches, \textbf{phy
 \begin{center}
 \textit{Sparrows residing in areas characterised by extreme climate events will differ from sparrows in more stable environments.}
 \end{center}
-\vspace{-15pt}
+\vspace{-10pt}
 \pause
 \begin{table}[t!]
         \centering
@@ -926,7 +921,7 @@ $\rightarrow$ Studied through \textit{time-series based} approaches, \textbf{phy
 \begin{center}
 \textit{Competition is more pronounced in certain areas leading to changes in sparrow physiology and behaviour.}
 \end{center}
-\vspace{-15pt}
+\vspace{-10pt}
 \pause
 \begin{table}[t!]
         \centering
@@ -948,7 +943,7 @@ $\rightarrow$ Studied through \textit{time-series based} approaches, \textbf{phy
 \begin{center}
 \textit{Presence and type of predator will influence sparrow behaviour and physiology.}
 \end{center}
-\vspace{-15pt}
+\vspace{-10pt}
 \pause
 \begin{table}[t!]
         \centering
@@ -972,7 +967,7 @@ $\rightarrow$ Studied through \textit{time-series based} approaches, \textbf{phy
 \begin{center}
 \textit{Sexual dimorphism is less/more pronounced in invasive or non-invasive species.}
 \end{center}
-\vspace{-15pt}
+\vspace{-10pt}
 \pause
 \begin{table}[t!]
         \centering
@@ -1066,7 +1061,6 @@ Analyses covered in this seminar series (continued):
   \item Mann-Whitney U
   \item Wilcoxon signed-rank test
   \end{itemize}
-  \pause
 \endcol
 \begincol{.5\linewidth}
   \pause

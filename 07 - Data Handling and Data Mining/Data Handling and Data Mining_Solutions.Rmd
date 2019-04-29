@@ -21,14 +21,14 @@ options(digits=2, width = 90)
 --------------------------------------------->
 ```{r child = 'Title.Rmd'}
 ```
-\clearpage
+\pagebreak
 
 <!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
 \pagestyle{plain}
 \pagenumbering{roman}
 
 \begingroup
-\let\clearpage\relax
+\let\pagebreak\relax
 \let\cleardoublepage\relax
 \begin{LARGE}
  \textbf{Summary:}\\
@@ -127,7 +127,7 @@ dim(Data_df) # checking if the elimination went right
 ## The `Summary()` Function
 As already stated in our seminar series, the `summary()` function is *invaluable* to data exploration and data inspection. However, it is only partially applicable as it will not work flawlessly on every class of data. Examples of this are shown below.  
 
-The weight data contained within our data frame should be numeric and this pose no issue to the `summary()` function. However, as shown in the next section, it is currently of type `r class(Data_df$Weight)` which leads the `summary()` function to work improperly.
+The weight data contained within our data frame should be numeric and thus pose no issue to the `summary()` function. However, as shown in the next section, it is currently of type `r class(Data_df$Weight)` which leads the `summary()` function to work improperly.
 ```{r SummaryWE}
 summary(Data_df$Weight)
 ```
@@ -205,8 +205,7 @@ Indeed, they do behave just like we'd expect them to. Pay attention that thes sh
 ### Fixing Problems
 We don't need to fix anything here.
 
-\clearpage
-
+\newpage
 
 ## Latitude
 \textbf{Variable Class Expectation:} `numeric` (Latitude is inherently continuous)
