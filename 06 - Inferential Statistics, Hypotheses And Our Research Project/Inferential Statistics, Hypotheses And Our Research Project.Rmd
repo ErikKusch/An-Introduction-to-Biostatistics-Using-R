@@ -701,7 +701,7 @@ $\rightarrow$ We will focus on the \textbf{more basic tests of both categories}.
 \begin{center}
 \textbf{Uncertainty} is an \textbf{inherent property} of any statistical method.
 \end{center}
-ßvspace{.5cm}
+\vspace{.5cm}
 \pause
 \begincols[c]
   \begincol{.5\linewidth}
