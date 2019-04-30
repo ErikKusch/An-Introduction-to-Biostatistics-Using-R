@@ -263,7 +263,7 @@ For data mining, one may wish to enlist the use of methods contained in seminar 
   \textbf{Data Loading}
     \begin{itemize}
     \item The data is located at \url{https://github.com/ErikKusch/An-Introduction-to-Biostatistics-Using-R}
-    \item The file is called SparrowData.xls
+    \item The file is called SparrowData.xls (also available as SparrowData.rar)
     \end{itemize}
 \pause
   \textbf{Expectations}
