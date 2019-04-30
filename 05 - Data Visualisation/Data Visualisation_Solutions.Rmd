@@ -34,7 +34,7 @@ options(digits=2, width = 90)
  \textbf{Summary:}\\
  \vspace{0.2cm}
 \end{LARGE}
-These are the solutions to the exercises contained within the handout to “Data Visulaisation” which walks you through the basics of data visualisation in `R`using `ggplot2`. The plots presented here are using data from the `iris` data set supplied through the `datasets` package. 
+These are the solutions to the exercises contained within the handout to “Data Visualisation” which walks you through the basics of data visualisation in `R`using `ggplot2`. The plots presented here are using data from the `iris` data set supplied through the `datasets` package. 
 
 Keep in mind that there is probably a myriad of other ways to reach the same conclusions as presented in these solutions.
 
