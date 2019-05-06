@@ -35,7 +35,7 @@ options(digits=2, width = 90)
  \vspace{0.2cm}
 \end{LARGE}
 
-Welcome to our second practical experience in R. Throughout the following notes, I will introduce you to a couple nominal statistical test approaches that might be useful to you and are often used in biology.  
+Welcome to our second practical experience in `R`. Throughout the following notes, I will introduce you to a couple nominal statistical test approaches that might be useful to you and are often used in biology.  
 To do so, I will enlist the sparrow data set we handled in our last exercise.
 
 \setcounter{secnumdepth}{3} 
@@ -65,8 +65,8 @@ install.load.package <- function(x) {
     install.packages(x)
   require(x, character.only = TRUE)
 }
-package_vec <- c("nonpar" # needed for Cochran's Q
-                 )
+package_vec <- c("nonpar", # needed for Cochran's Q
+                 "ggplot2") # data visualisation
 sapply(package_vec, install.load.package)
 ```
 
@@ -96,7 +96,7 @@ As we can see, there is no skew towards either male or female abundance of indiv
 
 This is to be expected. After all no bias for sex is known in *Passer domesticus* and indeed the species does reproduce monogamously so a skew between the sexes wouldn't go anywhere as far as evolution is concerned.
 
-\clearpage
+\newpage
 
 ## Predation
 
@@ -163,14 +163,11 @@ Obviously, with this data we would record a statistically significant change and
 Unfortunately, McNemar only tells us *that* there is a difference without any information about the *direction* of the difference. For now, we will have to settle on a visualisation of the sexes to shed some light on the difference.
 ```{r McNemar6}
 # preparing plotting
-probs <- cbind(
-  prop.table(mcnemar_matrix_change[1,]),
-  prop.table(mcnemar_matrix_change[2,])
-)
-colnames(probs) <- c("Now", "Next Year")
+plot_df <- data.frame(Data = c(prop.table(mcnemar_matrix_change[1,]), prop.table(mcnemar_matrix_change[2,])),
+                      Identifiers = rep(c("Female", "Male"), 2),
+                      Year = rep(c("Now", "Next Year"), each = 2))
 # plotting
-barplot(probs, main="Abundances of the sexes among study organisms",
-        xlab="Years", ylab = "Proportions", col=c("Red", "Blue"))
+ggplot(plot_df, aes(x = Year, y = Data, fill = Identifiers)) + geom_bar(stat="identity") + ggtitle(label = "Abundances of the sexes among study organisms") + theme_bw() + ylab("Proportion")
 ```
   
 The above plot is very crude and should only ever be used for data exploration and not for publishing purposes. Clearly, we can see the change in sex ratio towards a male-biased state (blue colour represents males).
@@ -191,20 +188,17 @@ The **null hypothesis** for Cochran's Q postulates an **equal proportion of clas
 When exploring our data, we can clearly see a pattern concerning the colour polymorphism of house sparrows arise which is dependant on the value of Predator Presence.
 ```{r ChochranPrep}
 counts <- table(Data_df$Colour, Data_df$Predator.Presence)
-
-probs <- cbind(
-  prop.table(counts[,1]),
-  prop.table(counts[,2])
-)
-colnames(probs) <- c("No", "Yes")
-
-barplot(probs, main="Colour Variations of the common House Sparrow",
-        xlab="Predator Presence", ylab = "Proportion", col=c("Black", "saddlebrown", "Grey"))
+# preparing plotting
+plot_df <- data.frame(Data = c(prop.table(counts[,1]), prop.table(counts[,2])),
+                      Identifiers = rep(c("Black", "Brown", "Grey"), 2),
+                      Predation = rep(c("No", "Yes"), each = 3))
+# plotting
+ggplot(plot_df, aes(x = Predation, y = Data, fill = Identifiers)) + geom_bar(stat="identity") + ggtitle(label = "Colour Variations of the common House Sparrow") + theme_bw() +ylab("Proportions") + scale_fill_manual(values=c("black", "saddlebrown", "grey"))
 ```
 
 This might lead us to believe that the presence of predators cause an evolutionary change of the plumage colour of *Passer domesticus* (we will have a more in-depth look on this in later seminars) and we might even postulate that "Black" and "Grey" serve as camouflage.  
 
-\clearpage
+\newpage
 
 Cochran's Q requires data to be delivered as binomial records. Therefore, we prepare colour as a binary variable of "Brown" and "Camouflage" (which we postulate to encompass "Grey" and "Black"). Since Colour is of type `factor` within our data set, we need to take some precautions in changing the data records. Predator Presence and Sex don't need any additional preparation.
 ```{r Chochran1}
@@ -284,10 +278,10 @@ chisq.test(table(Data_df$Colour))
 ```
 Again, we **reject the null hypothesis** thus concluding differing class proportions for every possible class of "Colour".
 
-\clearpage
+\newpage
 
 ## Two Sample Situation
-The two sample Chi-Squared approach let's us identify whether class assignment proportions of one variable differ when they are considered in a dependency of another nominal variable.  
+The two sample Chi-Squared approach lets us identify whether class assignment proportions of one variable differ when they are considered in a dependency of another nominal variable.  
 
 ### Sexual Dimorphism
 
@@ -315,7 +309,7 @@ chisq.test(table(Data_df$Colour, Data_df$Predator.Presence))
 ```
 The statement holds. Predator presence seems likely to be a driver of the colour polymorphism in *Passer domesticus* and we **reject the null hypothesis**.  
 
-\clearpage
+\newpage
 
 So what about a possible link of sparrow colour and predator type?
 ```{r Chi4.5}

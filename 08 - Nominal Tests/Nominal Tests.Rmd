@@ -2,7 +2,7 @@
 title: "Nominal Tests"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "??/??/20??"
+date: "07/05/2019"
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
@@ -41,6 +41,7 @@ sapply(package_vec, install.load.package)
 \begin{center}
 These approaches only allow for the use of \textbf{categorical} (nominal) \textbf{variables}!
 \end{center}
+\vspace{.5cm}
 \pause
 Prominent nominal tests include:
 \begin{itemize}
@@ -55,7 +56,7 @@ Prominent nominal tests include:
 
 ### The `table()` function
 In reality, you will need to convert your data to fit the various nominal test specifications. To do so, you may wish to enlist the help of the `table()` function of base `R` which converts nominal records into count data.
-
+\vspace{.5cm}
 \scriptsize
 ```{r Table}
 Samples <- c("A", "B")
@@ -92,10 +93,12 @@ table(counts)
 We feed the `binom.test()` function a 1/4 (`c(200, 800)`) data set whilst expecting the distribution to be 1 to 1 (`p = 0.5`).  
 
 \scriptsize
+\vspace{.2cm}
 ```{r Binomial}
 binom.test(c(200, 800), p = 0.5)
 ```
 \normalsize
+\vspace{.2cm}
 The result is significant (p $\approx$ `r round(binom.test(c(200, 800), p = 0.5)$p.value,2)`).
 
 ## McNemar
@@ -122,7 +125,7 @@ The result is significant (p $\approx$ `r round(binom.test(c(200, 800), p = 0.5)
 
 ### Minimal Working Example
 We feed the `mcnemar.test()` function a 1 to 1 (`c(500, 500)`) as well as a a 1 to 4 (`c(200, 800)`) data set for the paired data sets.  
-
+\vspace{.2cm}
 \scriptsize
 ```{r McNemar}
 Performance <- matrix(c(500, 500, 200, 800),nrow = 2)
@@ -130,6 +133,7 @@ Performance
 mcnemar.test(Performance)
 ```
 \normalsize
+\vspace{.2cm}
 With a p-value of $\approx$ `r round(mcnemar.test(Performance)$p.value,2)` the test concludes significantly.
 
 
@@ -158,7 +162,7 @@ With a p-value of $\approx$ `r round(mcnemar.test(Performance)$p.value,2)` the t
 
 ### Minimal Working Example
 We feed the `cochrans.q()` function a 6 by 4 matrix of binomial values. The first column represents our dependent, binomial variable. The remaining columns represent our independent variable on three levels expressed as binomial values.  
-
+\vspace{.2cm}
 \tiny
 ```{r CochransQ}
 CochranMatrix <- matrix(c(1,1,1,1,1,1,
@@ -193,7 +197,7 @@ cochrans.q(CochranMatrix)
 
 ### Minimal Working Example - One Sample Situation I
 We feed the `chisq.test()` function an unbiased nominal set of three levels:
-
+\vspace{.2cm}
 \tiny
 ```{r ChiSquared1}
 set.seed(42)
@@ -201,7 +205,7 @@ ChiMat1 <- table(sample(c("A", "B", "C"), 1000, replace = TRUE))
 ChiMat1
 chisq.test(ChiMat1)
 ```
-
+\vspace{.2cm}
 \normalsize
 Obviously, the observed distribution does not differ from our expectation of equally distributed proportions and so the test concludes non-significantly.
 
@@ -209,26 +213,27 @@ Obviously, the observed distribution does not differ from our expectation of equ
 We feed the `chisq.test()` function a skewed (towards `"A"`) nominal set of three levels:
 
 \tiny
+\vspace{.2cm}
 ```{r ChiSquared2}
 set.seed(42)
 ChiMat2 <- table(sample(c("A", "B", "C"), 1000, replace = TRUE, prob = c(0.8, 0.1, 0.1)))
 ChiMat2
 chisq.test(ChiMat2)
 ```
-
+\vspace{.2cm}
 \normalsize
 Obviously, the observed distribution does differ from our expectation of equally distributed proportions and so the test concludes significantly.
 
 ### Minimal Working Example - Two Sample Situation
 We feed the `chisq.test()` our unbiased as well as our skewed (towards `"A"`) nominal set of three levels to see whether their distributions differ significantly.
-
+\vspace{.2cm}
 \tiny
 ```{r ChiSquared3}
 ChiMatrix <- cbind(ChiMat1, ChiMat2)
 ChiMatrix
 chisq.test(ChiMatrix)
 ```
-
+\vspace{.2cm}
 \normalsize
 Clearly, they do differ significantly.
 
@@ -239,6 +244,8 @@ Clearly, they do differ significantly.
 \begin{center}
 Which variables in our \textit{Passer domesticus} data set are nominal?
 \end{center}
+
+\vspace{.8cm}
 
 \begincols[T]
 \begincol{.5\linewidth}
@@ -282,7 +289,7 @@ Which variables in our \textit{Passer domesticus} data set are nominal?
 \endcols
 
 \vspace{20pt}
-
+\vspace{.5cm}
 \visible<12>{
 \begin{center}
 All of these are nominal but some are binomial.
@@ -294,7 +301,7 @@ All of these are nominal but some are binomial.
 \begin{center}
 So which of our major research questions (seminar 6) can we answer?
 \end{center}
-
+\vspace{.4cm}
 \small
 \begincols[T]
   \begincol{.5\linewidth}
