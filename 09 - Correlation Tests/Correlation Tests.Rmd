@@ -2,7 +2,7 @@
 title: "Correlation Tests"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "??/??/20??"
+date: "14/05/2019"
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
@@ -98,7 +98,7 @@ $\rightarrow$ Get a feeling for it here \url{http://guessthecorrelation.com/}
 ## Contingency Coefficient
 ### Purpose And Assumptions
 \textbf{Contingency Coefficent} \flushright `ContCoef()` in the `DescTools` package  
-\vspace{-10pt}
+<!-- \vspace{-10pt} -->
 \begin{table}[c]
   \centering
   \resizebox{\textwidth}{!}{%
@@ -118,7 +118,7 @@ $\rightarrow$ Get a feeling for it here \url{http://guessthecorrelation.com/}
 
 ### Minimal Working Example
 Let's see if the `ContCoef()` function will identify the association between two categorical variables whose records are identical.
-
+\vspace{.5cm}
 \scriptsize
 ```{r ContCoeff}
 Samples <- c("Yes", "No")
@@ -134,7 +134,7 @@ The association has been identified.
 ## Kendall's Tau (Rank Correlation)
 ### Purpose And Assumptions
 \textbf{Kendall's Tau} \flushright `cor.test()` in base `R` using the `method = "kendall"` specification  
-\vspace{-10pt}
+<!-- \vspace{-10pt} -->
 \begin{table}[c]
   \centering
   \resizebox{\textwidth}{!}{%
@@ -154,7 +154,7 @@ The association has been identified.
 
 ### Minimal Working Example
 Let's have a look at what happens when we supply the `cor.test(..., method = "kendall")` with two correlated data sets:
-
+\vspace{.5cm}
 \scriptsize
 ```{r Kendal}
 cor.test(x = 1:1000, y = 1:1000, method = "kendall")
@@ -166,7 +166,7 @@ As expected, a strong correlation can be found.
 ## Spearman's Rank Correlation
 ### Purpose And Assumptions
 \textbf{Spearman Correlation} \flushright `cor.test()` in base `R` using the `method = "spearman"` specification  
-\vspace{-10pt}
+<!-- \vspace{-10pt} -->
 \begin{table}[c]
   \centering
   \resizebox{\textwidth}{!}{
@@ -187,23 +187,21 @@ As expected, a strong correlation can be found.
 
 ### Minimal Working Example I
 Let's have a look at what happens when we supply the `cor.test(..., method = "spearman")` with two non-correlated data sets:
-
+\vspace{.5cm}
 \scriptsize
-```{r Spearman}
+```{r Spearman, tidy = FALSE}
 set.seed(42)
-cor.test(x = c(1:1000), y = sample(c(1:1000), size = 1000, replace = FALSE), method = "spearman")
+cor.test(x = c(1:1000), y = sample(c(1:1000), size = 1000, replace = FALSE), 
+         method = "spearman")
 ```
 \normalsize
 
 As expected, no correlation can be found.
 
-
-
-
 ## Pearson Correlation
 ### Purpose And Assumptions
 \textbf{Pearson Correlation} \flushright `cor.test()` in base `R` (`method = "pearson"` is the default)  
-\vspace{-10pt}
+<!-- \vspace{-10pt} -->
 \begin{table}[c]
   \centering
   \resizebox{\textwidth}{!}{%
@@ -225,7 +223,7 @@ As expected, no correlation can be found.
 
 ### Minimal Working Example
 Let's have a look at what happens when we supply the `cor.test()` with two identical (hence correlated) data sets:
-
+\vspace{.5cm}
 \scriptsize
 ```{r Pearson}
 set.seed(42)
@@ -245,11 +243,11 @@ As expected, a strong correlation can be found.
 Which variables in our \textit{Passer domesticus} data set are nominal?
 \end{center}
 \pause
-\vspace{5pt}
+\vspace{.5cm}
 In general, correlation analyses can make use of all kinds of data as long as they are recorded as `numeric` and we are able to convert categorical values into `numerical` records if need be.
 \pause
 
-\vspace{5pt}
+\vspace{.5cm}
 \textit{What about Pearson correlation and normal distributed data?}  
 We need to check whether the assumption of normal distributed data records holds true for each variable before applying Pearson correlation. If that is not the case, we may wish to use Spearman correlation.
 
@@ -258,8 +256,8 @@ We need to check whether the assumption of normal distributed data records holds
 \begin{center}
 So which of our major research questions (seminar 6) can we answer?
 \end{center}
-
-\scriptsize
+\vspace{.2cm}
+\footnotesize
 \begincols[T]
   \begincol{.5\linewidth}
   \pause

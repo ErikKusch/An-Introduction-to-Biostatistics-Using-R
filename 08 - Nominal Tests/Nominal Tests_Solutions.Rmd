@@ -148,7 +148,7 @@ table(Sexes_AU_Now_vec)
 table(Sexes_AU_Next_vec)
 ```
 
-\clearpage
+\newpage
 
 ## Running The Test
 Now let's go on to test the unbiased vs. the male-skewed sex ratio:
@@ -161,13 +161,16 @@ Obviously, with this data we would record a statistically significant change and
 ## Making Sense Of The Results
 
 Unfortunately, McNemar only tells us *that* there is a difference without any information about the *direction* of the difference. For now, we will have to settle on a visualisation of the sexes to shed some light on the difference.
-```{r McNemar6}
+```{r McNemar6, tidy = FALSE, fig.height=4}
 # preparing plotting
-plot_df <- data.frame(Data = c(prop.table(mcnemar_matrix_change[1,]), prop.table(mcnemar_matrix_change[2,])),
+plot_df <- data.frame(Data = c(prop.table(mcnemar_matrix_change[1,]),
+                               prop.table(mcnemar_matrix_change[2,])),
                       Identifiers = rep(c("Female", "Male"), 2),
                       Year = rep(c("Now", "Next Year"), each = 2))
 # plotting
-ggplot(plot_df, aes(x = Year, y = Data, fill = Identifiers)) + geom_bar(stat="identity") + ggtitle(label = "Abundances of the sexes among study organisms") + theme_bw() + ylab("Proportion")
+ggplot(plot_df, aes(x = Year, y = Data, fill = Identifiers)) + geom_bar(stat="identity") +
+  ggtitle(label = "Abundances of the sexes among study organisms") + theme_bw() +
+  ylab("Proportion")
 ```
   
 The above plot is very crude and should only ever be used for data exploration and not for publishing purposes. Clearly, we can see the change in sex ratio towards a male-biased state (blue colour represents males).
