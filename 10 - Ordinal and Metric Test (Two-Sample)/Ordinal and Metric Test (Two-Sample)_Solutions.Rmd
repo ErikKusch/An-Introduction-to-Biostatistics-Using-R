@@ -123,7 +123,7 @@ p.val <- with(Data_df,
 ```
 Quite obviously, the weight of sparrows seems to be dependent on the type of climate the individuals are suspected to (p = $`r p.val`$) and **reject the null hypothesis**. Weights of sparrows in continental climates are, on average, heavier than respective weights of their peers in coastal climates.
 
-\clearpage
+\newpage
 
 ### Sparrow Height
 ```{r UHeightClimate, tidy=FALSE}
@@ -169,7 +169,7 @@ p.val <- with(Data_df,
 ```
 Apparently, the wing chord of sparrows seems to be dependent on the type of climate the individuals are suspected to (p = $`r p.val`$) and **reject the null hypothesis**. Sparrows in continental climates have, generally speaking, shorter wings than their peers in coastal climates.
 
-\clearpage
+\newpage
 
 ## Predation
 \begin{center}
@@ -227,7 +227,7 @@ p.val <- with(Data_df,
 ```
 We conclude that the nesting height of sparrows depends on what kind of predator is present (p = $`r p.val`$) conclusively **rejecting the null hypothesis**. Therefore, we are confident in stating that sparrows tend to go for nesting sites in more elevated positions when non-avian predators are present.
 
-\clearpage
+\newpage
 
 ## Competition
 \begin{center}
@@ -279,7 +279,7 @@ p.val <- with(Data_df,
 According to the output of our analysis, the home ranges of *Passer domesticus* do not depend on the climate characteristics of their respective habitats (p = $`r p.val`$). Thus, we **accept the null hypothesis**.  
 As you can see, the median of numeric home ranges is smaller in continental climates (just not statistically significant). Remember that small numeric ranges mean large actual ranges in this set-up and so we can conclude that  climates force common house sparrows to adapt to bigger home ranges.
 
-\clearpage
+\newpage
 
 ## Sexual Dimorphism
 \begin{center}
@@ -435,7 +435,7 @@ unique(Data_df$Wing.Chord[which(Data_df$Index == "SI")] == Data_df_Resettled$Win
 ```
 Indeed, none of the wing chord records have changed.
 
-\clearpage
+\newpage
 
 ## Predation
 \begin{center}
@@ -486,7 +486,7 @@ NH_Sib < NH_UK
 ```
 Yes, it does!
 
-\clearpage
+\newpage
 
 ## Competition
 \begin{center}

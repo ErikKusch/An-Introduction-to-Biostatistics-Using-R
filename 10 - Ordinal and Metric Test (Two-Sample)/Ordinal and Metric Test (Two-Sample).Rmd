@@ -2,7 +2,7 @@
 title: "Metric Tests (Two-Sample Situations)"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "??/??/20??"
+date: "20/05/2019"
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
@@ -42,6 +42,7 @@ sapply(package_vec, install.load.package)
 Metric tests are used to compare parameters of metric/ordinal variable values among groups/individuals.
 \end{center}
 \pause
+\vspace{.2cm}
 Prominent metric tests for two-sample situations include:
 \begin{itemize}
 \item \textbf{Mann-Whitney U Test}
@@ -49,7 +50,7 @@ Prominent metric tests for two-sample situations include:
 \item t Test (dealt with in seminar 12)
 \item ...
 \end{itemize}
-
+\vspace{.2cm}
 \pause
 
 Some of these tests rely on the \textbf{assumption of independence}:
@@ -70,7 +71,7 @@ Some of these tests rely on the \textbf{assumption of independence}:
     \pause
     \item A dependence is a connection between/within the data.
     \pause
-    \item The assumption of independence relies on the absence of any connection in your data that haven't accounted for in your approach (accounting for it is difficult).
+    \item The assumption of independence relies on the absence of any connection in your data that haven't been accounted for in your approach (accounting for it is difficult).
     \end{itemize} 
 \endcol
 \begincol{.5\linewidth}
@@ -118,6 +119,7 @@ Some of these tests rely on the \textbf{assumption of independence}:
 
 ### Minimal Working Example
 Let's use the `wilcox.test(..., paired = FALSE)` function to test whether the medians of an unnamed variable of two unconnected populations (`a` and `b`) with 10 individuals each are truly different:
+\vspace{.2cm}
 \scriptsize
 ```{r MannWhitney}
 set.seed(42)
@@ -129,6 +131,7 @@ wilcox.test(a, b, paired = FALSE)
 ```{r p.valMann, echo=FALSE}
 p.val <- wilcox.test(a,b, paired=FALSE)$p.value
 ```
+\vspace{.2cm}
 \normalsize
 The medians are significantly different (p = $`r p.val`$ ). Keep in mind that the \textbf{populations do not have to be of the same size} for this!
 
@@ -155,7 +158,8 @@ The medians are significantly different (p = $`r p.val`$ ). Keep in mind that th
 \end{table}
 
 ### Minimal Working Example
-Let's use the `wilcox.test(..., paired = FALSE)` function to test whether the medians of an unnamed variable of two connected samples (`a` and `b`) with 10 individuals each (i.e. one re-sampled population) are truly different:
+Let's use the `wilcox.test(..., paired =TRUE)` function to test whether the medians of an unnamed variable of two connected samples (`a` and `b`) with 10 individuals each (i.e. one re-sampled population) are truly different:
+\vspace{.2cm}
 \scriptsize
 ```{r Wilcox}
 set.seed(42)
@@ -167,6 +171,7 @@ wilcox.test(a, b, paired = TRUE)
 ```{r p.valWilcox, echo=FALSE}
 p.val <- wilcox.test(a,b, paired=TRUE)$p.value
 ```
+\vspace{.2cm}
 \normalsize
 The medians are significantly different (p = $`r p.val`$ ). Keep in mind that the \textbf{samples have to be of the same size} for this (i.e. there is one data record in `b` that corresponds to one data record in `a`)!
 
