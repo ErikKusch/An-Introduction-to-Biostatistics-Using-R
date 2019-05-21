@@ -161,7 +161,7 @@ Quite obviously, they aren't and, if there are any patterns in sex ratios to eme
 \textit{Do heavier sparrows have heavier/less eggs?}
 \end{center}
 
-A heavier weight of individual females alludes to a higher pool of resources being allocated by said individuals. There a multiple ways they might make use of it, one of them being investment in reproduction. To test how heavier females of *Passer domesticus* utilise their resources in reproduction, we use a Kendall's Tau approach to finding links between female weight and average egg weight per nest/number of eggs per nest.  
+A heavier weight of individual females alludes to a higher pool of resources being allocated by said individuals. There are multiple ways they might make use of it, one of them being investment in reproduction. To test how heavier females of *Passer domesticus* utilise their resources in reproduction, we use a Kendall's Tau approach to finding links between female weight and average egg weight per nest/number of eggs per nest.  
 Obviously, both weight variables are metric in nature and so we could use other methods as well. On top of that, we first need to convert these into ranks before being able to run a Kendall's Tau analysis as follows:
 
 ```{r Kendall, tidy = FALSE}
@@ -348,11 +348,11 @@ Following Bergmann's rule, we expect a positive correlation between sparrow heig
 ```{r Spearman1, fig.width=15, fig.height = 8, tidy=FALSE}
 cor.test(x = abs(Data_df$Latitude), y = Data_df$Height, 
          use = "pairwise.complete.obs", method = "spearman")
-ggplot(data = Data_df, aes(x = Latitude, y = Height)) +
+ggplot(data = Data_df, aes(x = abs(Latitude), y = Height)) +
   geom_point() + theme_bw() + stat_smooth(method = "lm") + 
   labs(title = "Height of Passer domesticus vs. Latitude")
 ```
-Interestingly enough, our analysis yields a negative correlation which would disproof Bermann's rule. This is a good example to show how important biological background knowledge is when doing biostatistics. Whilst a pure statistician might now believe to have just dis-proven a big rule of biology, it should be apparent to any biologist that Bergmann spoke of "bigger" organisms in colder climates (higher latitudes) and not of "taller" individuals. What our sparrow lack in height, they might make up for in circumference. This is an example where we would **reject the null hypothesis** but shouldn't **accept the alternative hypothesis** based on biological understanding.
+Interestingly enough, our analysis yields a negative correlation which would disproof Bermann's rule. This is a good example to show how important biological background knowledge is when doing biostatistics. Whilst a pure statistician might now believe to have just dis-proven a big rule of biology, it should be apparent to any biologist that Bergmann spoke of "bigger" organisms in colder climates (higher latitudes) and not of "taller" individuals. What our sparrows lack in height, they might make up for in circumference. This is an example where we would **reject the null hypothesis** but shouldn't **accept the alternative hypothesis** based on biological understanding.
 
 \newpage
 
@@ -366,7 +366,7 @@ Again, following Bergmann's rule, we expect a positive correlation between sparr
 ```{r Spearman, fig.width=15, fig.height = 8, tidy=FALSE}
 cor.test(x = abs(Data_df$Latitude), y = Data_df$Weight, 
          use = "pairwise.complete.obs", method = "spearman")
-ggplot(data = Data_df, aes(x = Latitude, y = Weight)) +
+ggplot(data = Data_df, aes(x = abs(Latitude), y = Weight)) +
   geom_point() + theme_bw() + stat_smooth(method = "lm") + 
   labs(title = "Weight of Passer domesticus vs. Latitude")
 ```
@@ -384,7 +384,7 @@ We would expect sparrows in higher latitudes (e.g. colder climates) to have smal
 ```{r Spearman2, fig.width=15, fig.height = 8, tidy=FALSE}
 cor.test(x = abs(Data_df$Latitude), y = Data_df$Wing.Chord, 
          use = "pairwise.complete.obs", method = "spearman")
-ggplot(data = Data_df, aes(x = Latitude, y = Wing.Chord)) +
+ggplot(data = Data_df, aes(x = abs(Latitude), y = Wing.Chord)) +
   geom_point() + theme_bw() + stat_smooth(method = "lm") + 
   labs(title = "Wing chord of Passer domesticus vs. Latitude")
 ```
@@ -403,7 +403,7 @@ Due to resource constraints in colder climates, we expect female *Passer domesti
 ```{r Spearman3, fig.width=15, fig.height = 8, tidy=FALSE}
 cor.test(x = abs(Data_df$Latitude), y = Data_df$Number.of.Eggs, 
          use = "pairwise.complete.obs", method = "spearman")
-ggplot(data = Data_df, aes(x = Latitude, y = Number.of.Eggs)) +
+ggplot(data = Data_df, aes(x = abs(Latitude), y = Number.of.Eggs)) +
   geom_point() + theme_bw() + stat_smooth(method = "lm") + 
   labs(title = "Number of eggs of Passer domesticus nests vs. Latitude")
 ```
@@ -421,7 +421,7 @@ Due to the reduced investment in egg numbers that we have just proven, we expect
 ```{r Spearman4, fig.width=15, fig.height = 8, tidy=FALSE}
 cor.test(x = abs(Data_df$Latitude), y = Data_df$Egg.Weight, 
          use = "pairwise.complete.obs", method = "spearman")
-ggplot(data = Data_df, aes(x = Latitude, y = Egg.Weight)) +
+ggplot(data = Data_df, aes(x = abs(Latitude), y = Egg.Weight)) +
   geom_point() + theme_bw() + stat_smooth(method = "lm") + 
   labs(title = "Weight of Passer domesticus eggs vs. Latitude")
 ```
