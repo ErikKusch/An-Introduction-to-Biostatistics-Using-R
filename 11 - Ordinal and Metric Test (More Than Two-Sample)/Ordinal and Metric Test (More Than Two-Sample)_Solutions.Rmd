@@ -13,7 +13,7 @@ geometry: "left= 2cm,right = 2cm, bottom = 1.5cm, top = 2cm"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=70),tidy=TRUE, fig.height=4)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = FALSE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=70),tidy=TRUE, fig.height=4)
 options(digits=2, width = 90)
 ```
 
@@ -68,7 +68,7 @@ package_vec <- c()
 sapply(package_vec, install.load.package)
 ```
 
-As you can see, we don't need any packages for our analyses in this practical.
+As you can see, we don't need any packages for our analyses in this practical. Take note that I am not using `ggplot2` for data visualisation today. Personally, I find it cumbersome for "behind-the-scenes" boxplots (which is what I'll use a lot today) and so I am presenting you with the base `R` alternative.
 
 ## Loading Data
 During our first exercise (Data Mining and Data Handling - Fixing The Sparrow Data Set) we saved our clean data set as an RDS file. To load this, we use the `readRDS()` command that comes with base `R`.
@@ -116,7 +116,7 @@ kruskal.test(Weights_vec, Climates)
 
 We conclude that the three-level climate variable is an important source of information to understand what drives weight records of *Passer domesticus* and thus **reject the null hypothesis** (p = $`r kruskal.test(Weights_vec, Climates)[["p.value"]]`$).  
 
-\clearpage
+\newpage
 
 ```{r KruskalSite1b, fig.height=12, fig.width=15}
 boxplot(Weights_vec ~ Climates)
@@ -124,7 +124,7 @@ boxplot(Weights_vec ~ Climates)
 
 Looking at the boxplot, we can understand the distribution of weight records as grouped by climate types and identify weight records to be biggest for continental climates followed by semi-coastal ones with similar spreads. Coastal climates, on the other hand, show a remarkable spread of weight records of *Passer domesticus* with a markedly lower median than the two previous categories.
 
-\clearpage
+\newpage
 
 ### Height
 
@@ -150,7 +150,7 @@ We conclude that the three-level climate variable is an important source of info
 
 Looking at the boxplot, we can understand the distribution of height records as grouped by climate types and identify height records to be smallest for continental climates followed by semi-coastal ones with similar spreads. Coastal climates, on the other hand, show a remarkable spread of height records of *Passer domesticus* with a markedly higher median than the two previous categories.
 
-\clearpage
+\newpage
 
 ### Wing Chord
 
@@ -177,7 +177,7 @@ We conclude that the three-level climate variable is an important source of info
 
 Looking at the boxplot, we can understand the distribution of wing chord records as grouped by climate types and identify wing chord records to be smallest for continental climates followed by semi-coastal ones with similar spreads. Coastal climates, on the other hand, show a remarkable spread of wing chord records of *Passer domesticus* with a markedly higher median than the two previous categories.
 
-\clearpage
+\newpage
 
 ### Automating the Analysis
 As we have seen, running seperate tests for every research question may be a bit cumbersome and so we may want to automate the analysis by establishing our own user-defined function as follows:
@@ -229,7 +229,7 @@ This function is *named* `AutomatedKruskal()` and takes three *arguments*: (1) `
 
 The function then proceeds to establish an empty data frame which it will store the results of our Kurskal-Wallis Tests in. Afterwards, it cycles through all variables contained within the `Variables` statement, extracts the relevant data, grouping it according to the specified grouping variable (`Groups`), runs the test, fills the data frame and plots the data if `Plotting` has ben set to `TRUE`.
 
-\clearpage
+\newpage
 
 Let's re-run our earlier test on sparrow morphology as influenced by climate using this function by *calling* it:
 ```{r KruskalSite7b, fig.height=15, fig.width=15}
@@ -243,7 +243,7 @@ As we can see from the results above, our function works flawlessly and we can u
 
 Furthermore, we can confirm some of the results of our Mann-Whitney U Test from last seminar.
 
-\clearpage
+\newpage
 
 ## Predation
 \begin{center}
@@ -271,7 +271,7 @@ Using our `Automated Kruskal()` function, we can conclude that the aggregation o
 
 Therefore, we can argue that avian predation forces sparrows into low nesting sites, non-avian predation leads to more elevated nesting sites in *Passer domesticus* and absence of predators seems to not force nesting height in any direction or restricting its spread.
 
-\clearpage
+\newpage
 
 ## Competition  
 \begin{center}
@@ -292,7 +292,6 @@ Data_df <- Data_df[Rows,]
 Let's test this for our three-level climate variable:
 ```{r KruskalCompetitiona, fig.height=7, fig.width=15}
 Data_df$Home.Range <- as.numeric(Data_df$Home.Range)
-
 AutomatedKruskal(Variables = "Home.Range", Groups = "Climate", Plotting = TRUE)
 ```
 
@@ -300,7 +299,7 @@ Using our `Automated Kruskal()` function, we can conclude that the three-loevel 
 
 Remember that small numeric ranges mean large actual ranges in this set-up and so we can conclude that  climates force common house sparrows to adapt to bigger home ranges.
 
-\clearpage
+\newpage
 
 ## Site-wise variation  
 \begin{center}
@@ -351,7 +350,7 @@ As such, this program is very reminiscent of the resettling program in our last 
 
 All of this serves to **maximise variation** that we want to research whilst **minising constraining factors**.
 
-\clearpage
+\newpage
 
 ## Climate Warming/Extremes  
 \begin{center}
@@ -422,7 +421,7 @@ AutomatedFried(Variables = c("Weight", "Height", "Wing.Chord"), Plotting = TRUE)
 
 Indeed, whilst climate is a good predictor for the weight of resettled sparrows (weight in continental climates is higher than in semi-coastal or coastal ones), height and wing chord records couldn't be properly tested on using the `friedman.test()` function since they have remained unalterd. Thetrefore, we **reject the null hypothesis** for weight records of *Passer domesticus* and **accept the null hypothesis** for height and wing chord records.
 
-\clearpage
+\newpage
 
 ## Predation
 \begin{center}

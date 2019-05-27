@@ -2,7 +2,7 @@
 title: "Metric Tests (More-Than-Two-Sample Situations)"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "??/??/20??"
+date: "27/05/2019"
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
@@ -42,6 +42,7 @@ sapply(package_vec, install.load.package)
 Metric tests are used to compare parameters of metric/ordinal variable values among groups/individuals.
 \end{center}
 \pause
+\vspace{.2cm}
 Prominent metric tests for more-than-two-sample situations include:
 \begin{itemize}
 \item \textbf{Kruskal-Wallis Test}
@@ -54,11 +55,13 @@ Prominent metric tests for more-than-two-sample situations include:
 
 Remember:
 \begin{itemize}
+\vspace{.3cm}
 \item \textbf{Got two samples?}
   \begin{itemize}
   \item \textit{Independent.} $\rightarrow$ Mann-Whitney U Test
   \item \textit{Dependent.} $\rightarrow$ Wilcoxon Signed Rank Test
   \end{itemize}
+  \vspace{.1cm}
 \item \textbf{Got more than two samples?}
   \begin{itemize}
   \item \textit{Independent.} $\rightarrow$ Kruskal-Wallis Test
@@ -91,6 +94,7 @@ Remember:
 
 ### Minimal Working Example
 Let's use the `kruskal.test()` function to test whether the medians of an unnamed variable of three unconnected populations (`a`, `b` and `c`) with 10 individuals each are truly different:
+\vspace{.2cm}
 \scriptsize
 ```{r Kruskal}
 set.seed(42)
@@ -126,6 +130,7 @@ kruskal.test(x = c(a, b, c), g = groups)
 
 ### Minimal Working Example
 Let's use the `friedman.test()` function to test whether the medians of an unnamed variable of three connected samples (`a`, `b` and `c`) with 10 individuals each (i.e. one re-sampled population) are truly different:
+\vspace{.2cm}
 \scriptsize
 ```{r Friedman}
 set.seed(42)
