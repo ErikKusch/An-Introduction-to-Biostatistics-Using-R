@@ -2,7 +2,7 @@
 title: "Simple Parametric Tests"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "??/??/20??"
+date: "26/06/2019"
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
@@ -41,6 +41,7 @@ sapply(package_vec, install.load.package)
 \begin{center}
 Parametric test are those statistical approaches which rely on \textbf{assumptions} about the parameters which define a population.
 \end{center}
+\vspace{.3cm}
 \pause
 Prominent parametric tests include:
 \begin{itemize}
@@ -112,6 +113,7 @@ $\rightarrow$ Test whether variance of response variable values in groups are eq
 ### Minimal Working Example
 \small
 Let's feed data to our `t.test(..., paired = FALSE)` function that holds two groups with clearly differing means:
+\vspace{.1cm}
 \scriptsize
 ```{r tTest1}
 data <- c(
@@ -122,6 +124,7 @@ factors <- as.factor(rep(c("A", "B"), each = 10))
 t.test(data ~ factors, paired = FALSE)
 ```
 \small
+\vspace{.1cm}
 The output above tells us that the means of our two groups are significantly different.
 
 
@@ -152,6 +155,7 @@ The output above tells us that the means of our two groups are significantly dif
 ### Minimal Working Example
 \small
 Let's feed data to our `t.test(..., paired = TRUE)` function that holds two connected groups with clearly differing means:
+\vspace{.1cm}
 \scriptsize
 ```{r tTest2}
 data <- c(
@@ -162,6 +166,7 @@ factors <- as.factor(rep(c("A", "B"), each = 10))
 t.test(data ~ factors, paired = TRUE)
 ```
 \small
+\vspace{.1cm}
 The output above tells us that the means of our two connected groups are significantly different.
 
 ## Analysis of Variance (ANOVA)
@@ -169,6 +174,7 @@ The output above tells us that the means of our two connected groups are signifi
 \begin{center}
 ANOVAs are used to test whether there is a difference between groups of variable values.
 \end{center}
+\vspace{.3cm}
 \pause
 There are \textbf{multiple versions of ANOVAs}:
 \begin{itemize}
@@ -216,12 +222,14 @@ head(crabs)
 ### Minimal Working Example
 \small
 Let's test whether body depth (BD) of crabs are varying when grouped by sex:
+\vspace{.1cm}
 \scriptsize
 ```{r One-Way}
 OneWay <- with(crabs,  lm(BD ~ sex))
 anova(OneWay)
 ```
 \small
+\vspace{.1cm}
 As we can see, sex does not make for a statistically significant predictor of crab body depth.  
 
 Take note that we do not deal with testing the assumptions here.
@@ -255,11 +263,13 @@ Take note that we do not deal with testing the assumptions here.
 \small
 Let's test whether body depth (BD) of crabs are varying when grouped by sex and species as well as their interaction:
 \scriptsize
+\vspace{.1cm}
 ```{r Two-Way}
 TwoWay <- with(crabs,  lm(BD ~ sex*sp))
 anova(TwoWay)
 ```
 \small
+\vspace{.1cm}
 The output above tells us that species and the interaction effect of sex and species are meaningful for understanding body depth of crabs.
 
 
@@ -305,6 +315,7 @@ The output above tells us that all of our model coefficients are significant.
 # Our Data
 ## Choice Of Variables
 ### Variables We Can Use
+\vspace{.7cm}
 \begincols[T]
   \begincol{.5\linewidth}
     \textbf{Response variables} (metric)
@@ -340,7 +351,7 @@ The output above tells us that all of our model coefficients are significant.
 \begin{center}
 So which of our major research questions (seminar 6) can we answer?
 \end{center}
-
+\vspace{.2cm}
 \scriptsize
 \begincols[T]
   \begincol{.5\linewidth}
@@ -381,17 +392,5 @@ So which of our major research questions (seminar 6) can we answer?
     \begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title=]
     \centering \textit{Remember to \textbf{check assumptions} and find ways to circumvent violations of assumptions!}
     \end{tcolorbox}
-\endcol
-\endcols
-
-# Exercise
-### Analysing Our Data
-\begincols[T]
-  \begincol{.5\linewidth}
-  \vspace{60pt}
-  \centering Use the exercise in `UL_Sem10_2018_Ex.pdf`
-\endcol
-\begincol{.5\linewidth}
-  \centering \includegraphics[width=.9\linewidth]{Figures/Exer.jpg}
 \endcol
 \endcols

@@ -35,7 +35,7 @@ options(digits=2, width = 90)
  \vspace{0.2cm}
 \end{LARGE}
 Welcome to our sixth practical experience in R. Throughout the following notes, I will introduce you to a couple of simple parametric test. Whilst parametric tests are used extremely often in biological statistics, they can be somewhat challenging to fit to your data as you will see soon.    
-To do so, I will enlist the sparrow data set we handled in our first exercise.
+To do so, I will enlist the sparrow data set we handled in our first exercise. Additionally, todays seminar is showing plotting via base plot instead of `ggplot2` to highlight the usefulness of base plot and show you the base notation.
 
 \setcounter{secnumdepth}{3} 
 \setcounter{tocdepth}{4} 
@@ -110,7 +110,7 @@ ShapiroTest <- function(Variables, Grouping){
 ```
 This function (`ShapiroTest()`) takes two arguments: (1) `Variables` - a vector of characters holding the names of the variables we want to have tested, and (2) `Grouping` - the binary variable by which to group our variables. The function returns a data frame holding the p-values of the Shapiro tests on each variable group values as well as the `var.test()` p-value.  
 
-\clearpage
+\newpage
 
 ## Climate Warming/Extremes
 \begin{center}
@@ -170,7 +170,7 @@ t.test(Data_df$Wing.Chord ~ Data_df$Climate, var.equal = FALSE)
 ```
 Without confirming the results of our Mann-Whitney U Test, we **accept the null hypothesis**.
 
-\clearpage
+\newpage
 
 **Conclusion**  
 Here's what we've learned from the t-Test so far:  
@@ -186,7 +186,7 @@ plot(Data_df$Height ~ Data_df$Climate)
 plot(Data_df$Wing.Chord ~ Data_df$Climate)
 ```
 
-\clearpage
+\newpage
 
 ## Sexual Dimorphism
 \begin{center}
@@ -231,7 +231,7 @@ ShapiroTestSites <- function(Variables, Grouping){
 
 This function (`ShapiroTestSites()`) takes two arguments: (1) `Variables` - a vector of characters holding the names of the variables we want to have tested, and (2) `Grouping` - the binary variable by which to group our variables. The function returns a list of data frames for each site holding the p-values of the Shapiro tests on each variable group values as well as the `var.test()` p-value. 
 
-\clearpage
+\newpage
 
 Let's put this function to the test:
 ```{r ShapiroSex1}
@@ -278,7 +278,7 @@ t_testSite <- function(Variables, Grouping, data, VarEqual){
 This `t_testSite()` function takes four arguments: (1) `Variables` - a vector of characters holding the names of the variables we want to have tested, (2) `Grouping` - the binary variable by which to group our variables, (3) `data` - the data frame which contains the `Variables` and the `Grouping` factor, and (4) `VarEqual` - a logical indicator of whether to perform a t-Test assuming equal variance of the groups or not.  
 The function returns a list of data frames (one per variable) containing the p-values of the unpaired t-Tests for each variable at every site as well as the predicted group means.
 
-\clearpage
+\newpage
 
 Although our function `t_testSite()` can handle multiple variables at once, we will now use it on each of our morphological sparrow variables individually to disentangle them a bit easier:  
 
@@ -308,7 +308,7 @@ t_testSite(Variables = "Wing.Chord", Grouping = "Sex", data = Data_df, VarEqual 
 ```
 Like with our Mann-Whitney U-Test, we fail to identify a significant effect of sex on sparrow wing chord records at each of our sites and so we **accept the null hypothesis**.
 
-\clearpage
+\newpage
 
 # t-Test (paired)
 
@@ -343,7 +343,7 @@ WeightDiff <- DataSI-Data_df_Resettled$Weight
 shapiro.test(WeightDiff)
 ```
 Thankfully, the **assumption of normality** is **met**.
-\clearpage
+\newpage
 Now let's visualise that using a qqplot:
 ```{r Norm3, fig.height = 8}
 qqnorm(WeightDiff)
@@ -361,7 +361,7 @@ t.test(DataSI, Data_df_Resettled$Weight, paired = TRUE)
 ```
 We were right, individual sparrow weights change significantly after our relocation experiment and we **reject the null hypothesis**. This is in accordance with the results of the Wilcoxon Signed Rank Test as well as the Friedman Test.
 
-\clearpage
+\newpage
 Let's go on to visualise our data to make better sense of what is going on here:
 ```{r tpaired1, fig.height=8}
 # Select the sparrow weights
@@ -420,7 +420,7 @@ ANOVACheck <- function(Variables, Grouping, data, plotting){
 This `ANOVACheck()` function takes four arguments: (1) `Variables` - a vector of characters holding the names of the variables we want to have tested, (2) `Grouping` - the categorical variable by which to group our variables, (3) `data` - the data frame which contains the `Variables` and the `Grouping` factor, and (4) `plotting` - a logical indicator of whether to produce plots visualising the test results or not.  
 The function returns a data frames containing the p-values indexing whether to accept or reject the notion of the normality of residuals per variable (`Residual Normality`), and the p-values indexing whether variances between groups are homogeneous or not (`Homogeneity of Variances`).  
 
-\clearpage
+\newpage
 
 ## Climate Warming/Extremes
 \begin{center}
@@ -447,7 +447,7 @@ ANOVACheck(Variables = c("Weight", "Height", "Wing.Chord"), Grouping = "Climate"
 
 Unfortunately, neither weight nor wing chord records fullfil our requirements.
 
-\clearpage
+\newpage
 
 ### Analysis
 Let's run our analysis for height as grouped by the three-level climate variable:
@@ -467,7 +467,7 @@ plot(Data_df$Wing.Chord ~ Data_df$Climate)
 
 As you can see, the variances are definitely not equal between our groups which explains why part of our assumption test failed.
 
-\clearpage
+\newpage
 
 ## Predation
 \begin{center}
@@ -495,7 +495,7 @@ ANOVACheck(Variables = "Nesting.Height", Grouping = "Predator.Type", data = Data
 ```
 Again, our data fails the assumption check. The residuals are definitely not normal distributed and the variance of nesting height records within our groups are not equal.
 
-\clearpage
+\newpage
 
 ### Analysis
 
@@ -505,7 +505,7 @@ plot(Data_df$Nesting.Height ~ Data_df$Predator.Type)
 ```
 Once more, we can see why our homogeneity of variances test failed.
 
-\clearpage
+\newpage
 
 ## Site-wise Variation
 \begin{center}
@@ -525,7 +525,7 @@ ANOVACheck(Variables = c("Weight", "Height", "Wing.Chord"), Grouping = "Index",
 
 This time, our data does not fail the assumption test (except for the weight attribute of our sparrows).
 
-\clearpage
+\newpage
 
 ### Analysis
 Let's run only one One-Way ANOVA then, because we have already looked at this with our Kruskal-Wallis Test and site-wise variation wasn't really part of our big research questions (seminar 4);
@@ -633,7 +633,7 @@ ANOVACheck_TWO(Formulas = c(Weight ~ Climate*Sex,
 ```
 Sadly, not enough of our assumptions are met.
 
-\clearpage
+\newpage
 
 ### Analysis
 Since none of our assumptions are met, we cannot run an ANOVA and therefore resort to data visualisation alone:
@@ -644,7 +644,7 @@ boxplot(Height ~ Sex*Climate, data = Data_df, col = c("purple", "blue"))
 boxplot(Wing.Chord ~ Sex*Climate, data = Data_df, col = c("purple", "blue"))
 ```
 
-\clearpage
+\newpage
 
 ## Sexual Dimorphism
 \begin{center}
@@ -670,7 +670,7 @@ ANOVACheck_TWO(Formulas = c(Weight ~ Population.Status*Sex,
                , data = Data_df, plotting = TRUE)
 ```
 Again our assumptions are not met except for sparrow height and wing chord as a product of sex and population status.
-\clearpage
+\newpage
 
 ### Analysis
 Let's run our analysis:
@@ -784,14 +784,14 @@ I will not interpret these plots here in text and leave this to you.
 
 Take note that this **could've been achieved much easier with `ggplot2`!**
 
-\clearpage
+\newpage
 ```{r Analysisc, fig.height=4, echo=FALSE}
 par(mfrow=c(1,2))
 PlotAncovas(Variables = c("Weight", "Height", "Wing.Chord", "Nesting.Height", "Egg.Weight", "Number.of.Eggs", "Home.Range"), Grouping = "Climate", Covariate = "Latitude", data = Data_df)
 ```
 
 
-\clearpage
+\newpage
 
 ## Sparrow Characteristics And Sites
 
