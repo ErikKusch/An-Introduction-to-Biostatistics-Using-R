@@ -16,6 +16,7 @@
 !*SparrowData.xls
 !*SparrowProject_README.txt
 !*.rar
+!*.odt
 
 # ...even if they are in subdirectories
 !*/
