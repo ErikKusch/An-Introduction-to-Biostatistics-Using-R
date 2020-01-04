@@ -2,7 +2,7 @@
 title: "Introduction to R"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "09/04/2019"
+date: ""
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
@@ -32,7 +32,7 @@ options(digits=2)
 `R` is an **object-based** programming language hence why *objects* are one of the *smallest* and *most important* units anyone attempting to handle `R` should be aware of. Like words in a sentence they **carry information**.  
 \vspace{0.5cm} \pause
 Objects are characterised by **attributes**:  
-\vspace{-0.4cm}
+\vspace{-0.2cm}
 \pause
 \begin{small}
 \begin{table}[h!]
@@ -52,12 +52,17 @@ An object is **assigned** some content in `R` as follows:
 *  Name `<-` Object/Content (this is the way to go)
 *  Name `=` Object/Content (avoid this)  
 
+\vspace{.4cm}
+
 This will **add** an object of the chosen name **to** the **working environment**.  
 \pause
 \small
 \begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title=]
 Only one object of the same name can be present in the working environment at any given time.
 \end{tcolorbox}
+
+\vspace{.2cm}
+
 \normalsize
 \pause
 To **alter/remove** a specific object from your `R` working environment do either of the following:
@@ -109,7 +114,11 @@ Within `R`, the **type of any object** can be **identified** using the `class()`
 ### Vector I (`character`)
 `Vectors` are created using the function `c(... , ...)` ("c" stands for *concatenate*; "," separates individual units within the vector) in `R`:
 
+\vspace{.4cm}
+
 * A `character` vector:  
+
+\vspace{.2cm}
 
 \scriptsize
 ```{r createVectors1}
@@ -118,10 +127,13 @@ Letters_vec
 class(Letters_vec)
 ```
 \normalsize
+\vspace{.4cm}
 You can also **convert** object element mode to be of `character` by using the function `as.character()`.
 
 ### Vector II (`numeric`)
 * A `numeric` vector:  
+
+\vspace{.2cm}
 
 \scriptsize
 ```{r createVectors2}
@@ -130,10 +142,13 @@ Numbers_vec
 class(Numbers_vec)
 ```
 \normalsize
+\vspace{.4cm}
 You can also **convert** object element mode to be of `numeric` by using the function `as.numeric()`.
 
 ### Vector III (`logical`)
 * A `logical` vector:  
+
+\vspace{.2cm}
 
 \scriptsize
 ```{r createVectors3}
@@ -142,13 +157,16 @@ Logic_vec
 class(Logic_vec)
 ```
 \normalsize
+\vspace{.4cm}
 You can also **convert** object element mode to be of `logical` by using the function `as.logical()` (keep in mind that this will only yield partially desirable results).
 
 ### Factor
 `Factors` are created using the function `factor(x , levels , ...)` ("x" represents the data; "levels" indicates the preconceived levels our data should take and is usually estimated from the data by default) in `R`.  
+\vspace{.4cm}
 
 * A `factor` type object:  
 
+\vspace{.2cm}
 \scriptsize
 ```{r createFactors1, tidy=FALSE}
 Letters_fac <- factor(x = c("A", "B", "C"))
@@ -156,10 +174,12 @@ Letters_fac
 class(Letters_fac)
 ```
 \normalsize
+\vspace{.4cm}
 You can also **convert** object types to be of `factor` by using the function `as.factor()`.
 
 ### Lists
 `Lists` are created using the function `list(...)` ("..." represents the objects passed to the list) in `R`.
+\vspace{.2cm}
 \scriptsize
 ```{r createLists1}
 Vectors_ls <- list(Numbers_vec, Letters_vec)
@@ -167,11 +187,13 @@ Vectors_ls
 class(Vectors_ls)
 ```
 \normalsize
+\vspace{.4cm}
 Keep in mind that a list **can contain every conceivable object** of `R` **within** every list position (yes, even lists of lists are possible).  
 You can also **convert** object types to be of `list` by using the function `as.list()`.
 
 ### Matrix
 `Matrices` are created using the function `matrix(data, nrow, ncol, byrow, dimnames)` ("data" represents the data; "nrow" and "ncol" indicate the number of rows and columns respectively, "byrow" is a logical argument indicating whether to fill the data into the matrix by row or by column, "dimnames" let's you ascribe names to columns and rows) in `R`. 
+\vspace{.2cm}
 \scriptsize
 ```{r createMatrices1}
 Combine_mat <- matrix(data = c(Numbers_vec, Letters_vec), ncol = 2)
@@ -179,13 +201,16 @@ Combine_mat
 class(Combine_mat)
 ```
 \normalsize
+\vspace{.4cm}
 You can also **convert** object types to be of `matrix` by using the function `as.matrix()`.
 
 ### Data Frame I (creating from a `matrix`)
 `Data Frames` are created using the function `data.frame(...)` ("..." can stand for a `matrix` or index individual columns) in `R`.  
+\vspace{.4cm}
 
 * Creating a `data.frame` from a `matrix`:  
 
+\vspace{.2cm}
 \scriptsize
 ```{r createDFs1}
 Combine_df <- data.frame(Combine_mat)
@@ -193,11 +218,13 @@ Combine_df
 class(Combine_df)
 ```
 \normalsize
+\vspace{.4cm}
 You can also edit the names of columns and rows in a `data.frame` object using the commands `colnames()` and `rownames()` respectively.
 
 ### Data Frame II (creating with individual columns)
 * Creating a `data.frame` from `vectors` as individual columns:  
 
+\vspace{.2cm}
 \scriptsize
 ```{r createDFs2}
 Combine2_df <- data.frame(Numbers = Numbers_vec, Letters = Letters_vec)
@@ -205,6 +232,7 @@ Combine2_df
 class(Combine_df)
 ```
 \normalsize
+\vspace{.4cm}
 You can also **convert** object types to be of `data.frame` by using the function `as.data.frame()`.
 
 ## CheatSheet Overview
@@ -251,17 +279,21 @@ You can also **convert** object types to be of `data.frame` by using the functio
 ## Inspecting and Subsetting Objects in `R`
 ### Object Dimensions (`matrices` and `data.frames`)
 Object **dimensions** are the last of the essential attributes of objects we will consider. They tell you how data is arranged. They are assessed using the `dim(...)` function in `R` ("..." stands for any given object name in `R`):  
+\vspace{.4cm}
 
 * Matrices have dimensions of rowcount `x` columncount
 
+\vspace{.2cm}
 \footnotesize
 ```{r, Dimensions3}
 dim(Combine_mat)
 ```
 \normalsize
+\vspace{.4cm}
 
 * Data Frames also have dimensions of rowcount `x` columncount
 
+\vspace{.2cm}
 \footnotesize
 ```{r, Dimensions4}
 dim(Combine_df)
@@ -273,15 +305,18 @@ dim(Combine_df)
 
 * Vectors, Factors and Lists don't have `dimensions`...  
 
+\vspace{.2cm}
 \footnotesize
 ```{r, Dimensions}
 c(dim(Letters_vec), dim(Letters_fac), dim(Vectors_ls))
 ```
 \normalsize
+\vspace{.2cm}
 
 * ... they only have a `length`
 
 \footnotesize
+\vspace{.2cm}
 ```{r, Dimensions2}
 c(length(Letters_vec), length(Letters_fac), length(Vectors_ls))
 ```
@@ -293,6 +328,7 @@ c(length(Letters_vec), length(Letters_fac), length(Vectors_ls))
 - `rownames()` (row labels, `data.frames`)  
 - `dimnames()` (dimension labels, `matrices`)  
 
+\vspace{.2cm}
 \scriptsize
 ```{r SubsetNames3}
 colnames(Combine2_df)
@@ -303,14 +339,17 @@ Combine2_df$Numbers # subsetting by column 'Numbers'
 ### The Naming System (`vectors`)
 * Our vectors don't have names assigned yet: 
 
+\vspace{.2cm}
 \scriptsize
 ```{r SubsetNames1}
 names(Numbers_vec)
 ```
 \normalsize
+\vspace{.4cm}
 
 * Let's do that:  
 
+\vspace{.2cm}
 \scriptsize
 ```{r SubsetNames2}
 SubNames1 <- Numbers_vec
@@ -324,16 +363,21 @@ The **indexing** system is basically the *numerical* **counterpart** to the nami
 - `[[elementnumber]]` for `lists`  
 - `[rownumber, columnnumber]` for `data.frames` and `matrices`  
 
+\vspace{.4cm}
+
 * First element of second column of our matrix:
 
+\vspace{.2cm}
 \scriptsize
 ```{r Indexing1}
 Combine_mat[1,2]
 ```
 \normalsize 
+\vspace{.4cm}
 
 * Entire first column of our data frame:  
 
+\vspace{.2cm}
 \scriptsize
 ```{r Indexing2}
 Combine_df[,1]
@@ -342,19 +386,21 @@ Combine_df[,1]
 ### The Indexing System (`vectors`, `factors` and `lists`)
 * Third element of our letter vector:
 
+\vspace{.2cm}
 \scriptsize
 ```{r Indexing3}
 Letters_vec[3]
 ```
 \normalsize 
+\vspace{.4cm}
 
 * First element of our list:  
 
+\vspace{.2cm}
 \scriptsize
 ```{r Indexing4}
 Vectors_ls[[1]]
 ```
-
 
 
 # Functionality in `R`
@@ -366,15 +412,19 @@ Vectors_ls[[1]]
 
 \pause
 
+\vspace{.4cm}
+
 * **What** does that mean?  
 Any mathematical operation is applied to every element in an object:  
 
+\vspace{.2cm}
 \small
 ```{r Vectorise1}
 Numbers_vec + 1
 ```
 \normalsize
 
+\vspace{.4cm}
 
 \pause
 
@@ -388,10 +438,11 @@ Because it greatly influences how you do calculations in `R`.
 - *Argument(s)* - give additional information to the function  
 - *Call* - a function needs to be called to exert its effect  
 
-\vspace{0.3cm}
+\vspace{0.4cm}
 
 Users can **create** their own **functions** in `R` as follows:
 
+\vspace{.2cm}
 \scriptsize
 ```{r Userfunction}
 Plus1 <- function(x){ # function has an argument of `x`
@@ -400,6 +451,8 @@ Plus1 <- function(x){ # function has an argument of `x`
 }
 Plus1(Numbers_vec) # call the function on thes Numbers vector
 ```
+
+\vspace{.2cm}
 
 `#` indicate **comments in the code** - these are not run but can help explain stuff to the user
 
@@ -419,15 +472,18 @@ All packages are available via the Comprehensive R Archive Network (\url{https:/
 \centering
 You **install** and **load** them into `R`!  
 
+\vspace{.4cm}
 \flushleft
 \pause
 
 This is done in a **two-step process**:
 
 \pause
+\vspace{.4cm}
 
 * `install.packages()` is used to install packages in `R`  
 
+\vspace{.2cm}
 \small
 ```{r, InstallP, eval=FALSE}
 # vegan is a common library of functionality in biostatistics
@@ -435,9 +491,11 @@ install.packages("vegan")
 ```
 \normalsize
 \pause
+\vspace{.4cm}
 
 * `library()` is used to load them into the current working environment  
 
+\vspace{.2cm}
 \small
 ```{r, LoadP}
 library(vegan)
@@ -461,6 +519,7 @@ These statements return an element of mode `logical` (`TRUE` or `FALSE`).
 ### `if()` statements
 `if()` statements *build on logical statements*. They **test whether something is correct** and then act on it:
 
+\vspace{.2cm}
 \small
 ```{r ifState}
 # is 1 smaller than 2?
@@ -476,6 +535,8 @@ if(Numbers_vec[1] < Numbers_vec[2]){
 ## Loops
 ### `for()` loops
 `for()` loops are in **action whilst** an **indiciator** is **within a specified data range**:
+
+\vspace{.2cm}
 \small
 ```{r forloop}
 # loop from one to length of the letter vector in steps of 1
@@ -487,6 +548,8 @@ for(i in 1:length(Letters_vec)){
 
 ### `while()` loops
 `while()` loops work a lot like `for()` loops and are in **action whilst** an **indiciator statement** is `TRUE`:
+
+\vspace{.2cm}
 \small
 ```{r whileloop}
 # while our data frame has equal to or less than 3 columns
@@ -501,6 +564,7 @@ Combine_df # inspect the result
 ### `rm(list=ls())` I
 * `rm(list=ls())` clears the entire working environment
 
+\vspace{.2cm}
 \begin{center}
   \includegraphics[width=0.8\linewidth]{Figures/R_RM.png}
 \end{center}
@@ -509,10 +573,11 @@ Combine_df # inspect the result
 
 \centering `rm(list=ls())` is **extremely useful** and one should use this before sourcing (running an entire script) any `R` document to avoid influence of remnants of previous `R` sessions on the current analysis.
 
+\vspace{.2cm}
 \begin{center}
   \includegraphics[width=0.4\linewidth]{Figures/Meme_RMList.jpg}
 \end{center}
-
+\vspace{.2cm}
 \pause
 $\rightarrow$ Simply code this to be \textbf{your first line}!
 
@@ -536,6 +601,7 @@ $\rightarrow$ often used to hard code the working directory (please avoid this a
 ### `?`
 * `?` followed by a function name, this will open the help documentation for said function
 
+\vspace{.2cm}
 \begin{center}
   \includegraphics[width=0.8\linewidth]{Figures/R_Fun.png}
 \end{center}
@@ -543,6 +609,7 @@ $\rightarrow$ often used to hard code the working directory (please avoid this a
 ### `View()`
 * `View()` is a very neat command that lets the user inspect any object of their choosing in a separate tab
 
+\vspace{.2cm}
 \begin{center}
   \includegraphics[width=0.7\linewidth]{Figures/R_View1.png}
 \end{center}
