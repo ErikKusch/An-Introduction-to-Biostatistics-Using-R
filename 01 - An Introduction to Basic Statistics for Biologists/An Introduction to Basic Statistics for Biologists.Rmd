@@ -2,7 +2,7 @@
 title: "Basic Statistics for Biologists"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "02/04/2019"
+date: ""
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
@@ -30,39 +30,41 @@ options(digits=2)
 ## The Seminars
 ### Course Dates  \& Outline I
 \textbf{Block I} - Theory and Basics of `R`
+\vspace{.2cm}
 \begin{footnotesize}
 \begin{table}[h!]
   \begin{tabular}{|p{1.5cm}p{1.8cm}p{5cm}p{2cm}|} \hline
-    \textbf{Date}   & \textbf{Time} & \textbf{Topic}                                                      & \textbf{Location} \\\hline
+    \textbf{Date}   & \textbf{Time} & \textbf{Topic} & \textbf{Location} \\\hline
     \multicolumn{4}{|l|}{\textbf{I.) Introduction}} \\
-    02/04/2019    & 15:00 - 16:30 & (1) An Introduction to Basic Statistics for Biologists                                 & CIP-POOL \\\hline
-    09/04/2019      & 15:00 - 16:30 & (2) Introduction to R                                               & CIP-POOL \\\hline
+       Date & Time & (1) An Introduction to Basic Statistics for Biologists & Location \\\hline
+       Date & Time & (2) Introduction to R & Location \\\hline
     \multicolumn{4}{|l|}{\textbf{II.) Basic statistical terminology}} \\
-      09/04/2019      & 15:00 - 16:30 & (3) A Primer for Statistical Tests                                  & CIP-POOL \\\hline
-      14/04/2019      & 15:00 - 16:30 & (4) Descriptive Statistics                                          & CIP-POOL \\\hline
-      23/04/2019      & 15:00 - 16:30 & (5) Data Visualisation                                              & CIP-POOL \\\hline
-      30/04/2019      & 15:00 - 16:30 & (6) Inferential Statistics, Hypotheses and our Research Project                        & CIP-POOL \\\hline
+       Date & Time & (3) A Primer for Statistical Tests & Location \\\hline
+       Date & Time & (4) Descriptive Statistics & Location \\\hline
+       Date & Time & (5) Data Visualisation & Location \\\hline
+       Date & Time & (6) Inferential Statistics, Hypotheses and our Research Project & Location \\\hline
   \end{tabular}
 \end{table}
 \end{footnotesize}
 
 ### Course Dates  \& Outline II
 \textbf{Block II} - Basic Statistics in `R`
+\vspace{.2cm}
 \begin{footnotesize}
 \begin{table}[h!]
   \begin{tabular}{|p{1.5cm}p{1.8cm}p{5cm}p{2cm}|} \hline
-    \textbf{Date}   & \textbf{Time} & \textbf{Topic}                                                      & \textbf{Location} \\\hline
+    \textbf{Date}   & \textbf{Time} & \textbf{Topic} & \textbf{Location} \\\hline
     \multicolumn{4}{|l|}{\textbf{III.) Handling Data}} \\
-      07/05/2019      & 15:00 - 16:30 & (7) Data Handling and Data Mining                                   & CIP-POOL \\\hline
+       Date & Time & (7) Data Handling and Data Mining & Location \\\hline
     \multicolumn{4}{|l|}{\textbf{IV.) Non-parametric tests}} \\
-      14/05/2019      & 15:00 - 16:30 & (8) Nominal Tests                                                   & CIP-POOL \\\hline
-      21/05/2019      & 15:00 - 16:30 & (9) Correlation Tests                                               & CIP-POOL \\\hline
-      28/05/2019      & 15:00 - 16:30 & (10) Ordinal and Metric Tests for two-sample situations              & CIP-POOL \\\hline
-      04/06/2019      & 15:00 - 16:30 & (11) Ordinal and Metric Tests for more than two-sample situations   & CIP-POOL \\\hline
+       Date & Time & (8) Nominal Tests & Location \\\hline
+       Date & Time & (9) Correlation Tests & Location \\\hline
+       Date & Time & (10) Ordinal and Metric Tests for two-sample situations & Location \\\hline
+       Date & Time & (11) Ordinal and Metric Tests for more than two-sample & Location \\\hline
     \multicolumn{4}{|l|}{\textbf{V.) Parametric tests}} \\
-      02/07/2019     & 15:00 - 16:30 & (12) Simple Parametric Tests                                        & CIP-POOL \\\hline
+       Date & Time & (12) Simple Parametric Tests & Location \\\hline
     \multicolumn{4}{|l|}{\textbf{VI.) Closing}} \\
-      Handout      &  & (13) Summary and an Outlook on Advanced Statistics                                 &  \\\hline
+       Date & Time & (13) Summary and an Outlook on Advanced Statistics & Location \\\hline
   \end{tabular}
 \end{table}
 \end{footnotesize}
@@ -70,6 +72,7 @@ options(digits=2)
 ### Learning Goals
 
 \begin{enumerate}
+\vspace{.3cm}
 \item A solid grasp of basic biostatistics
   \uncover<2->{
   \begin{itemize}
@@ -77,6 +80,7 @@ options(digits=2)
   \item Be able to judge the applicability of individual methods
   \end{itemize}
   }
+  \vspace{.3cm}
 \item Basic proficiency in using R
   \uncover<3->{
   \begin{itemize}
@@ -85,6 +89,7 @@ options(digits=2)
   \item Be able to apply basic statistical methods to biologically relevant data sets
   \end{itemize}
   }
+  \vspace{.3cm}
 \item Research Design
   \uncover<4->{
   \begin{itemize}
@@ -107,7 +112,7 @@ options(digits=2)
     \pause
     \item Work through basic biostatistical methods in a research project using simulated data
     \pause
-    \item Fully reproducible analyses (located here: \url{https://github.com/ErikKusch/An-Introduction-to-Biostatistics-Using-R})
+    \item Fully reproducible analyses (\url{https://github.com/ErikKusch/An-Introduction-to-Biostatistics-Using-R})
     \end{itemize}
   \end{column}
   \begin{column}{.5\linewidth}
@@ -115,104 +120,35 @@ options(digits=2)
   \end{column}
 \end{columns}
 \pause
-\vspace*{0.2cm}
+\vspace{0.3cm}
 \begin{center}
 \textbf{We will focus heavily on actually doing the statistics!}
 \end{center}
 
-## Your Tutor
+## Course Resources and Reading
 ### Let Me Introduce Myself
 \centering
 \includegraphics[width=\textwidth]{Figures/Erik.png}
 
-### Statistics (**B.Sc.**)
+### Useful Reading
+\center You are **NOT** required to read these!
 
-**\uline{B.Sc.}** at **Technische Universität Dresden**:  
-\begin{itemize}
-  \item \textbf{Course} "Biostatistik für Biologen" by \textit{Dr. Matthias Rudolf}
-\end{itemize}
-  \visible<2->{
-    $\rightarrow$ \textbf{first introduction to biostatistics}
-  }
 \begin{columns}[T]
-  \begin{column}{.5\linewidth}
-    \visible<3->{
-    \begin{itemize}
-      \item \textbf{B.Sc. thesis} on landscape-scale vegetation dynamics based on remote sensing data with: 
-        \begin{itemize}
-        \item \textit{Dr. Alistair Seddon} (Universitetet i Bergen)
-        \item \textit{Prof. Dr. Klaus Reinhardt} (Technische Universität Dresden)
-        \end{itemize}
-    \end{itemize}
-    $\rightarrow$ \textbf{first steps in R!}
-    }
+  \begin{column}{.3\linewidth}
+  \includegraphics[width=1\linewidth]{Figures/Crawley.jpg}
+  \tiny ISBN: 978-1-118-94109-6
   \end{column}
-  \begin{column}{.5\linewidth}
-  \visible<4->{
-    \centering
-    \includegraphics[width=.9\linewidth]{Figures/ROC_Full_Numbers.jpg}
-    \small
-    \vspace{-1cm}
-      \begin{table}[c]
-        \centering
-          \resizebox{\textwidth}{!}{%
-          \begin{tabular}{r|ccccc}
-            & \multicolumn{5}{c}{\textit{Present State}} \\
-           \hline
-           \textit{Past State} & Boreal Forest     & Dwarf Shrub     & Shrub     & Barren/Moss     & Tundra/Sedge     \\
-            Boreal Forest     & {\color{green}{93.39\%}} & 0.78\%  & 4.56\%  & 0.06\%  & 1.21\% \\
-            Dwarf Shrub     & 5.53\%  & 53.5\%  & {\color{orange}{29.55\%}} & 0.02\%  & 11.4\% \\
-            Shrub     & 12.12\% & 17.85\% & 68.51\% & 0\%     & 1.53\% \\
-            Barren/Moss     & 1.23\%  & 0.19\%  & 0\%     & {\color{green}{76.8\%}} & {\color{orange}{21.77\%}} \\
-            Tundra/Sedge     & 5.3\%   & {\color{orange}{26.18\%}} & 4.1\%   & 2.52\%  & 61.89\% \\
-          \hline
-          \end{tabular}}
-        \label{tab:Contingency_AK}
-    \end{table}
-  }
+  \begin{column}{.3\linewidth}
+  \includegraphics[width=1\linewidth]{Figures/Dalgaard.jpg}
+  \tiny ISBN: 978-0-387-79053-4
+  \end{column}
+  \begin{column}{.3\linewidth}
+  \includegraphics[width=1\linewidth]{Figures/Bramer.jpg}
+  \tiny ISBN: 978-1-4471-4883-8
   \end{column}
 \end{columns}
-
-### Statistics (**M.Sc.**)
-**\uline{M.Sc.}** at **Universitetet i Bergen**:
-\begin{itemize}
-\visible<1->{
-  \item Bayesian \textbf{Summer School} by \textit{Dr. Joseph Chipperfield \& Partners}
-  \item \textbf{Course} "Statistical Learning" by \textit{Dr. Yushu Li}
-  \item \textbf{Course} "Ordination and Gradient Analysis" by \textit{Dr. Richard Telford}
-  \item \textbf{Course} "Biological Data Analysis II" by \textit{Dr. Richard Telford}
-  \item \textbf{Course} "Biostatistics" by \textit{Dr. Knut Helge Jensen} \linebreak
-}\visible<2->{
-  \item \textbf{M.Sc. thesis} on vegetation memory effects on landscape-scale and the link with plant functional traits with: 
-        \begin{itemize}
-        \item \textit{Dr. Alistair Seddon} (Universitetet i Bergen)
-        \item \textit{Dr. Richard Davy} (Nansen Environmental and Remote Sensing Center)
-        \end{itemize}
-}
-\end{itemize}
-\visible<3>{
-\centering $\rightarrow$ \textbf{Developing my grasp on statistical theory and practice in R}
-}
-
-### Statistics (**Research Assistant**)
-**\uline{Research Assistant}** at **University of Kyoto**:  
-\begin{itemize}
-  \item Analysing behavioural interactions of Japanese macaques using complex social networks  
-\end{itemize}
-
-**\uline{Research Assistant}** at **Universität Leipzig**:  
-\begin{itemize}
-  \item Generating data with various implemented odour effects on which to test the methods  
-  \item Analysing primate odour profiles  
-  \item Assessing a variety of statistical methods for analytical power in identifying odour effects
-  \item Teaching the basics of biostatistics (this is where you come in)
-\end{itemize}
-
-
-\visible<2>{
-\centering $\rightarrow$ \textbf{Putting experience in statistics and R to the test}
-}
-
+\hspace{.3cm}
+\flushright But these books are seriously good.
 
 
 # The Importance Of Proper Statistics
