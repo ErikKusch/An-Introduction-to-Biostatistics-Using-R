@@ -34,7 +34,7 @@ options(digits=2, width = 90)
  \textbf{Summary:}\\
  \vspace{0.2cm}
 \end{LARGE}
-These are the solutions to the exercises contained within the handout to “Descriptive Statistics” which walks you through the basics of descriptive statistics and its parameters. The analyses presented here are using data from the `StarWars` data set supplied through the `dplyr` package.  
+These are the solutions to the exercises contained within the handout to “Descriptive Statistics” which walks you through the basics of descriptive statistics and its parameters. The analyses presented here are using data from the `StarWars` data set supplied through the `dplyr` package that have been saved as a .csv file.  
 
 Keep in mind that there is probably a myriad of other ways to reach the same conclusions as presented in these solutions.
 
@@ -168,7 +168,7 @@ Now, with our `Height` vector being the numeric height records of the Star Wars 
 ```{r HeightLoc}
 mean <- mean(Height, na.rm = TRUE)
 median <- median(Height, na.rm = TRUE)
-mode <- mlv(na.omit(Height), method="mfv")$M
+mode <- mlv(na.omit(Height), method="mfv")
 min <- min(Height, na.rm = TRUE)
 max <- max(Height, na.rm = TRUE)
 range <- max-min
@@ -216,7 +216,7 @@ Mass <- Data_df$mass
 ```{r MassLoc, echo = FALSE}
 mean <- mean(Mass, na.rm = TRUE)
 median <- median(Mass, na.rm = TRUE)
-mode <- mlv(na.omit(Mass), method="mfv")$M
+mode <- mlv(na.omit(Mass), method="mfv")
 min <- min(Mass, na.rm = TRUE)
 max <- max(Mass, na.rm = TRUE)
 range <- max-min
@@ -274,7 +274,7 @@ Keep in mind that StarWars operates on a different time reference scale than we 
 ```{r BYLoc, echo = FALSE}
 mean <- mean(BY, na.rm = TRUE)
 median <- median(BY, na.rm = TRUE)
-mode <- mlv(na.omit(BY), method="mfv")$M
+mode <- mlv(na.omit(BY), method="mfv")
 min <- min(BY, na.rm = TRUE)
 max <- max(BY, na.rm = TRUE)
 range <- max-min

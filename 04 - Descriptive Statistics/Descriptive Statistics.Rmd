@@ -2,7 +2,7 @@
 title: "Descriptive Statistics"
 # subtitle: "An Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "16/04/2019"
+date: ""
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout"
@@ -558,11 +558,20 @@ The **most common** form of data is the **`data frame`** which you can:
 
 Your **ToDo-List** for this exercise:  
 
-\vspace{.2cm}
+\vspace{.1cm}
 
 * Load the file DescriptiveData.csv into `R`  
+
+\vspace{.2cm}
+
 * Identify what kind of information it contains  
+
+\vspace{.2cm}
+
 * Calculate the location parameters and parameters of spread for any of the variables contained within the data set that catch your interest.  
+
+\vspace{.2cm}
+
 * Question the validity of your findings and the data
 
 \vspace{.5cm}
