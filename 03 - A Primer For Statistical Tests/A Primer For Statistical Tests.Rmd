@@ -2,7 +2,7 @@
 title: "A Primer For Statistical Tests"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "09/04/2019"
+date: ""
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
@@ -574,7 +574,7 @@ There is a \textbf{plethora of distributions} which variables could fall onto:
 \flushright ... and yet \textbf{the hat goes deeper}
 
 ### Binomial Distribution
-One of the **more important** distributions it is applicable to:  
+One of the **more important** distributions. It is applicable to:  
 
 \begincols[T]
   \begincol{.5\linewidth}
@@ -604,7 +604,7 @@ One of the **more important** distributions it is applicable to:
 \endcols
 
 ### Poisson Distribution
-Another one of the **more important** distributions it is applicable to:  
+Another one of the **more important** distributions. It is applicable to:  
 
 \begincols[T]
   \begincol{.5\linewidth}
@@ -640,7 +640,7 @@ the variance (i.e., variance = mean)
 \end{center}
 \vspace{.3cm}
 \pause
-Distributions can be described via \textbf{Classic parameters of descriptive statistics:}
+Distributions can be described via \textbf{classic parameters of descriptive statistics:}
 \begin{columns}[T]
   \begin{column}{.5\linewidth}
     \begin{itemize}
@@ -664,6 +664,10 @@ Distributions can be described via \textbf{Classic parameters of descriptive sta
     \end{itemize}
   \end{column}
 \end{columns}
+
+\pause
+\vspace{.5cm}
+$\rightarrow$ Most of these are dealt with in the next seminar.
 
 ### Skewness I
 
@@ -807,13 +811,19 @@ The \textbf{Basics of Confidence Intervals}:
 * They let you save your entire working environment  
 * You cannot alter them outside of `R` (aside from deleting them)
 
+\vspace{.2cm}
+
 How to **create** them?  
 
 * Use the function `save.image()` (you can specify the argument `file` for a specific name of the file)  
 
+\vspace{.2cm}
+
 How to **load** them?  
 
 * Use the function `load(...)` ("..." specifies the exact path to the file on your machine)
+
+\vspace{.2cm}
 
 **What to do**?  
 
@@ -826,15 +836,13 @@ Answer the following questions (take a notes for each variable!) for the variabl
 \begin{itemize}
 \item \textbf{What variables} am I using and:
   \begin{itemize}
-  \pause
   \item Of what \textit{mode} are they?
   \end{itemize}
 \pause
+\vspace{.3cm}
 \item \textbf{What scales} apply and:
   \begin{itemize}
-  \pause 
   \item What do they \textit{imply}?
-  \pause 
   \item Does my data \textit{fit} these scales? Use the functions barplot() and table() when applicable!
   \linebreak
   \end{itemize}
@@ -848,5 +856,7 @@ Plot the distributions of the values for the following variables:
 * `Reproducing` 
 * `IndividualsPassingBy`  
 * `Depth`  
+
+\vspace{.3cm}
 
 What distributions are these? Use QQPlots or the Shapiro Test to assess normality. If you stumble upon a non-normal distribution, what else could it be?

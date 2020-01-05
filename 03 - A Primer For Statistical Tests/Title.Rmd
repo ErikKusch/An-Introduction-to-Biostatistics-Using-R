@@ -4,7 +4,9 @@
 \begin{tabular}{p{\textwidth}}
 
 \begin{center}
-\includegraphics[width=0.5\linewidth]{Figures/UL-logo.jpg}
+\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
+\hspace{.05\linewidth}
+\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
 \end{center}
 
 \\
@@ -26,15 +28,15 @@ R for Beginners \\
 
 \raggedleft
 \textbf{Erik Kusch} \\
-\textit{Research Assistant} \\
-University of Leipzig \\
-Faculty of Life Sciences \\
-Institute of Biology \\
-Behavioral Ecology Research Group \\
-Talstrasse 33 \\
-D-04103 Leipzig \\
-Germany \\
-email: erik.kusch@uni-leipzig.de \\
+\textit{PhD Student} \\
+Aarhus University \\
+Department of Bioscience \\
+Section for Ecoinformatics \& Biodiversity \\
+Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE) \\
+Ny Munkegade 116, Building 1540 \\
+8000 Aarhus \\
+Denmark \\
+email: erik@i-solution.de \\
 
 \end{tabular}
 \end{center}
