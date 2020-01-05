@@ -2,11 +2,11 @@
 title: "Data Visualisation"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "23/04/2019"
+date: ""
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
-    keep_tex: false
+    keep_tex: true
     toc: false # this is added through a later command
     slide_level: 3 # at how many pound signs (#) to assume slide title level
     includes:
@@ -279,33 +279,39 @@ Making plots directly in `R` entails a learning curve and there is a heavy debat
 ### The Good
 \hfill \linebreak
 \begin{center}
-\includegraphics[width=1.2\linewidth]{Figures/Good.jpg}  
+\includegraphics[width=2\linewidth]{Figures/Good.jpg}  
 \end{center}
-\tiny{\textit{De Boeck, H. J. et al. (2017) 'Patterns and drivers of biodiversity-stability relationships under climate extremes', Journal of Ecology, (October), pp. 1-13. doi: 10.1111/1365-2745.12897.}}
+\vspace{.2cm}
+\tiny\textit{De Boeck, H. J. et al. (2017) 'Patterns and drivers of biodiversity-stability relationships under climate extremes', Journal of Ecology, (October), pp. 1-13. doi: 10.1111/1365-2745.12897.}
 
 ### The Bad
 \begin{center}
-\includegraphics[height=0.6\textheight]{Figures/Bad.jpg}  
+\includegraphics[height=0.7\textheight]{Figures/Bad.jpg}  
 \end{center}
-\tiny{\textit{De Boeck, H. J. et al. (2017) 'Patterns and drivers of biodiversity-stability relationships under climate extremes', Journal of Ecology, (October), pp. 1-13. doi: 10.1111/1365-2745.12897.}}
+\vspace{.2cm}
+\tiny\textit{De Boeck, H. J. et al. (2017) 'Patterns and drivers of biodiversity-stability relationships under climate extremes', Journal of Ecology, (October), pp. 1-13. doi: 10.1111/1365-2745.12897.}
 
 ### The Ugly
 \begin{center}
-\includegraphics[height=0.6\textheight]{Figures/Ugly1.jpg} 
+\includegraphics[height=0.8\textheight]{Figures/Ugly1.jpg} 
 \end{center}
-\tiny{\textit{Andrady, A. L. (2011) 'Microplastics in the marine environment', Marine Pollution Bulletin. Pergamon, 62(8), pp. 1596-1605. doi: 10.1016/J.MARPOLBUL.2011.05.030.}}
+\vspace{.2cm}
+\tiny\textit{Andrady, A. L. (2011) 'Microplastics in the marine environment', Marine Pollution Bulletin. Pergamon, 62(8), pp. 1596-1605. doi: 10.1016/J.MARPOLBUL.2011.05.030.}
 
 ### The Ugly
 \begin{center}
-\includegraphics[height=0.6\textheight]{Figures/Ugly2.jpg}
+\includegraphics[height=0.7\textheight]{Figures/Ugly2.jpg}
 \end{center}
-\tiny{\textit{Kanhai, L. D. K. et al. (2017) 'Microplastic abundance, distribution and composition along a latitudinal gradient in the Atlantic Ocean', Marine Pollution Bulletin, 115(1-2), pp. 307-314. doi: 10.1016/j.marpolbul.2016.12.025.}}
+\vspace{.2cm}
+\tiny\textit{Kanhai, L. D. K. et al. (2017) 'Microplastic abundance, distribution and composition along a latitudinal gradient in the Atlantic Ocean', Marine Pollution Bulletin, 115(1-2), pp. 307-314. doi: 10.1016/j.marpolbul.2016.12.025.}
 
 ## How To Make A Plot In `R`
 ### `ggplot` Overview
 \begin{center}
 These seminars will focus on how to create plots with `ggplot` instead of teaching you data visualisation using base `R` commands.
 \end{center}
+
+\vspace{.2cm}
 
 \begincols[T]
   \begincol{.5\linewidth}
@@ -340,6 +346,8 @@ If you need an introduction to base plot, go here: \url{https://biostats.w.uib.n
 ### How To Make A Plot In `R` (using `ggplot`)
 
 The `ggplot()` function considers \textbf{three basic components} to a plot:
+
+\vspace{.2cm}
 \pause
 \begin{itemize}
 \item \textit{Data set} - where to get the data to the plotted from
@@ -347,6 +355,8 @@ The `ggplot()` function considers \textbf{three basic components} to a plot:
 ```{r plot_start, tidy=FALSE, eval=FALSE}
 ggplot(diamonds)
 ``` 
+
+\vspace{.2cm}
 \pause
 \begin{itemize}
 \item \textit{Aesthetics} - what variables should be used
@@ -354,6 +364,8 @@ ggplot(diamonds)
 ```{r plot_start1, tidy=FALSE, eval=FALSE}
 ggplot(diamonds, aes(x=carat, y=price))
 ``` 
+
+\vspace{.2cm}
 \pause
 \begin{itemize}
 \item \textit{Layers/Geometry} - what kind of plot to produce
@@ -361,6 +373,7 @@ ggplot(diamonds, aes(x=carat, y=price))
 ```{r plot_start2, tidy=FALSE, eval=FALSE}
 ggplot(diamonds,aes(x=carat, y=price)) + geom_point()
 ``` 
+\vspace{.4cm}
 \pause
 You can find a `ggplot` cheatsheet in the course repository (\url{https://github.com/ErikKusch/An-Introduction-to-Biostatistics-Using-R}).
 
@@ -1050,11 +1063,12 @@ Accommodates all kinds of data.
 ### The Hat Goes Deeper!
 There are way more plot types that you may want to use at some point.  
 
+\vspace{.2cm}
 Flow charts to illustrate your workflow, for example:
 \begin{center}
     \includegraphics[width=0.5\linewidth]{Figures/Flow.png}  
     \end{center}
-\tiny{\textit{Seddon, A. W. R. et al. (2016) 'Sensitivity of global terrestrial ecosystems to climate variability.', Nature, 531(7593), pp. 229-232. Available at: http://dx.doi.org/10.1038/nature16986.}}
+\tiny\textit{Seddon, A. W. R. et al. (2016) 'Sensitivity of global terrestrial ecosystems to climate variability.', Nature, 531(7593), pp. 229-232. Available at: http://dx.doi.org/10.1038/nature16986.}
 
 # Exercise
 ## `R`-internal data sets
