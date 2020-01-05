@@ -2,7 +2,7 @@
 title: "Inferential Statistics and Hypothesis Testing"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "30/04/2019"
+date: ""
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
@@ -172,6 +172,7 @@ This is \textbf{the most basic format} of hypotheses upon which every other type
     \tiny Ralston, J. et al. (2016) 'Population trends influence species ability to track climate change', Global Change Biology, pp. 1-10. doi: 10.1111/gcb.13478.
     \end{itemize}
     \pause
+    \vspace{.2cm}
     \begin{itemize}
     \small
     \item \textit{"[...] detect vegetation cover [...]. Chi squared test was applied to test the null hypothesis of no effects. [...] logistic regression model performs better than the null model [...]"} \linebreak
@@ -213,13 +214,14 @@ This format of hypotheses is built upon postulated \textbf{differences in variab
   \endcol
   \begincol{.5\linewidth}
   \pause
-  \textbf{In Practice}:
+  \textbf{In Practice}:   \vspace{.2cm}
     \begin{itemize}
     \small
     \item \textit{"[...] difference in the rate of treated bleeding events [...] between [...] prophylaxis (group A) and [...] no prophylaxis (group B) [...]"} \linebreak
     \tiny Oldenberg, J. et al. (2017) 'Emicizumab prophylaxis in hemophilia A with inhibitors', N.Engl.J Med., pp. 1-10. doi: 10.1056/NEJMoa1703068.
     \end{itemize}
     \begin{itemize}
+    \vspace{.1cm}
     \small
     \item \textit{"[...] could enable the plant to react differently to the next frost spell"} \linebreak
     \tiny Walter, J. et al. (2013) 'Ecological stress memory and cross stress tolerance in plants in the face of climate extremes', Environmental and Experimental Botany. Elsevier B.V., 94, pp. 3-8. doi: 10.1016/j.envexpbot.2012.02.009.
@@ -253,13 +255,14 @@ This format of hypotheses is built upon postulated \textbf{equivalence of variab
   \endcol
   \begincol{.5\linewidth}
   \pause
-  \textbf{In Practice}:
+  \textbf{In Practice}:   \vspace{.2cm}
     \begin{itemize}
     \small
     \item \textit{"Thresholds are equivalent to tipping points [...]"} \linebreak
     \tiny Angeler, D. G. and Allen, C. R. (2016) 'Quantifying Resilience', Applied Ecology, pp. 617-624. doi: 10.1111/1365-2664.12649.
     \end{itemize}
     \begin{itemize}
+    \vspace{.1cm}
     \small
     \item \textit{"Just as LAI is the canopy equivalent of leaf area, so $\epsilon^*_g$ is the canopy equivalent of the quantum yield."} \linebreak
     \tiny Prince, S. D. and Goward, S. N. (1995) 'Global primary production: a remote sensing approach', Journal of Biogeography, pp. 815-835. doi: Doi 10.2307/2845983.
@@ -293,13 +296,14 @@ This format of hypotheses is built upon postulated \textbf{relationships of vari
   \endcol
   \begincol{.5\linewidth}
   \pause
-  \textbf{In Practice}:
+  \textbf{In Practice}:   \vspace{.2cm}
     \begin{itemize}
     \small
     \item \textit{"[...] yield significant relationships between GPP and tree diversity."} \linebreak
     \tiny Nightingale, J. M. et al. (2008) 'PREDICTING TREE DIVERSITY ACROSS THE UNITED STATES AS A FUNCTION OF MODELED GROSS PRIMARY PRODUCTION', Ecological Applications, 18(1), p. 93. Available at: http://dx.doi.org/10.1890/07-0693.1.
     \end{itemize}
     \begin{itemize}
+    \vspace{.1cm}
     \small
     \item \textit{"[...] test for a series of hypothetical relationships (i.e., linear through to threshold) between ecological response variable and environment [...]"} \linebreak
     \tiny Seddon, A. et al. (2014) 'A quantitative framework for analysis of regime shifts in a Galapagos coastal lagoon', Ecology, 95(11), pp. 3046-3055. doi: 10.1890/13-1974.1.
@@ -351,6 +355,7 @@ This format of hypotheses is built on postulated \textbf{connections and/or diff
     \tiny Lavorel, S. and Garnier, E. (2002) 'Predicting changes in community composition and ecosystem functioning from plant traits: revisiting the Holy Grail', Functional Ecology, 16(Essay Review), pp. 545-556. doi: Doi 10.1046/J.1365-2435.2002.00664.X.
     \end{itemize}
     \pause
+    \vspace{.2cm}
     \begin{itemize}
     \small
     \item \textit{"Individual tropical trees show incredibly strong and persistent variation in long-term growth rates, resulting in a fourfold variation in the ages of similarly sized trees."} \linebreak
@@ -411,6 +416,7 @@ This format is built on postulated \textbf{effect sizes} of treatments/groupings
     \tiny De Boeck, H. J. et al. (2017) 'Patterns and drivers of biodiversity-stability relationships under climate extremes', Journal of Ecology, (October), pp. 1-13. doi: 10.1111/1365-2745.12897.
     \end{itemize}
     \pause
+    \vspace{.2cm}
     \begin{itemize}
     \small
     \item \textit{"[...] a sample of 51 participants with a withdrawal rate of 10\% in the control group would provide a power of more than 95\% at a two-sided significance level of 0.05 to detect an effect size of 4/18 = 0.22 (null hypothesis: rate ratio = 1)."} \linebreak
@@ -439,7 +445,9 @@ This process is highly variable but can be broken down into the following genera
     \begin{enumerate}
     \item Establish a hypothesis (in terms of \textit{Null} and \textit{Alternative})
     \pause
+    \vspace{.1cm}
     \item Plan study and collect data
+    \vspace{.1cm}
     \pause
     \item \textbf{Testing}
       \begin{itemize}
@@ -449,6 +457,7 @@ This process is highly variable but can be broken down into the following genera
       \item \textit{Final analysis}
       \end{itemize}
     \pause
+    \vspace{.1cm}
     \item \textbf{Exporting results} and final plotting
     \end{enumerate}
   \endcol
@@ -553,9 +562,10 @@ Statistical tests rely on individual \textit{statistical assumptions}. Most prom
 \begincols[c]
   \begincol{.5\linewidth}
   General procedure:
+   \vspace{.2cm}
     \begin{enumerate}
     \pause
-    \item Select appropriate test based on (this should happen \textbf{before data collection})
+    \item Select appropriate test (this should happen \textbf{before data collection}) based on:
       \begin{itemize}
       \item Data structure
       \item Variable scale
@@ -563,8 +573,10 @@ Statistical tests rely on individual \textit{statistical assumptions}. Most prom
       \item Applicability to the hypothesis
       \end{itemize}
     \pause
+    \vspace{.1cm}
     \item Choose an appropriate test statistic (often pre-determined by the choice of test)
     \pause
+    \vspace{.1cm}
     \item Test \textit{statistical significance} (usually $p$-value)
     \end{enumerate}
   \endcol
@@ -605,7 +617,7 @@ Tests can be classified according to their use of \textit{parameters}:
     \end{itemize}
   \endcol
 \endcols
-\vspace{0.4cm}
+\vspace{0.6cm}
 \pause
 $\rightarrow$ We will focus on the \textbf{more basic tests of both categories}.
 
@@ -712,6 +724,7 @@ $\rightarrow$ We will focus on the \textbf{more basic tests of both categories}.
   \pause
   \item \textbf{Type II} (\textit{"False Positive"})
   \end{itemize}
+  \vspace{.2cm}
   \pause
     \begin{tcolorbox}[colback=bondiblue!5,colframe=bondiblue!40!black,title=]
     \centering{Statistical errors are \textbf{impossible to avoid} but we can aim to \textbf{make as few as possible}.}
@@ -1007,11 +1020,15 @@ Set-up of \textbf{11 Sites} chosen according to \textbf{three factors/treatments
     \end{tabular}}
   \label{Stations}
 \end{table}
-\vspace{-5pt}
+\vspace{-2pt}
 \flushright \tiny Source: \url{https://www.cabi.org/isc/datasheet/38975}, retrieved 21/01/2018
+
+\flushleft \normalsize We also resettle the population of SI to MA and UK
 
 ### Study Setup II
 \centering \includegraphics[width=1\linewidth]{Figures/Passer_Sites_Labeled.jpg}
+
+We have three data files. Check the README file for a data description.
 
 ## Testing The Hypotheses
 ### Using Our Data I
@@ -1044,7 +1061,8 @@ The actual analyses will be done in the following seminars (8-12) using these st
   \begin{itemize}
   \item Pearson
   \item Rank
-  \item Spearman, Kendall's Tau, Contingency C
+  \item Spearman
+  \item Kendall's Tau
   \end{itemize}
   \endcol
 \endcols
