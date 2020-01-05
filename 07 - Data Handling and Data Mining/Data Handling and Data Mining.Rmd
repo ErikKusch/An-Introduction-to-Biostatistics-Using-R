@@ -2,11 +2,11 @@
 title: "Data Handling And Data Mining"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "30/04/2019"
+date: ""
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
-    keep_tex: false
+    keep_tex: true
     toc: false # this is added through a later command
     slide_level: 3 # at how many pound signs (#) to assume slide title level
     includes:
@@ -84,6 +84,7 @@ To do so, one usually uses a \textbf{README} file containing the following:
   \item Funding information
 \end{itemize}
 \pause
+\vspace{.5cm}
 \centering This file is always \textbf{saved in conjunction with the actual data set}!
 
 ## Data Handling
@@ -165,6 +166,7 @@ The etiquette of fixing data:
 Fixing an data set is usually a \textbf{two-step} process:
 \end{center}
   
+\vspace{.2cm}
 \begincols[T]
   \begincol{.5\linewidth}
   \pause
@@ -263,7 +265,7 @@ For data mining, one may wish to enlist the use of methods contained in seminar 
   \textbf{Data Loading}
     \begin{itemize}
     \item The data is located at \url{https://github.com/ErikKusch/An-Introduction-to-Biostatistics-Using-R}
-    \item The file is called SparrowData.xls (also available as SparrowData.rar)
+    \item The file is called SparrowData.csv
     \end{itemize}
 \pause
   \textbf{Expectations}

@@ -57,7 +57,6 @@ Reproducibility is the be-all and end-all of any statistical analysis, particula
 rm(list=ls()) # clearing environment
 Dir.Base <- getwd() # soft-coding our working directory
 Dir.Data <- paste(Dir.Base, "Data", sep="/") # soft-coding our data directory 
-options(java.parameters = "-Xmx8g") # allocate more RAM to your java processes called by R
 ```
 
 Once you get into highly complex statistical analyses, you may wish to break up chunks of your analysis into separate documents. To ensure that remnants of an earlier analysis or analysis chunk do not influence the results of your current analysis, you may wish to *empty* `R`'s cache (*Environment*) before attempting a new analysis. This is achieved via the command `rm(list=ls())`.  
@@ -76,25 +75,27 @@ install.load.package <- function(x) {
     install.packages(x)
   require(x, character.only = TRUE)
 }
-package_vec <- c("xlsx", # we need this package for loading excel files
-                 "dplyr" # we need this package to fix the most common data errors
+package_vec <- c("dplyr" # we need this package to fix the most common data errors
                  )
 sapply(package_vec, install.load.package)
 ```
 
 Using the above function is way more sophisticated than the usual `install.packages()` + `library()` approach since it automatically detects which packages require installing and only install these thus not overwriting already installed packages.
 
+\clearpage
+
 ## Loading The Data
 Loading data is crucial to any analysis in `R`. Period.  
 
-`R` offers a plethora of approaches to data loading and you will usually be taught the `read.table()` command in basic biostatistics courses. However, I have found to prefer the functionality provided by the `xlsx` package since most data recording is taking place in Excel. Therefore, we will use this for data loading for now.
+`R` offers a plethora of approaches to data loading and you will usually be taught the `read.table()` command in basic biostatistics courses. However, I have found to prefer the functionality provided by the `xlsx` package since most data recording is taking place in Excel. As this package is dependant on the installation of Java and `RJava`, we will settle on the base `R` function `read.csv()`.
 
 ```{r DataLoading}
-Data_df_base <- read.xlsx(file = paste(Dir.Data, "/SparrowData.xls", sep=""), header = TRUE, sheetIndex = "Data (containing Errors)")
+Data_df_base <- read.csv(file = paste(Dir.Data, "/SparrowData.csv", sep=""), header = TRUE)
 Data_df <- Data_df_base # duplicate and save initial data on a new object
 ```
 
 Another trick to have up your sleeve (if your RAM enables you to act on it) is to duplicate your initial data onto a new object once loaded into `R`. This will enable you to easily remedy mistakes in data treatment without having to reload your initial data set from the data file.
+
 
 
 # Inspecting The Data
@@ -137,7 +138,7 @@ The height data within our data set, on the other hand, is stored correctly as c
 summary(Data_df$Height)
 ```
 
-Making data inspection more easy, one may which to automate the use of the `summary()` function. However, this only makes sense, when every data column is presenting data in the correct class type. Therefore, we will first fix the column classes and then automate the use of the `summary()` command.
+Making data inspection more easy, one may which to automate the use of the `summary()` function. However, this only makes sense, when every data column is presenting data in the correct class type. Therefore, we will first fix the column classes and then use the `summary()` command.
 
 # Data Cleaning Workflow
 ## Identifying Problems
@@ -307,15 +308,6 @@ Fixing this is not necessarily difficult but it is an erroneous issue for data h
 Data_df$Weight <- as.numeric(gsub(pattern = ",", replacement = ".", x = Data_df_base$Weight))
 summary(Data_df$Weight)
 ```
-We still have at least one data value exceeding the biological feasible range of weights. However, this is an issue of column content and not column type and so we will deal with this later.  
-
-<!-- Below you can see a representation of the above transformation approaches to assess the performance of the procedures. -->
-<!-- ```{r plottingpanesWeight} -->
-<!-- par(mfrow=c(2,2)) # plotting panes as 2 by 2 -->
-<!-- hist(as.numeric(Data_df_base$Weight), main = "Numeric(Data)", breaks = 100) -->
-<!-- hist(as.numeric(as.character(Data_df_base$Weight)), main = "Numeric(Character(Data))", breaks = 100) -->
-<!-- hist(as.numeric(gsub(pattern = ",", replacement = ".", x = Data_df_base$Weight)), main = "Numeric(CommaFix(Data))", breaks = 100) -->
-<!-- ``` -->
 
 There is one data record left hat exceeds the biologically viable span for body weight records of *Passer domesticus*. This data record holds the value 420. Since this is unlikely to be a simple mistake of placing the decimal delimiter in the wrong place (both 4.2 and 42 grams are also not feasible weight records for house sparrows), we have to delete the weight data record in question:
 ```{r ColContWeight, fig.height=5}
@@ -663,8 +655,7 @@ Everything checks out. Let's save our final data frame.
 Since Excel is readily available for viewing data outside of R, I like to save my final data set in excel format as can be seen below. Additionally, I recommend saving your final data frame as an RDS file. These are `R` specific data files which you will not be able to alter outside of `R` thus saving yourself from accidentally changing records when only trying to view your data. On top of that, RDS files take up less space than either Excel or TXT files do.
 ```{r Exporting, tidy=FALSE}
 # saving in excel sheet
-write.xlsx(Data_df, file = paste(Dir.Data, "/SparrowData.xls", sep=""),
-           sheetName = "Data (Fixed)", append = TRUE)
+write.csv(Data_df, file = paste(Dir.Data, "/SparrowData_FIXED.csv", sep=""))
 # saving as R data frame object
 saveRDS(Data_df, file = paste(Dir.Data, "/1 - Sparrow_Data_READY.rds", sep="")) 
 ```
