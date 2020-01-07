@@ -19,8 +19,41 @@ options(digits=2, width = 90)
 
 <!--- ####### PREAMBLE -----------
 --------------------------------------------->
-```{r child = 'Title.Rmd'}
-```
+\begin{center}
+\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
+\hspace{.05\linewidth}
+\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
+\end{center}
+
+
+\vspace{5.5cm}
+
+\begin{center}
+\textsc{\LARGE{
+\textbf{Nominal Tests}\\
+\vspace{0.15cm}
+Analysing the Sparrow Data Set \\
+\vspace{0.3cm}
+- } \vspace{0.3cm}\\
+\large{BASIC STATISTICS FOR BIOLOGISTS\\
+}}
+\end{center}
+
+\vspace{6.5cm}
+
+\raggedleft
+\textbf{Erik Kusch}  
+\textit{PhD Student}  
+Aarhus University  
+Department of Bioscience  
+Section for Ecoinformatics \& Biodiversity  
+Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE)  
+Ny Munkegade 116, Building 1540  
+8000 Aarhus  
+Denmark  
+email: erik@i-solution.de  
+
+\raggedright
 \clearpage
 
 <!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
