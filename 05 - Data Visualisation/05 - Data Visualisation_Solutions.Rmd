@@ -19,21 +19,25 @@ options(digits=2, width = 90)
 
 <!--- ####### PREAMBLE -----------
 --------------------------------------------->
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\begin{center}
+\begin{tabular}{p{\textwidth}}
+
 \begin{center}
 \includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
 \hspace{.05\linewidth}
 \includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
 \end{center}
 
-\\
 
 \vspace{5.5cm}
 
 \begin{center}
 \textsc{\LARGE{
-\textbf{Data Visualisation}\\
+\textbf{Data Handling and Data Mining}\\
 \vspace{0.15cm}
-Biostatistics for Beginners \\
+Fixing The Sparrow Data Set \\
 \vspace{0.3cm}
 - } \vspace{0.3cm}\\
 \large{BASIC STATISTICS FOR BIOLOGISTS\\
@@ -43,19 +47,22 @@ Biostatistics for Beginners \\
 \vspace{6.5cm}
 
 \raggedleft
-\textbf{Erik Kusch}  
-\textit{PhD Student}  
-Aarhus University  
-Department of Bioscience  
-Section for Ecoinformatics \& Biodiversity  
-Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE)  
-Ny Munkegade 116, Building 1540  
-8000 Aarhus  
-Denmark  
-email: erik@i-solution.de  
+\textbf{Erik Kusch} \\
+\textit{PhD Student} \\
+Aarhus University \\
+Department of Bioscience \\
+Section for Ecoinformatics \& Biodiversity \\
+Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE) \\
+Ny Munkegade 116, Building 1540 \\
+8000 Aarhus \\
+Denmark \\
+email: erik@i-solution.de \\
 
+\end{tabular}
+\end{center}
 \raggedright
-\clearpage
+
+\pagebreak
 
 <!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
 \pagestyle{plain}
@@ -68,7 +75,7 @@ email: erik@i-solution.de
  \textbf{Summary:}\\
  \vspace{0.2cm}
 \end{LARGE}
-These are the solutions to the exercises contained within the handout to “Data Visualisation” which walks you through the basics of data visualisation in `R`using `ggplot2`. The plots presented here are using data from the `iris` data set supplied through the `datasets` package. 
+These are the solutions to the exercises contained within the handout to Data Visualisation which walks you through the basics of data visualisation in `R`using `ggplot2`. The plots presented here are using data from the `iris` data set supplied through the `datasets` package. 
 
 Keep in mind that there is probably a myriad of other ways to reach the same conclusions as presented in these solutions.
 
@@ -102,7 +109,7 @@ sapply(package_vec, install.load.package)
 
 \let\cleardoublepage\relax
 
-# Loading `R`-internal data sets (`iris`)
+# Loading `R`-internal data sets (`iris`)  
 The `iris` data set is included in the `datasets` package in `R`. An `R`-internal data set is loaded through the command `data()`. Take note that you do not have to assign this command's output to a new object (via `<-`). Instead, the dataset is loaded to your current environment by its name (iris, in this case). Keep in mind that this **can override** objects of the same name that are already present in your current session of `R`.
 ```{r RLoad}
 data("iris")
@@ -110,7 +117,7 @@ data("iris")
 
 \let\cleardoublepage\relax
 
-# Inspect the data set  
+# Inspect the data set    
 Since we know that `iris` is a dataset, we can be reasonably sure that this object will be complex enough to warrant using the `str()` function for inspection:
 ```{r RInspect}
 str(iris)
@@ -120,7 +127,7 @@ The `iris` dataset contains four measurements (`Sepal.Length`, `Sepal.Width`, `P
 
 \newpage
 
-# **Boxplot** of `Petal.Length` by `Species`  
+# **Boxplot** of `Petal.Length` by `Species`    
 ```{r PlottingExercise1, fig.height=8, tidy=FALSE}
 ggplot(iris, # the data set
        aes(x=Species, y=Petal.Length) # aesthetics
@@ -132,7 +139,7 @@ THis boxplot shows us exactly how the distributions of petal length measurements
 
 \newpage
 
-# **Scatterplot** of `Petal.Length` and `Petal.Width`  
+# **Scatterplot** of `Petal.Length` and `Petal.Width`    
 ```{r PlottingExercise2, tidy=FALSE}
 ggplot(iris, # the data set
        aes(x=Petal.Width, y=Petal.Length) # aesthetics
@@ -141,7 +148,7 @@ ggplot(iris, # the data set
 ```
 
 
-# **Scatterplot** of `Petal.Length` and `Petal.Width` grouped by `Species`  
+# **Scatterplot** of `Petal.Length` and `Petal.Width` grouped by `Species`    
 ```{r PlottingExercise3, tidy=FALSE}
 ggplot(iris, # the data set
        aes(x=Petal.Width, y=Petal.Length, colour = Species) # aesthetics
@@ -153,7 +160,7 @@ ggplot(iris, # the data set
 
 \newpage
 
-# Relationship of `Sepal.Length` and `Sepal.Width`  
+# Relationship of `Sepal.Length` and `Sepal.Width`    
 ```{r PlottingExercise4, tidy=FALSE}
 ggplot(iris, # the data set
        aes(x=Sepal.Width, y=Sepal.Length) # aesthetics
@@ -161,7 +168,7 @@ ggplot(iris, # the data set
   theme_bw() + labs(title="Petal Width and Petal Length of three different species of Iris")
 ```
 
-# Relationship of `Sepal.Length` and `Sepal.Width` (grouped by `Species`)
+# Relationship of `Sepal.Length` and `Sepal.Width` (grouped by `Species`)  
 ```{r PlottingExercise5, tidy=FALSE}
 ggplot(iris, # the data set
        aes(x=Sepal.Width, y=Sepal.Length, colour = Species) # aesthetics

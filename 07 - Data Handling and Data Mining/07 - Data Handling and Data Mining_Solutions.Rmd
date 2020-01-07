@@ -19,13 +19,17 @@ options(digits=2, width = 90)
 
 <!--- ####### PREAMBLE -----------
 --------------------------------------------->
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\begin{center}
+\begin{tabular}{p{\textwidth}}
+
 \begin{center}
 \includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
 \hspace{.05\linewidth}
 \includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
 \end{center}
 
-\\
 
 \vspace{5.5cm}
 
@@ -43,17 +47,19 @@ Fixing The Sparrow Data Set \\
 \vspace{6.5cm}
 
 \raggedleft
-\textbf{Erik Kusch}  
-\textit{PhD Student}  
-Aarhus University  
-Department of Bioscience  
-Section for Ecoinformatics \& Biodiversity  
-Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE)  
-Ny Munkegade 116, Building 1540  
-8000 Aarhus  
-Denmark  
-email: erik@i-solution.de  
+\textbf{Erik Kusch} \\
+\textit{PhD Student} \\
+Aarhus University \\
+Department of Bioscience \\
+Section for Ecoinformatics \& Biodiversity \\
+Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE) \\
+Ny Munkegade 116, Building 1540 \\
+8000 Aarhus \\
+Denmark \\
+email: erik@i-solution.de \\
 
+\end{tabular}
+\end{center}
 \raggedright
 
 \pagebreak
@@ -80,12 +86,12 @@ Welcome to our first "real" practical experience in `R`. The following notes pre
 \pagestyle{fancy}
 \pagenumbering{arabic}
 
-# Preparing Our Procedure
+# Preparing Our Procedure 
 The following three sections are what I consider to be *essential* parts of the preamble to any `R`-based analysis. I highly recommend clearly indicating these bits in your code. 
 
 More often than not, you will use variations of these code chunks whether you are working on data handling, data exploration or full-fledged statistical analyses.
 
-## Necessary Steps For Reproducibility
+## Necessary Steps For Reproducibility 
 Reproducibility is the be-all and end-all of any statistical analysis, particularly in light of the peer-review process in life sciences.  
 
 ```{r Preparation}
@@ -119,7 +125,7 @@ Using the above function is way more sophisticated than the usual `install.packa
 
 \clearpage
 
-## Loading The Data
+## Loading The Data 
 Loading data is crucial to any analysis in `R`. Period.  
 
 `R` offers a plethora of approaches to data loading and you will usually be taught the `read.table()` command in basic biostatistics courses. However, I have found to prefer the functionality provided by the `xlsx` package since most data recording is taking place in Excel. As this package is dependant on the installation of Java and `RJava`, we will settle on the base `R` function `read.csv()`.
@@ -133,10 +139,10 @@ Another trick to have up your sleeve (if your RAM enables you to act on it) is t
 
 
 
-# Inspecting The Data
+# Inspecting The Data 
 Once the data is loaded into `R`, you *need to inspect* it to make sure it is ready for use.
 
-## Assessing A Data Frame in `R`
+## Assessing A Data Frame in `R` 
 Most, if not all, data you will ever load into `R` will be stored as a `data.frame` within `R`. Some of the most important functions for inspecting data frames ("df" in the following) in base `R` are the following four:
 
 - `dim(df)` returns the dimensions (Rows $\times$ Columns)of the data frame
@@ -160,7 +166,7 @@ Data_df <- Data_df[,-1] # eliminating the erroneous first column as it is redund
 dim(Data_df) # checking if the elimination went right
 ```
 
-## The `Summary()` Function
+## The `Summary()` Function 
 As already stated in our seminar series, the `summary()` function is *invaluable* to data exploration and data inspection. However, it is only partially applicable as it will not work flawlessly on every class of data. Examples of this are shown below.  
 
 The weight data contained within our data frame should be numeric and thus pose no issue to the `summary()` function. However, as shown in the next section, it is currently of type `r class(Data_df$Weight)` which leads the `summary()` function to work improperly.
@@ -175,8 +181,8 @@ summary(Data_df$Height)
 
 Making data inspection more easy, one may which to automate the use of the `summary()` function. However, this only makes sense, when every data column is presenting data in the correct class type. Therefore, we will first fix the column classes and then use the `summary()` command.
 
-# Data Cleaning Workflow
-## Identifying Problems
+# Data Cleaning Workflow 
+## Identifying Problems 
 Indentifying most problems in any data set you may ever encounter comes down to mostly two manifestations of inadequate data entry or handling:  
 
 **1. Types/Classes  **  
@@ -190,7 +196,7 @@ For further inspection, one may want to combine the information obtained by usin
 **2. Contents/Values  **  
 Typos and the like will always lead to some data that simply doesn't make sense given the context of your project. Sometimes, errors like these are salvageable but doing so can be a very difficult process. Before we alter any column contents, we will first need to identify columns whose contents need fixing, however. Doing so is as easy applying an automated version of `summary()` to the data contained within every column of our data frame separately after having fixed possibly erroneous data classes.  
 
-## Fixing The Problems
+## Fixing The Problems 
 Fixing the problems in our data sets always comes down to altering data classes, altering faulty values or removing them entirely.  
 To make sure we fix all problems, we may often wish to enlist the `summary()` function as well as the `hist()` function for data inspection and visualisation.  
 
@@ -209,11 +215,11 @@ Before we alter any column contents, we will first need to identify columns whos
 
 <!-- There are some glaring issues her which we will address in the following sections. -->
 
-# Our Data
+# Our Data 
 ## Site
 \textbf{Variable Class Expectation:} `factor` (only 11 possible values)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Site records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentSite}
 class(Data_df$Site)
@@ -221,7 +227,7 @@ summary(Data_df$Site)
 ```
 Indeed, they do behave just like we'd expect them to.  
 
-### Fixing Problems
+### Fixing Problems 
 We don't need to fix anything here.
 
 
@@ -230,7 +236,7 @@ We don't need to fix anything here.
 ## Index
 \textbf{Variable Class Expectation:} `factor` (only 11 possible values)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Index records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentIndex}
 class(Data_df$Index)
@@ -238,7 +244,7 @@ summary(Data_df$Index)
 ```
 Indeed, they do behave just like we'd expect them to. Pay attention that thes shortened index numbers lign up with the numbers of site records!
 
-### Fixing Problems
+### Fixing Problems 
 We don't need to fix anything here.
 
 \newpage
@@ -246,7 +252,7 @@ We don't need to fix anything here.
 ## Latitude
 \textbf{Variable Class Expectation:} `numeric` (Latitude is inherently continuous)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Latitude records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentLat}
 class(Data_df$Latitude)
@@ -254,7 +260,7 @@ table(Data_df$Latitude) # use this instead of summary due to station-dependency 
 ```
 Indeed, they do behave just like we'd expect them to. 
 
-### Fixing Problems
+### Fixing Problems 
 We don't need to fix anything here.
 
 \vspace{1.5cm}
@@ -262,7 +268,7 @@ We don't need to fix anything here.
 ## Longitude
 \textbf{Variable Class Expectation:} `numeric` (Longitude is inherently continuous)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Longitude records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentLong}
 class(Data_df$Longitude)
@@ -270,7 +276,7 @@ table(Data_df$Longitude) # use this instead of summary due to station-dependency
 ```
 Indeed, they do behave just like we'd expect them to. 
 
-### Fixing Problems
+### Fixing Problems 
 We don't need to fix anything here.
 
 
@@ -279,7 +285,7 @@ We don't need to fix anything here.
 ## Climate
 \textbf{Variable Class Expectation:} `factor` (three levels: coastal, semi-coastal, continental)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Climate records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentClimate}
 class(Data_df$Climate)
@@ -287,15 +293,15 @@ summary(Data_df$Climate)
 ```
 Indeed, they do behave just like we'd expect them to. 
 
-### Fixing Problems
+### Fixing Problems 
 We don't need to fix anything here.
 
 \vspace{1.5cm}
 
-## Population Status
+## Population Status 
 \textbf{Variable Class Expectation:} `factor` (two levels: native, introduced)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Population Status records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentPopulation.Status}
 class(Data_df$Population.Status)
@@ -303,7 +309,7 @@ summary(Data_df$Population.Status)
 ```
 Indeed, they do behave just like we'd expect them to. 
 
-### Fixing Problems
+### Fixing Problems 
 We don't need to fix anything here.
 
 \clearpage
@@ -311,7 +317,7 @@ We don't need to fix anything here.
 ## Weight
 \textbf{Variable Class Expectation:} `numeric` (weight is a continuous metric)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Weight records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentWeight}
 class(Data_df$Weight)
@@ -319,7 +325,7 @@ summary(Data_df$Weight)
 ```
 Obviously, something is wrong.
 
-### Fixing Problems
+### Fixing Problems 
 As seen above, weight records are currently stored as `r class(Data_df$Weight)` which they shouldn't. So how do we fix this?
 
 Firstly, let's try an intuitive `as.numeric()` approach which attempts to convert all values contained within a vector into numeric records.
@@ -359,7 +365,7 @@ We finally fixed it!
 ## Height
 \textbf{Variable Class Expectation:} `numeric` (height is a continuous metric)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Height records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentHeight}
 class(Data_df$Height)
@@ -367,7 +373,7 @@ summary(Data_df$Height)
 ```
 Again, some of our data don't behave the way the should (a `r max(Data_df$Height)` or  `r min(Data_df$Height)` cm tall sparrow are just absurd).
 
-### Fixing Problems
+### Fixing Problems 
 Height (or "Length") records of *Passer domesticus* should fall roughly between 10cm and 22cm. Looking at the data which exceed these thresholds, it is apparent that these are generated simply through misplaced decimal delimiters. So we fix them as follows and use a histogram to check if it worked.  
 ```{r ColContHeight, fig.height=3}
 Data_df$Height[which(Data_df$Height < 10)] # decimal point placed wrong here
@@ -380,10 +386,10 @@ hist(Data_df$Height, breaks = 100)
   
 We finally fixed it!
 
-## Wing Chord
+## Wing Chord 
 \textbf{Variable Class Expectation:} `numeric` (wing chord is a continuous metric)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Wing Chord records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentWing.Chord}
 class(Data_df$Wing.Chord)
@@ -391,7 +397,7 @@ summary(Data_df$Wing.Chord)
 ```
 Indeed, they do behave just like we'd expect them to. 
 
-### Fixing Problems
+### Fixing Problems 
 We don't need to fix anything here.
 
 \vspace{1.5cm}
@@ -399,7 +405,7 @@ We don't need to fix anything here.
 ## Colour
 \textbf{Variable Class Expectation:} `factor` (three levels: black, grey, brown)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Colour records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentColour}
 class(Data_df$Colour)
@@ -407,7 +413,7 @@ summary(Data_df$Colour)
 ```
 Some of the colour records are very odd.
 
-### Fixing Problems
+### Fixing Problems 
 The colour records "Bright black" and "Grey with black spots" should be "Grey". Someone clearly got too eager on the assignment of colours here. The fix is as easy as identifying the data records which are "too precise" and overwrite them with the correct assignment:
 ```{r ColContColour}
 Data_df$Colour[which(Data_df$Colour == "Bright black")] <- "Grey"
@@ -423,7 +429,7 @@ We finally fixed it!
 ## Sex
 \textbf{Variable Class Expectation:} `factor` (two levels: male and female)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Climate records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentSex}
 class(Data_df$Sex)
@@ -431,20 +437,20 @@ summary(Data_df$Sex)
 ```
 Indeed, they do behave just like we'd expect them to. 
 
-### Fixing Problems
+### Fixing Problems 
 We don't need to fix anything here.
 
-## Nesting Site
+## Nesting Site 
 \textbf{Variable Class Expectation:} `factor` (two levels: shrub and tree)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Nesting Site records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentNesting.Site}
 class(Data_df$Nesting.Site)
 summary(Data_df$Nesting.Site)
 ```
 
-### Fixing Problems
+### Fixing Problems 
 One individual is recording to be nesting on the ground. This is something house sparrows don't do. Therefore, we have to assume that this individual is not even a *Passer domesticus* to begin with. 
 
 The only way to solve this is to remove all observations pertaining to this individual:
@@ -462,10 +468,10 @@ summary(Data_df$Nesting.Site)# FIXED IT!
 
 
 
-## Nesting Height
+## Nesting Height 
 \textbf{Variable Class Expectation:} `numeric` (continuous records in two clusters corresponding to shrubs and trees)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Nesting Height records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentNesting.Height}
 class(Data_df$Nesting.Height)
@@ -474,7 +480,7 @@ summary(Data_df$Nesting.Height)
 There are obviously some issues here.
 
 
-### Fixing Problems
+### Fixing Problems 
 Nesting height is a clear example of a variable that should be recorded as `numeric` and yet our data frame currently stores them as `r class(Data_df$Nesting.Height)`.
 
 Our first approach to fixing this, again, is using the `as.numeric()` function.
@@ -497,10 +503,10 @@ This quite clearly fixed our problems.
 <!-- hist(as.numeric(as.character(Data_df_base$Nesting.Height)), main = "Numeric(Character(Data))", breaks = 100) -->
 <!-- ``` -->
 
-## Number of Eggs
+## Number of Eggs 
 \textbf{Variable Class Expectation:} `numeric` (no a priori knowledge of levels)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Number of Eggs records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentNumber.of.Eggs}
 class(Data_df$Number.of.Eggs)
@@ -508,7 +514,7 @@ summary(Data_df$Number.of.Eggs)
 ```
 One very out of the ordinary record is to be seen.
 
-### Fixing Problems
+### Fixing Problems 
 Number of eggs is another variable which should be recorded as `numeric` and yet is currently stored as `r class(Data_df$Number.of.Eggs)`.
 
 Our first approach to fixing this, again, is using the `as.numeric()` function.
@@ -537,17 +543,17 @@ We did it!
 
 \clearpage  
 
-## Egg Weight
+## Egg Weight 
 \textbf{Variable Class Expectation:} `numeric` (another weight measurement that needs to be continuous)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Egg Weight records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentEgg.Weight}
 class(Data_df$Egg.Weight)
 summary(Data_df$Egg.Weight)
 ```
 
-### Fixing Problems
+### Fixing Problems 
 Egg weight should be recorded as `numeric` and yet is currently stored as `r class(Data_df$Egg.Weight)`. Our first approach to fixing this, again, is using the `as.numeric()` function again.
 ```{r ColTypeEW1}
 summary(as.numeric(Data_df$Egg.Weight))
@@ -569,7 +575,7 @@ summary(Data_df$Egg.Weight)
 ## Flock
 \textbf{Variable Class Expectation:} `factor` (each sparrow was assigned to one particular flock)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Flock records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentFlock}
 class(Data_df$Flock)
@@ -577,15 +583,15 @@ summary(Data_df$Flock)
 ```
 Indeed, they do behave just like we'd expect them to.  
 
-### Fixing Problems
+### Fixing Problems 
 We don't need to fix anything here.
 
 \vspace{1.5cm}
 
-## Home Range
+## Home Range 
 \textbf{Variable Class Expectation:} `factor` (three levels: small, medium, large)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Home Range records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentHome.Range}
 class(Data_df$Home.Range)
@@ -593,15 +599,15 @@ summary(Data_df$Home.Range)
 ```
 Indeed, they do behave just like we'd expect them to.  
 
-### Fixing Problems
+### Fixing Problems 
 We don't need to fix anything here.
 
 \clearpage
 
-## Flock Size
+## Flock Size 
 \textbf{Variable Class Expectation:} `numeric` (continuous measurement of how many sparrows are in each flock - measured as integers)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Flock Size records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentFlock.Size}
 class(Data_df$Flock.Size)
@@ -609,15 +615,15 @@ summary(Data_df$Flock.Size)
 ```
 Indeed, they do behave just like we'd expect them to.  
 
-### Fixing Problems
+### Fixing Problems 
 We don't need to fix anything here.
 
 \vspace{1.5cm}
 
-## Predator Presence
+## Predator Presence 
 \textbf{Variable Class Expectation:} `factor` (two levels: yes and no)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Predator Presence records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentPredator.Presence}
 class(Data_df$Predator.Presence)
@@ -625,16 +631,16 @@ summary(Data_df$Predator.Presence)
 ```
 Indeed, they do behave just like we'd expect them to.  
 
-### Fixing Problems
+### Fixing Problems 
 We don't need to fix anything here.
 
 
 \clearpage 
 
-## Predator Type
+## Predator Type 
 \textbf{Variable Class Expectation:} `factor` (three levels: Avian, Non-Avian, and `NA`)
 
-### Identifying Problems
+### Identifying Problems 
 Let's asses our Predator Type records for our *Passer domesticus* individuals and check whether they behave as expected:
 ```{r IdentPredator.Type}
 class(Data_df$Predator.Type)
@@ -642,7 +648,7 @@ summary(Data_df$Predator.Type)
 ```
 Something doesn't sit well here.
 
-### Fixing Problems
+### Fixing Problems 
 Someone got overly eager when recording Predator Type and specified the presence of a hawk instead of taking down "Avian". We fix this as follows:
 ```{r ColContPT}
 Data_df$Predator.Type[which(Data_df$Predator.Type == "Hawk")] <- "Avian"
@@ -658,7 +664,7 @@ summary(Data_df$Predator.Type)# FIXED IT!
 
 
 
-## Redundant Data
+## Redundant Data 
 Our data contains redundant columns (i.e.: columns whose data is present in another column already). These are (1) Flock Size (data contained in Flock column) and (2) Flock.Size (data contained in Index column). The fix to this is as easy as removing the columns in question.
 ```{r ColContRedundancy}
 Data_df <- within(Data_df, rm(Flock.Size, Site))
@@ -668,14 +674,14 @@ Fixed it!
 
 By doing so, we have gotten rid of our flock size problem stemming from the deletion of a data record. You could also argue that the columns `Site` and `Index` are redundant. We keep both for quality-of-life when interpreting our results (make use of `Sites`) and coding (make use os `Index`).
 
-# Saving The Fixed Data Set
+# Saving The Fixed Data Set 
 We fixed out entire data set! The data set is now ready for use.  
 
 Keep in mind that the data set I provided you with was relatively clean and real-world messy data sets can be far more difficult to clean up.  
 
 Before going forth, we need to save it. **Attention:** don't overwrite your initial data file!
 
-## Final Check
+## Final Check 
 Before exporting you may want to ensure that everything is in order and do a final round of data inspection. This can be achieved by running the automated `summary()` command from earlier again as follows. I am not including the output here to save some space.
 ```{r Inspection2, eval = FALSE}
 for(i in 1:dim(Data_df)[2]){
@@ -686,7 +692,7 @@ for(i in 1:dim(Data_df)[2]){
 ```
 Everything checks out. Let's save our final data frame.
 
-## Exporting The Altered Data
+## Exporting The Altered Data 
 Since Excel is readily available for viewing data outside of R, I like to save my final data set in excel format as can be seen below. Additionally, I recommend saving your final data frame as an RDS file. These are `R` specific data files which you will not be able to alter outside of `R` thus saving yourself from accidentally changing records when only trying to view your data. On top of that, RDS files take up less space than either Excel or TXT files do.
 ```{r Exporting, tidy=FALSE}
 # saving in excel sheet
