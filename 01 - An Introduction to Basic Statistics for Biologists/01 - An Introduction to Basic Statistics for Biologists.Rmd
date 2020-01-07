@@ -1,0 +1,743 @@
+---
+title: "Basic Statistics for Biologists"
+# subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
+author: "Erik Kusch"
+date: ""
+fontsize: 10pt
+output: 
+  beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t (top alignment) or c (for centre alignment)
+    keep_tex: true
+    toc: false # this is added through a later command
+    slide_level: 3 # at how many pound signs (#) to assume slide title level
+    includes:
+      in_header: Style.tex
+classoption: "handout"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=30),tidy=TRUE)
+options(digits=2)
+```
+
+<!--- ####### TOC (use this if you want ## headers to be included in the toc)--------------------
+---------------------------------------  --->
+
+\tableofcontents[subsubsectionstyle=hide]
+
+<!--- ####### Introduction to the Course---------------------------------------------------------
+---------------------------------------  --->
+# What To Expect
+## The Seminars
+### Course Dates  \& Outline I
+\textbf{Block I} - Theory and Basics of `R`
+\vspace{.2cm}
+\begin{footnotesize}
+\begin{table}[h!]
+  \begin{tabular}{|p{1.5cm}p{1.8cm}p{5cm}p{2cm}|} \hline
+    \textbf{Date}   & \textbf{Time} & \textbf{Topic} & \textbf{Location} \\\hline
+    \multicolumn{4}{|l|}{\textbf{I.) Introduction}} \\
+       Date & Time & (1) An Introduction to Basic Statistics for Biologists & Location \\\hline
+       Date & Time & (2) Introduction to R & Location \\\hline
+    \multicolumn{4}{|l|}{\textbf{II.) Basic statistical terminology}} \\
+       Date & Time & (3) A Primer for Statistical Tests & Location \\\hline
+       Date & Time & (4) Descriptive Statistics & Location \\\hline
+       Date & Time & (5) Data Visualisation & Location \\\hline
+       Date & Time & (6) Inferential Statistics, Hypotheses and our Research Project & Location \\\hline
+  \end{tabular}
+\end{table}
+\end{footnotesize}
+
+### Course Dates  \& Outline II
+\textbf{Block II} - Basic Statistics in `R`
+\vspace{.2cm}
+\begin{footnotesize}
+\begin{table}[h!]
+  \begin{tabular}{|p{1.5cm}p{1.8cm}p{5cm}p{2cm}|} \hline
+    \textbf{Date}   & \textbf{Time} & \textbf{Topic} & \textbf{Location} \\\hline
+    \multicolumn{4}{|l|}{\textbf{III.) Handling Data}} \\
+       Date & Time & (7) Data Handling and Data Mining & Location \\\hline
+    \multicolumn{4}{|l|}{\textbf{IV.) Non-parametric tests}} \\
+       Date & Time & (8) Nominal Tests & Location \\\hline
+       Date & Time & (9) Correlation Tests & Location \\\hline
+       Date & Time & (10) Ordinal and Metric Tests for two-sample situations & Location \\\hline
+       Date & Time & (11) Ordinal and Metric Tests for more than two-sample & Location \\\hline
+    \multicolumn{4}{|l|}{\textbf{V.) Parametric tests}} \\
+       Date & Time & (12) Simple Parametric Tests & Location \\\hline
+    \multicolumn{4}{|l|}{\textbf{VI.) Closing}} \\
+       Date & Time & (13) Summary and an Outlook on Advanced Statistics & Location \\\hline
+  \end{tabular}
+\end{table}
+\end{footnotesize}
+
+### Learning Goals
+
+\begin{enumerate}
+\vspace{.3cm}
+\item A solid grasp of basic biostatistics
+  \uncover<2->{
+  \begin{itemize}
+  \item Have an overview of available methods
+  \item Be able to judge the applicability of individual methods
+  \end{itemize}
+  }
+  \vspace{.3cm}
+\item Basic proficiency in using R
+  \uncover<3->{
+  \begin{itemize}
+  \item Know base commands and how they function
+  \item Be able to prepare biologically relevant data sets for further analysis
+  \item Be able to apply basic statistical methods to biologically relevant data sets
+  \end{itemize}
+  }
+  \vspace{.3cm}
+\item Research Design
+  \uncover<4->{
+  \begin{itemize}
+  \item Understand how to formulate testable hypotheses
+  \item Know the importance of proper statistical approaches in research
+  \item Being able to critically assess statistical methods in research publications
+  \end{itemize}
+  }
+\end{enumerate}
+
+### Learning Methods
+
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+  We will:
+    \begin{itemize}
+    \item Cover useful theory of biostatistics (lecture style)
+    \pause
+    \item Run biostatistical analyses in R (seminar style)
+    \pause
+    \item Work through basic biostatistical methods in a research project using simulated data
+    \pause
+    \item Fully reproducible analyses (\url{https://github.com/ErikKusch/An-Introduction-to-Biostatistics-Using-R})
+    \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \visible<5->{\centering\includegraphics[width=0.7\linewidth]{Figures/Meme_WasteTime.jpg}}
+  \end{column}
+\end{columns}
+\pause
+\vspace{0.3cm}
+\begin{center}
+\textbf{We will focus heavily on actually doing the statistics!}
+\end{center}
+
+## Course Resources and Reading
+### Let Me Introduce Myself
+\centering
+\includegraphics[width=\textwidth]{Figures/Erik.png}
+
+### Useful Reading
+\center You are **NOT** required to read these!
+
+\begin{columns}[T]
+  \begin{column}{.3\linewidth}
+  \includegraphics[width=1\linewidth]{Figures/Crawley.jpg}
+  \tiny ISBN: 978-1-118-94109-6
+  \end{column}
+  \begin{column}{.3\linewidth}
+  \includegraphics[width=1\linewidth]{Figures/Dalgaard.jpg}
+  \tiny ISBN: 978-0-387-79053-4
+  \end{column}
+  \begin{column}{.3\linewidth}
+  \includegraphics[width=1\linewidth]{Figures/Bramer.jpg}
+  \tiny ISBN: 978-1-4471-4883-8
+  \end{column}
+\end{columns}
+\hspace{.3cm}
+\flushright But these books are seriously good.
+
+
+# The Importance Of Proper Statistics
+
+## The Consequences Of Bad Statistics
+### When Mistakes Happen
+Even the rigorous peer-review system might miss some minor flaws.
+
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    An example:
+      \begin{itemize}
+      \visible<1->{
+      \item Birkenmeyer et. al published a flawed paper in 2016.
+      }
+      \end{itemize}
+      \visible<2->{
+    The mistake in the data set was spotted by Dr. B. M. Weiß. in early 2017}
+      \begin{itemize}
+      \visible<2->{\item A corrigendum was put online}
+      \visible<3->{\item A corrected version of the paper was uploaded}
+      \end{itemize}
+    \visible<3->{None of the results of the paper changed.}
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \visible<1->{\includegraphics[width=0.65\linewidth]{Figures/BirkenmayerPress.jpg}}
+    \visible<2->{\hspace*{-3cm}\includegraphics[width=0.65\linewidth]{Figures/BirkenmayerCorr.jpg}}
+    \visible<3->{\hspace*{-3cm}\includegraphics[width=0.65\linewidth]{Figures/BirkenmayerCorrPress.jpg}}
+  \end{column}
+\end{columns}
+
+\vspace*{0.2cm}
+\pause \pause \pause
+$\rightarrow$ No big deal so long as you offer corrections to your flawed work.
+
+### Fraudulent Practices - The Case Of Andrew Wakefield
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+  Probably one of the most reviled doctors of the 21\textsuperscript{st} century
+   \begin{itemize}
+      \visible<1->{
+      \item Claimed to have found a link for vaccines and autism (Paper from 1998)
+      }
+      \visible<2->{\item Paper retracted by the publisher}
+      \visible<3->{\item General Medical Council of Britain revoked his medical license}
+      \end{itemize}
+    \visible<3->{His academic career is over despite his large community of followers in the U.S., Australia and Brazil.}
+  \end{column}
+  \begin{column}{.5\linewidth}
+  \only<1>{
+  \centering\includegraphics[width=0.65\linewidth]{Figures/Wakefield.jpg}
+  }\visible<2->{
+  \centering\includegraphics[width=0.65\linewidth]{Figures/Wakefield_Paper.jpg}
+  }
+  \end{column}
+\end{columns}
+
+\vspace*{0.4cm}
+\pause \pause \pause
+$\rightarrow$ Knowingly fraudulent practices can cost you your career.
+
+
+### Fraudulent Practices - The Case Of Diederik Stapel
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+  Former star in academia, now a laughing stock
+   \begin{itemize}
+      \visible<2->{
+      \item Manipulated data and completely fabricated entire studies
+      }
+      \visible<3->{\item Fired from his position as professor at Tilburg University}
+      \visible<4->{\item 58 retracted papers}
+      \visible<5->{\item Papers of other authors needed to be retracted as well}
+      \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \centering\includegraphics[width=0.65\linewidth]{Figures/Stapel.jpg}
+  \end{column}
+\end{columns}
+
+\vspace*{0.6cm}
+\pause \pause \pause \pause \pause
+$\rightarrow$ Knowingly fraudulent practices can cost you your career, discredit your institution and your field of research, and even seriously impede the careers of unknowing co-workers.
+
+
+## What Are Bad Statistics?
+### Wrong/Malinformed Use
+**Lack of statistical knowledge**
+
+\pause
+
+* Applying statistics to data which they aren't meant for
+
+\pause
+
+$\rightarrow$ *Methods can "break"*
+
+\pause
+
+* Flawed understanding of the methodology
+
+\pause
+
+$\rightarrow$ *Incorrect conclusions*
+
+\pause
+\hfill \linebreak
+\begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title= ]
+\centering \textbf{Pure biologists lack knowledge on statistics.}
+\end{tcolorbox}
+
+
+### Uninformed Use
+
+**Lack of biological knowledge**
+
+\pause
+
+* Delineation of nonsensical but statistically significant relationships
+
+\pause
+
+$\rightarrow$ *p-hacking*
+
+\pause
+
+* No sense of how to establish testable, feasible hypotheses 
+
+\pause
+
+$\rightarrow$ *Waste of time*
+
+\pause
+\hfill \linebreak
+\begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title= ]
+\centering \textbf{Pure statisticians lack knowledge on biology.}
+\end{tcolorbox}
+
+### Caveat
+
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \begin{itemize}
+      \item Biologists often have preformed ideas of what to expect\\
+      \pause
+      $\rightarrow$ data-tweaking to match expectations?
+      \pause
+      \item Researchers also have a vested interest in uncovering extraordinary things\\
+      \pause
+      $\rightarrow$ The more astounding a paper the better?
+    \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \visible<1->{\centering\includegraphics[width=0.55\linewidth]{Figures/Caveat.png}}
+  \end{column}
+\end{columns}
+
+\vspace*{0.2cm}
+\pause
+\begin{tcolorbox}[colback=bondiblue!5,colframe=burgundy!40!black,title= ATTENTION!]
+\centering \textbf{Don't let a personal bias inform your analysis!}
+\end{tcolorbox}
+
+
+## Statistical Concern On The Rise
+### The Recent Debate
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \begin{itemize}
+      \item p-values are a cause of concern\\
+      \pause
+      $\rightarrow$ More on this in seminar 6 (Inferential Statistics and Hypotheses)
+      \pause
+      \item Pre-p-value statistics and data handling increasingly subject of scrutiny\\
+      \pause
+      $\rightarrow$ More on this in seminar 7 (Data Handling and Data Mining)
+    \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \visible<1->{\includegraphics[width=0.65\linewidth]{Figures/Nature1.png}}
+    \visible<2->{\hspace*{-3cm}\includegraphics[width=0.65\linewidth]{Figures/Nature2.png}}
+    \visible<3->{\hspace*{-3cm}\includegraphics[width=0.65\linewidth]{Figures/Nature3.png}}
+  \end{column}
+\end{columns}
+
+\vspace*{0.2cm}
+\pause
+\begin{tcolorbox}[colback=bondiblue!5,colframe=bondiblue!40!black,title=]
+\centering Practices in statistics are constantly subject to change.
+\end{tcolorbox}
+
+### Why Keep Up With It?
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \begin{itemize}
+      \item Journals mights enact bans on studies containing p values\\
+      \pause
+      $\rightarrow$ Counter-productive according to Andrew Vickers (Memorial Sloan Kettering Cancer Center)
+      \pause
+      \item Statistically robust studies hold up to scrutiny much better\\
+      \pause
+      $\rightarrow$ Statistical prowess enhances your research massively
+      \pause
+      \item Staying up-to-date can help advance one's understanding and career
+    \end{itemize}
+  \end{column}
+  \begin{column}{.6\linewidth}
+    \visible<1->{\centering\includegraphics[width=0.7\linewidth]{Figures/Nature4.png}}
+  \end{column}
+\end{columns}
+
+### Advancing In Statistics
+
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+  \hfill \linebreak
+  \hfill \linebreak
+  \hfill \linebreak
+  \begin{center}
+  "Treat statistics as a science, and not a recipe!"  \\
+  $\sim$ \textit{Andrew Vickers}
+\end{center}  
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \visible<2->{\centering\includegraphics[width=0.75\linewidth]{Figures/Meme_TheoryPraxis.jpg}}
+  \end{column}
+\end{columns}
+
+
+
+## Further benefits of a statistical background
+### The Lack Of Biostatisticans
+* Biological studies without rigorous statistical analyses are almost unpublishable
+
+\pause
+
+* Biostatisticians are rare
+
+\pause
+
+* Almost every biological research group requires at least one capable statistician
+
+
+\pause
+\begin{center}
+$\rightarrow$ \textbf{Biostatisticians are sought-after}
+\end{center}
+
+### Statistics As An Apphrodisiac
+\centering\includegraphics[width=0.55\linewidth]{Figures/Meme_Math.jpg}
+
+# Terminology
+## Classifying Statistics
+### Frequently Used Classifications
+\begin{columns}
+  \begin{column}{.5\linewidth}
+    \begin{itemize}
+    \visible<1->{
+      \item According to how they are done:
+        \begin{itemize}
+        \item Theoretical Statistics
+        \item Applied Statistics
+        \end{itemize}
+    }\visible<2->{
+      \item According to topic:
+        \begin{itemize}
+        \item Biostatistics
+        \item Economic Statistics
+        \item Statistical Physics
+        \item ...
+        \end{itemize}
+    }\end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \begin{itemize}
+    \visible<3->{
+    \item According to what the goal is and what kind of data is available
+      \begin{itemize}
+      \item Regression
+      \item Classification
+      \end{itemize}
+    }\visible<4->{
+    \item According to how the analyses makes use of the data
+      \begin{itemize}
+      \item Supervised
+      \item Unsupervised
+      \end{itemize}
+    }
+    \end{itemize}
+  \end{column}
+\end{columns}
+
+\visible<5->{
+\begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title= According to the kind of information returned by the methods]
+\begin{itemize}
+\item Descriptive Statistics
+\item Inference/Inferential Statistics
+\end{itemize}
+\end{tcolorbox}
+}
+
+### Unsupervised Approaches
+Unsupervised methods are often \textit{used to select} the \textit{most informative $X$ input variables} for \textit{supervised approaches}. 
+\vspace{0.4cm}
+\begincols[T]
+\begincol{0.5\linewidth}
+\pause
+\textbf{Pre-requisites:}
+\begin{itemize}
+\item Only \textit{input variables} are observed.
+\item \textit{No solution/feedback (output)} is given. 
+\end{itemize}
+\endcol
+\begincol{0.5\linewidth}
+\pause
+\textbf{Aims:}
+\begin{itemize}
+\item \textit{Divide} the observations into relatively distinct groups.
+\item \textit{Model} the underlying structure or distribution in the data.
+\end{itemize}
+\endcol
+\endcols
+\pause
+\vspace{0.8cm}
+$\rightarrow$ \textbf{"Pre-processing" before a supervised learning analysis} and \textbf{exploratory analyses}
+
+### Supervised Approaches
+Supervised methods are often \textit{informed by unsupervised approaches} and used to \textit{gain validated information} about the data. 
+\vspace{0.4cm}
+\begincols[T]
+\begincol{0.5\linewidth}
+\pause
+\textbf{Pre-requisites:}
+\begin{itemize}
+\item Both \textit{predictors} $\mathbf{X}$, and \textit{responses} $\mathbf{Y}$ are observed (there is one $y\textsubscript{i}$ for each $x\textsubscript{i}$).
+\item Data is split into \textit{Training} and \textit{Test Data Sets}.
+\end{itemize}
+\endcol
+\begincol{0.5\linewidth}
+\pause
+\textbf{Aims:}
+\begin{itemize}
+\item Learn a \textit{mapping function} $f$ from $X$ to $Y$.
+\item \textit{Validate} established function/model.
+\item Further \textit{prediction} and \textit{inference}.
+\end{itemize}
+\endcol
+\endcols
+\pause
+\vspace{0.8cm}
+$\rightarrow$ \textbf{Mostly inferential analyses}
+
+## Basic Vocabulary
+### Population vs. Sample
+\begincols[T]
+  \begincol{0.5\linewidth}
+  \pause
+  \textbf{Population:} describes the sum total of all \textit{existing} values of a variable given a certain research question. This includes non-measured data.
+  \endcol
+  \begincol{0.5\linewidth}
+  \pause
+  \textbf{Sample:} describes the sum total of all \textit{available} values of a variable for any given analysis. This can only include measured data.
+  \endcol
+\endcols
+
+\pause
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \hline
+            & \\
+          \end{tabular}}
+        \label{Spacer}
+\end{table}
+
+\vspace{-1cm}
+\textbf{An example:}  \linebreak
+In an experimental set-up, you rear an ant colony of exactly 10,000 individuals. You are interested in the average mandible strength of ants within the colony.
+ 
+  \vspace{0.2cm}
+  
+\pause \textit{The problem:} You cannot possibly take measurements of all 10,000 individuals.
+
+  \vspace{0.2cm}
+  
+\pause \textit{The solution:} Taking measurements on a \textbf{Sample} (e.g. 1,000 individuals) from within the \textbf{Population} (10,000 individuals).
+
+### Training Data vs. Test Data
+This differentiation is only applicable when concerned with \textit{modelling}, which we won't cover in these seminars.
+\vspace{0.2cm}
+\begincols[T]
+  \begincol{0.5\linewidth}
+  \pause
+  \textbf{Training Data:} describes the subset of the total data which is used to \textit{establish/train} the model.
+  \endcol
+  \begincol{0.5\linewidth}
+  \pause
+  \textbf{Test Data:} describes the subset of the total data which is used to \textit{test} the performance of the model.
+  \endcol
+\endcols
+
+\pause
+\begin{table}[c]
+        \centering
+          \resizebox{\textwidth}{!}{%
+          \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
+           \hline
+            & \\
+          \end{tabular}}
+        \label{Spacer}
+\end{table}
+
+\vspace{-1cm}
+\textit{The problem:} You have identified a way to model how mandible strength and ant size are interconnected but don't know how to assess the quality of your model (a model will always fit the data it was built on extremely well).
+
+\vspace{0.2cm}
+
+\pause \textit{The solution:} Split the available data into two non-overlapping subsets of data (\textbf{Training} and \textbf{Test Data}) and use these separately to build your model and assess its performance.
+
+### What Makes Data Truly Random?
+\begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title=]
+\centering \textbf{Randomisation} is one of the \textbf{most important} practices in biological studies.
+\end{tcolorbox}
+
+\pause
+
+A \textbf{sampling} procedure is \textbf{random} when any member of the \textit{population} has an equal chance of being selected into the \textit{sample}.
+
+\vspace{0.2cm}
+
+\textit{Training} and \textit{Test Data Sets} are established from the population with the same sense of randomness although there may be exceptions depending on the modelling procedure at hand.
+
+\vspace{0.2cm}
+\begincols[T]
+  \begincol{0.5\linewidth}
+  \pause
+  \textbf{Data collection:} Number all units contained within the set-up and sample those units corresponding to random numbers.
+  \endcol
+  \begincol{0.5\linewidth}
+  \pause
+  \textbf{In R:} Use the `sample()` function to create truly random subsets. Remember to use `set.seed()` to make this step reproducible!
+  \endcol
+\endcols
+
+### Random Sampling in `R`
+```{r sample, tidy=FALSE}
+# Making it reproducible
+set.seed(42)
+# Establishing a population
+pop <- c(1:15)
+pop
+# Establishing a random sample
+sam <- sample(pop, 5, replace = FALSE)
+sam
+```
+
+
+# Introduction To `R`
+## Why Use R?
+### The Power Of `R`
+
+\begin{columns}[T]
+  \begin{column}{.7\linewidth}
+    \begin{enumerate}
+    \pause
+    \item \textbf{R} is a powerful \textbf{statistical} and \textbf{graphical tool}
+    \pause
+    \item Available for almost every platform (Windows, Linux, Mac, FreeBSD, etc.)
+    \pause
+    \item It is \textbf{completely free}
+    \pause
+    \item \textbf{Open source}
+      \begin{itemize}
+      \pause
+      \item It can be modified heavily to suit individual demands
+      \pause
+      \item Constant, moderated user input to widen functionality
+      \pause
+      \item Dedicated, heavily frequented forums online
+      \pause
+      \item Allows for reproducible coding
+      \end{itemize}
+    \end{enumerate}
+  \end{column}
+  \begin{column}{.3\linewidth}
+    \visible<10->{\centering\includegraphics[width=1\linewidth]{Figures/Meme_R_SPSS.jpg}}
+  \end{column}
+\end{columns}
+
+
+\pause
+\begin{center}
+\textbf{R is the rising star of statistical applications in biological sciences!}
+\end{center}
+
+
+## The `R` landscape
+### Obtaining `R`
+R is a free statistical environment that is used by many researchers all around the globe.
+\vspace{0.2cm}
+\begincols[T]
+  \begincol{0.5\linewidth}
+    \pause
+    \textbf{How to get it?}  
+    \begin{itemize}
+    \item R is available at \url{https://www.r-project.org/}
+    \item A host of editors is available freely on the internet. I recommend RStudio (available at \url{https://www.rstudio.com/}).
+    \end{itemize}
+  \endcol
+  \begincol{0.5\linewidth}
+    \pause
+    \textbf{What if I need help?}  
+    Multiple dedicated forums online:
+    \begin{itemize}
+    \item \url{https://stackoverflow.com/}
+    \item \url{https://stackexchange.com/}
+    \end{itemize}
+  \endcol
+\endcols
+
+## Layouts
+### Layouts - The Console
+Running R through the console ...
+\begin{center}
+  \includegraphics[width=0.55\linewidth]{Figures/R_Console.png}
+\end{center}
+\begin{flushright}
+\pause
+  ... is a \textbf{bad idea.}
+\end{flushright}
+But you will have access to it anyway as it comes with `R` (we will use version 3.4.2. \url{https://cran.r-project.org/bin/windows/base/old/3.4.2/}).
+
+### Layouts - The Editor
+Running R through an editor...
+\begin{center}
+  \includegraphics[width=0.55\linewidth]{Figures/R_Layout_Full.png}
+\end{center}
+\pause
+\begin{flushright}
+  ... is a \textbf{much better idea!}
+\end{flushright}
+I recommend RStudio (\url{https://www.rstudio.com/}). If you use it a lot, I also recommend changing the appearance to 'Vibrant Ink' (setting located in the 'Global Options' window nested within the 'Tools' tab).
+
+### Layouts - The Editor Explained
+\begin{center}
+  \includegraphics[width=0.8\linewidth]{Figures/R_Layout_Source.png}
+\end{center}
+The **Source** is where you load scripts and write most of your coding document.
+
+### Layouts - The Editor Explained
+\begin{center}
+  \includegraphics[width=0.8\linewidth]{Figures/R_Layout_Environment.png}
+\end{center}
+The **Environment, History, Connections** is where you will be able to quickly access all objects of your current R session.
+
+### Layouts - The Editor Explained
+\begin{center}
+  \includegraphics[width=0.8\linewidth]{Figures/R_Layout_Plots.png}
+\end{center}
+**Files, Plots, Packages, Help Viewer** are especially useful for document navigation, data visualisation and to get information on certain functions in R.
+
+### Layouts - The Editor Explained
+\begin{center}
+  \includegraphics[width=0.8\linewidth]{Figures/R_Layout_Console.png}
+\end{center}
+The **Console** is where you execute short commands, and warning and error messages are displayed.
+
+## Coding
+### The Evolution Of Code
+
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \begin{itemize}
+    \item Your code and coding practices evolve
+    \pause
+    \item Comment \textbf{every line} of code
+    \pause
+    \item Elegant code makes an analysis easier to reproduce
+    \pause
+    \item \textbf{Avoid hard-coding!} 
+    \end{itemize}
+    \pause
+    \hfill \linebreak
+    \begin{center}
+    \textit{"If it looks stupid but it works, it isn't stupid."}
+    \end{center}  
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \visible<5->{\centering\includegraphics[width=1\linewidth]{Figures/Meme_Code.jpg}}
+  \end{column}
+\end{columns}
