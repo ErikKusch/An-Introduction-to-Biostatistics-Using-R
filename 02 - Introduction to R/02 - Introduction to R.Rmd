@@ -6,12 +6,12 @@ date: ""
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
-    keep_tex: false
+    keep_tex: true
     toc: false # this is added through a later command
     slide_level: 3 # at how many pound signs (#) to assume slide title level
     includes:
       in_header: Style.tex
-classoption: t
+classoption: "handout"
 ---
 
 ```{r setup, include=FALSE}
