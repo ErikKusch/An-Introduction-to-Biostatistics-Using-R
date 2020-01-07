@@ -1,0 +1,316 @@
+---
+title: "Data Handling And Data Mining"
+# subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
+author: "Erik Kusch"
+date: ""
+fontsize: 10pt
+output: 
+  beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
+    keep_tex: true
+    toc: false # this is added through a later command
+    slide_level: 3 # at how many pound signs (#) to assume slide title level
+    includes:
+      in_header: Style.tex
+classoption: "handout"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=20),tidy=TRUE, fig.height=8)
+options(digits=2)
+```
+
+<!--- ####### TOC (use this if you want ## headers to be included in the toc)--------------------
+---------------------------------------  --->
+
+\tableofcontents[subsubsectionstyle=hide]
+
+<!--- ####### Inferential Statistics-------------------------------------------------------------
+---------------------------------------  --->
+# Collecting And Handling Data
+## Data Collection
+### Why Care?
+\begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title=]
+\centering \textit{Biostatisticians often use 70\% of their time to handle data and just 30\% to actually analyse it.}
+\end{tcolorbox}
+
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+    \textbf{Why care?} 
+    \begin{itemize}
+    \item Proper data collection and data handling ensure accurate results
+    \item Proper data collection cuts down on data handling time
+    \item Proper data handling will make reproducing an analysis much easier
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{What to consider?} 
+    \begin{itemize}
+    \item Which data format to use
+    \item What kind of data to record
+    \item How data values are recorded/stored
+    \item What kind of data values are feasible
+    \end{itemize}
+  \endcol
+\endcols
+
+### Recording Data
+\textbf{Guidelines for data recording:}
+\begin{itemize}
+\pause
+  \item When collecting categorical data, know what values the variables are allowed to take
+\pause
+  \item When collecting continuous data, know which range the variable values can fall into
+\pause
+  \item Make sure everyone involved in data collection is on the same page
+\pause
+  \item Make regular back-ups of your data set
+\end{itemize}
+
+### Recording Data Collection - The README File
+\textbf{Documenting data recording} is just as important as proper data collection!  
+\vspace{10pt}
+\pause
+To do so, one usually uses a \textbf{README} file containing the following:
+\begin{itemize}
+  \item Project Name and Summary
+  \item Primary contact information
+  \item Your name and title (if you aren't the primary contact)
+  \item Other people working on the project
+  \item Location of data and supporting info
+  \item Organization and naming conventions used for the data
+  \item Any previous work on the project and where its located
+  \item Funding information
+\end{itemize}
+\pause
+\vspace{.5cm}
+\centering This file is always \textbf{saved in conjunction with the actual data set}!
+
+## Data Handling
+### Data Structure
+I recommend a structure like the one shown below with at least two hierarchy levels.  
+\vspace{5pt}
+\pause
+The only files allowed in your first hierarchy level are:
+\begin{itemize}
+\item R master file
+\item Manuscript master file
+\end{itemize}
+
+\centering \includegraphics[width=0.8\linewidth]{Figures/Hierarchy.jpg}
+
+\pause
+Additionally, make sure to \textbf{back-up your project folder frequently} and use \textbf{version control} on it.
+
+### Which Format To Use
+When storing your data, you have a plethora of file formats to choose from.  
+\hfill \linebreak
+\pause
+`R` works very well with:  
+\begin{itemize}
+\item excel files (.xls, .xlsx, .csv)  
+\item text files (.txt)
+\end{itemize}
+\hfill \linebreak
+\pause
+Whilst both of these are accessible to everyone of your co-workers, excel is easier to operate outside of `R`.  
+\vspace{5pt}
+\pause
+$\rightarrow$ Make sure to provide co-workers with a master file before data collection to avoid cell formatting issues on different computers
+
+## Fixing Data
+### Common Issues
+\pause
+\textbf{The Decimals}  
+\pause
+Always use a \textit{dot} to indicate decimals.  
+$\rightarrow$ It is the standard in science.
+  
+\pause
+\hfill \linebreak
+\textbf{To} `NA` \textbf{Or Not To} `NA`\textbf{?}  
+\pause
+\textit{Never enter} `NA` \textit{values manually} into your data.  
+$\rightarrow$ They cause problems in `R`.
+  
+\pause
+\hfill \linebreak
+\textbf{Redundancy Or Sparsity?}  
+\pause
+\textit{Don't clutter data} with unnecessary data records.  
+$\rightarrow$ Reduces storage space and chances for errors.
+
+
+### Workflow I
+\begin{center}
+\textit{No data set is ever perfect (except fabricated ones)!}
+\end{center}
+  
+\hfill \linebreak
+\pause
+The etiquette of fixing data:
+\begin{itemize}
+\pause
+\item \textbf{Never overwrite/alter} your original data file 
+\pause
+\item \textbf{Never} apply fixes by hand (you completely break the process of reproducibility by doing so)
+\end{itemize}
+
+\hfill \linebreak
+\pause
+\centering `R` is a beyond powerful tool for fixing your data!
+
+### Workflow II
+\begin{center}
+Fixing an data set is usually a \textbf{two-step} process:
+\end{center}
+  
+\vspace{.2cm}
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+    \textbf{Column/Variable Class}
+    \begin{itemize}
+      \item Variable record classes are paramount to get right for specific analyses in R.
+      \item Before data recording is done, we should already have a desired variable record class for each variable's records.
+    \end{itemize} 
+\endcol
+\begincol{.5\linewidth}
+    \pause
+    \textbf{Column/Variable Content/Values}
+    \begin{itemize}
+      \item Typos and the like can often lead to false data/variable records and need to be fixed or removed for dependable results to be obtained.
+    \end{itemize} 
+\endcol
+\endcols
+\vspace{0.5cm}
+Since records are usually stored in one column for each variable, we may wish to asses column classes as "variable record classes".
+
+
+### Useful Functions in `R`
+- `dim(object)` returns the dimensions of the object  
+\vspace{4pt}
+\pause
+- `summary(object)` gives you a summary of values contained within the object (see seminar 4)  
+\vspace{4pt}
+\pause
+- `View(object)` opens almost any `R` object in a new tab within `R` for visual inspection  
+\vspace{4pt}
+\pause
+- `which(object == value)` returns a vector of `TRUE` and `FALSE` values according to the statement in brackets  
+\vspace{4pt}
+\pause
+- `sum(object)` returns the sum an objects values (also works for `TRUE`/`FALSE` values)  
+\vspace{4pt}
+\pause
+- `vector[position]` subsets elements of a `vector`  
+\vspace{4pt}
+\pause
+- `data.frame[Row,Column]` subsets elements of a `data.frame`
+
+# Mining Data
+## What To Mine For
+### The README File Revisited
+Using the \textbf{README file}, one can identify what information is contained within the data set and thus decide:  
+\begin{itemize}
+\pause
+\item What type/class a data record should be of
+\pause
+\item Which variables may be redundant
+\pause
+\item Which data records exceed their variable-specific feasible thresholds
+\pause
+\item Where to get comparative data sets from
+\end{itemize}
+\hfill \linebreak
+\pause
+\textbf{Data Mining} should then focus on:
+\begin{itemize}
+\pause
+\item \textit{Identifying problems} within the data records
+\pause
+\item \textit{Explorative} data analyses
+\end{itemize}
+
+## How To Mine in `R`
+### Numbers or Visualisations?
+For data mining, one may wish to enlist the use of methods contained in seminar 4 \& 5 (Descriptive Statistics \& Data Visualisation):  
+\vspace{10pt}
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Descriptive Statistics:}  
+    As far as descriptive statistics go, the `summary()` command in `R` is probably the most useful tool for data mining.
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+  \textbf{Data Visualisations:}
+    \begin{itemize}
+    \item Histograms
+    \item Scatter plots
+    \end{itemize}
+  \endcol
+\endcols
+\vspace{20pt}
+\pause
+\centering \textbf{Holistic data mining} is best \textbf{achieved using a combination} of data visualisations tools and parameters of descriptive statistics!
+
+# Exercise
+### What To Do I
+\small
+\begincols[T]
+\begincol{.5\linewidth}
+\pause
+  \textbf{Data Loading}
+    \begin{itemize}
+    \item The data is located at \url{https://github.com/ErikKusch/An-Introduction-to-Biostatistics-Using-R}
+    \item The file is called SparrowData.csv
+    \end{itemize}
+\pause
+  \textbf{Expectations}
+    \begin{itemize}
+    \item Browse the README file to get a feeling for the variables contained within our data set.
+    \item Write down your expectations of data range and variable mode within R.
+    \end{itemize}
+\endcol
+\begincol{.5\linewidth}
+\pause
+  \textbf{Inspection}
+    \begin{itemize}
+    \item Use common functions to get a feeling for the data set.
+    \item Can you spot some data errors right away?
+    \item Do \textbf{not} do this in Excel.
+    \end{itemize}
+\endcol
+\endcols
+
+### What To Do II
+\small
+\begincols[T]
+  \begincol{.5\linewidth}
+    \pause
+    \textbf{Column/Variable Class}
+    \begin{itemize}
+      \item Find columns whose record classes do not match up with your educated expectation
+      \item Transform these column classes
+    \end{itemize} 
+    \pause
+    \textbf{Column/Variable Content/Values}
+    \begin{itemize}
+      \item Identify columns which, after fixing their record class, still exhibit faulty/unreasonable values.
+      \item Decide what to do about them.
+    \end{itemize}
+\endcol
+\begincol{.5\linewidth}
+    \pause
+    \textbf{Redundancy}
+    \begin{itemize}
+      \item Remove columns from the data set which are not needed because their information is contained in another column or are unnecessarily bloating the data set.
+    \end{itemize} 
+    \pause
+    \vspace{1cm}
+    $\rightarrow$ Do this \textbf{variable by variable}.
+\endcol
+\endcols
+

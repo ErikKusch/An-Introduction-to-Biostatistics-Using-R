@@ -6,6 +6,7 @@
 \usepackage{fancyhdr}
 \usepackage{lmodern}
 \usepackage{titlesec}
+\usepackage{float}
 % ============= Header and Footer =============
 \pagestyle{fancy}
 \fancyhf{}
@@ -25,10 +26,7 @@
 \titleformat{\chapter}[hang]{\bf\huge}{\thechapter .}{2pc}{}
 
 %% reducing spacing around chapter headings
-\titlespacing*{\chapter}{0pt}{10pt}{5pt}
-
-\titlespacing*{\section}{0pt}{4pt}{2pt}
-\titlespacing*{\subsection}{0pt}{1pt}{0pt}
+\titlespacing*{\chapter}{0pt}{10pt}{10pt}
 
 %% eliminating page break on part
 \titleclass{\part}{top}

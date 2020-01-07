@@ -1,0 +1,1100 @@
+---
+title: "Data Visualisation"
+# subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
+author: "Erik Kusch"
+date: ""
+fontsize: 10pt
+output: 
+  beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
+    keep_tex: true
+    toc: false # this is added through a later command
+    slide_level: 3 # at how many pound signs (#) to assume slide title level
+    includes:
+      in_header: Style.tex
+classoption: "handout"
+---
+
+```{r setup, include=FALSE}
+options(scipen=1, digits=4)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=20),tidy=TRUE, fig.height=8, digits=4)
+```
+
+<!--- ####### TOC (use this if you want ## headers to be included in the toc)--------------------
+---------------------------------------  --->
+
+\tableofcontents[subsubsectionstyle=hide]
+
+<!--- ####### Descriptive Statistics-------------------------------------------------------------
+---------------------------------------  --->
+# Introduction
+## Overview
+
+### Means to Visualisation
+Methods of data visualisation are manifold:
+\vspace{0.2cm}
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+  \visible<2->{\textbf{Tables:}}
+    \begin{itemize}
+    \visible<3->{
+    \item Data Tables
+    \item Frequency Tables
+    \item Stem And Leaf Displays
+    }
+    \end{itemize}
+    \hfill \linebreak
+  \visible<2->{\textbf{Text-based descriptions} of data:}
+    \begin{itemize}
+    \visible<4->{
+    \item Only applicable to minute data sets
+    \item Not used extensively
+    }
+    \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+  \visible<2->{\textbf{Plots:}}
+    \begin{itemize}
+    \visible<5->{
+    \item Pie Charts
+    \item Scatter plots, Line Graphs
+    \item Bar Charts, Histograms, Frequency Polygons
+    \item Box plots
+    \item Contour Plots, 3-D Plots
+    \item ...
+    }
+    \end{itemize}
+  \end{column}
+\end{columns}
+
+\vspace{1cm}
+\visible<4->{$\rightarrow$ We will not be covering text-based data summaries here.}
+
+# Tables
+## Using Tables
+### Table Etiquette
+\begin{center}
+Tables are \textbf{useful data summary and visualisation tools}.  
+\end{center}
+\pause
+Etiquette in table making:
+\begin{itemize}
+\item Vertical lines are used sparingly
+\item Horizontal lines are used frequently
+\item Table captions are placed \textbf{above} the table they belong to
+\end{itemize}
+\vspace{0.2cm}
+\pause
+Making tables directly in `R` can be difficult. Assuming you use \LaTeX \hspace{0.02cm} for writing manuscripts (which you really should try if you haven't yet):
+\begin{itemize}
+\item \LaTeX \hspace{0.02cm} directly
+\item The Excel2\LaTeX-Add-in (\url{https://www.ctan.org/tex-archive/support/excel2latex/})
+\item Various R packages (e.g.: `xtable`)
+\item R Markdown for writing manuscripts
+\end{itemize}
+
+
+## Table Types
+### Data Tables
+Can accommodate all kinds of data.
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+  \vspace{0.2cm}
+  \begin{itemize}
+  \pause
+  \item \textbf{For publications:}
+    \begin{itemize}
+    \item Great way to summarise and present data
+    \item Can be used to present a list of definitions
+    \end{itemize}
+  \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+  \vspace{0.5cm}
+  \centering \includegraphics[width=1\linewidth]{Figures/Table2.jpg}
+  \raggedright \tiny{\textit{Newton, A. C. (2016) 'Biodiversity Risks of Adopting Resilience as a Policy Goal', Conservation Letters, 9(October), pp. 369-376. doi: 10.1111/conl.12227.}}
+  \end{column}
+\end{columns}
+
+### Data Tables
+Can accommodate all kinds of data.
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+  \vspace{0.2cm}
+  \begin{itemize}
+  \item \textbf{For publications:}
+    \begin{itemize}
+    \item Great way to summarise and present data
+    \item Can be used to present a list of definitions
+    \end{itemize}
+  \pause
+  \item \textbf{For behind-the-scenes work:}
+    \begin{itemize}
+    \item Still a great way to summarise and present data
+    \item Data management, mining and exploration relies on tables (more on this in seminar 7)
+    \end{itemize}
+  \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+  \vspace{0.5cm}
+  \centering \includegraphics[width=1\linewidth]{Figures/Table1.jpg}  
+  \raggedright \tiny{\textit{Salzmann, U. et al. (2008) 'A new global biome reconstruction and data-model comparison for the Middle Pliocene', Global Ecology and Biogeography, 17(3), pp. 432-447. doi: 10.1111/j.1466-8238.2008.00381.x.}}
+  \end{column}
+\end{columns}
+
+### Frequency Tables
+Only accommodate frequency counts.
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+  \vspace{0.2cm}
+  \begin{itemize}
+  \pause
+  \item \textbf{For publications:}
+    \begin{itemize}
+    \item Rarely ever used in publications
+    \item Applicable for publication of appendices and manuscripts of theses
+    \end{itemize}
+  \pause
+  \item \textbf{For behind-the-scenes work:}
+    \begin{itemize}
+    \item Used excessively internally in `R`
+    \item Basis for many plotting approaches
+    \end{itemize}
+  \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+  \vspace{0.2cm}
+  \centering \includegraphics[width=1\linewidth]{Figures/Table3.jpg}  
+  \raggedright \tiny{\textit{Lotsch, A. (1996) Biome level classification of land cover at continental scales using decision trees. Free University of Berlin. Available at: http://cliveg.bu.edu/download/thdis/alotsch.MA.pdf.} \\  
+  \hfill \linebreak
+  Note that the table caption is misplaced on this table.}
+  \end{column}
+\end{columns}
+
+### Stems And Leaf Displays
+Accommodate frequency/count data.
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+  \vspace{0.2cm}
+  \begin{itemize}
+  \pause
+  \item \textbf{For publications:}
+    \begin{itemize}
+    \item Pretty outdated
+    \item Usually only included in books and course material
+    \end{itemize}
+  \pause
+  \item \textbf{For behind-the-scenes work:}
+    \begin{itemize}
+    \item Of no particular use when considering small or excessively big data sets
+    \item Can be helpful in data exploration of medium-sized data sets
+    \end{itemize}
+  \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+  \vspace{0.2cm}
+  \centering \includegraphics[width=1\linewidth]{Figures/Table4.jpg}
+  
+  \raggedright \tiny{\textit{Lane, D. M. (2009) Introduction To Statistics, Introduction to Statistics. doi: 10.1016/B978-0-12-370483-2.00006-0.}}
+  \end{column}
+\end{columns}
+
+
+# Plots
+## Using Plots
+### Plot Etiquette
+\begin{center}
+Plots are extremely \textbf{useful data summary and visualisation tools}.
+\end{center}
+\pause
+Etiquette in plot making:
+\begin{itemize}
+\item Less is more (strife for simplicity)
+\item Figure captions are placed \textbf{below} the figure they belong to
+\end{itemize}
+\vspace{0.2cm}
+\pause
+Making plots directly in `R` entails a learning curve and there is a heavy debate about how to do the plotting:
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+  \pause
+    Using \textbf{base R}:
+    \begin{itemize}
+    \item Can be cumbersome
+    \item Relies on same commands as basic R coding
+    \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+  \pause
+    Using \textbf{ggplot}:
+    \begin{itemize}
+    \item Extremely powerful
+    \item Relies on ggplot specific commands
+    \end{itemize}
+  \end{column}
+\end{columns}
+
+### The Good, The Bad, And The Ugly
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \begin{itemize}
+    \pause
+    \item \textbf{Good plots:}
+      \begin{itemize}
+      \item Clearly legible labels
+      \item Clean look
+      \item Concise caption
+      \end{itemize}
+    \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \begin{itemize}
+    \pause
+    \item \textbf{Bad plots:}
+      \begin{itemize}
+      \item Convoluted display
+      \item Overlapping plotting symbols
+      \item Overly complicated caption
+      \end{itemize}
+    \end{itemize}
+  \end{column}
+\end{columns}
+
+\vspace{0.3cm}
+\begin{itemize}
+\pause
+\item \textbf{Ugly plots:}
+  \begin{itemize}
+  \item Photos
+    \begin{itemize}
+    \item No-Go for publications
+    \item Ok for presentations
+    \item Very good for keeping track of complex set-ups for yourself and to aid memory when doing field work
+    \end{itemize}
+  \item Awkward legend
+  \item Awkward labelling (e.g. obvious R internal naming)
+  \item Excel figures
+  \end{itemize}
+\end{itemize}
+
+### The Good
+\hfill \linebreak
+\begin{center}
+\includegraphics[width=2\linewidth]{Figures/Good.jpg}  
+\end{center}
+\vspace{.2cm}
+\tiny\textit{De Boeck, H. J. et al. (2017) 'Patterns and drivers of biodiversity-stability relationships under climate extremes', Journal of Ecology, (October), pp. 1-13. doi: 10.1111/1365-2745.12897.}
+
+### The Bad
+\begin{center}
+\includegraphics[height=0.7\textheight]{Figures/Bad.jpg}  
+\end{center}
+\vspace{.2cm}
+\tiny\textit{De Boeck, H. J. et al. (2017) 'Patterns and drivers of biodiversity-stability relationships under climate extremes', Journal of Ecology, (October), pp. 1-13. doi: 10.1111/1365-2745.12897.}
+
+### The Ugly
+\begin{center}
+\includegraphics[height=0.8\textheight]{Figures/Ugly1.jpg} 
+\end{center}
+\vspace{.2cm}
+\tiny\textit{Andrady, A. L. (2011) 'Microplastics in the marine environment', Marine Pollution Bulletin. Pergamon, 62(8), pp. 1596-1605. doi: 10.1016/J.MARPOLBUL.2011.05.030.}
+
+### The Ugly
+\begin{center}
+\includegraphics[height=0.7\textheight]{Figures/Ugly2.jpg}
+\end{center}
+\vspace{.2cm}
+\tiny\textit{Kanhai, L. D. K. et al. (2017) 'Microplastic abundance, distribution and composition along a latitudinal gradient in the Atlantic Ocean', Marine Pollution Bulletin, 115(1-2), pp. 307-314. doi: 10.1016/j.marpolbul.2016.12.025.}
+
+## How To Make A Plot In `R`
+### `ggplot` Overview
+\begin{center}
+These seminars will focus on how to create plots with `ggplot` instead of teaching you data visualisation using base `R` commands.
+\end{center}
+
+\vspace{.2cm}
+
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+    \textbf{Why we use} `ggplot`:
+    \begin{itemize}
+    \pause
+    \item It is extremely powerful
+    \pause
+    \item It is becoming the norm
+    \pause
+    \item Even base graphics look good
+    \end{itemize}
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+    \textbf{Why} `ggplot` \textbf{can frustrate you}:
+    \begin{itemize}
+    \pause
+    \item You need to memorise specific commands
+    \pause
+    \item Certain objects in `R` are not compatible with `ggplot` yet
+    \pause
+    \item It may be unintuituve at first
+    \end{itemize}
+  \endcol
+\endcols
+\pause
+\vspace{0.7cm}
+If you need an introduction to base plot, go here: \url{https://biostats.w.uib.no/topics/r/r-7-making-plot-learn-the-basics/}.
+
+### How To Make A Plot In `R` (using `ggplot`)
+
+The `ggplot()` function considers \textbf{three basic components} to a plot:
+
+\vspace{.2cm}
+\pause
+\begin{itemize}
+\item \textit{Data set} - where to get the data to the plotted from
+\end{itemize}
+```{r plot_start, tidy=FALSE, eval=FALSE}
+ggplot(diamonds)
+``` 
+
+\vspace{.2cm}
+\pause
+\begin{itemize}
+\item \textit{Aesthetics} - what variables should be used
+\end{itemize}
+```{r plot_start1, tidy=FALSE, eval=FALSE}
+ggplot(diamonds, aes(x=carat, y=price))
+``` 
+
+\vspace{.2cm}
+\pause
+\begin{itemize}
+\item \textit{Layers/Geometry} - what kind of plot to produce
+\end{itemize}
+```{r plot_start2, tidy=FALSE, eval=FALSE}
+ggplot(diamonds,aes(x=carat, y=price)) + geom_point()
+``` 
+\vspace{.4cm}
+\pause
+You can find a `ggplot` cheatsheet in the course repository (\url{https://github.com/ErikKusch/An-Introduction-to-Biostatistics-Using-R}).
+
+### How To Make A Plot In `R` (Basic Scatterplot)
+We start off by plotting data contained within the `diamonds` data set that comes with the `ggplot2` package. We will be assessing how carats and price of individual diamonds influence each other.
+\scriptsize
+```{r plot_start_Disp, tidy=FALSE, eval=TRUE, fig.height = 5, fig.width = 15, fig.align = 'center'}
+library(ggplot2)
+p <- ggplot(diamonds, # the data set
+       aes(x=carat, y=price) # aesthetics
+       ) + geom_point() # geometry
+p
+``` 
+
+### How To Make A Plot In `R` (Labelling Axes and Title) I
+A good plot always includes a title and sports some fancy axis labels:
+\scriptsize
+```{r plot_axeslab, tidy=FALSE, eval=TRUE, fig.height = 5, fig.width = 15, fig.align = 'center'}
+library(ggplot2)
+p <- p + labs(title="Scatterplot", x="Carat", y="Price")
+p
+``` 
+
+### How To Make A Plot In `R` (Labelling Axes and Title) II
+Sometimes, you may wish to customise axes even further
+\scriptsize
+```{r plot_axeslab2, tidy=FALSE, eval=TRUE, fig.height = 5, fig.width = 15, fig.align = 'center'}
+p <- p + theme(axis.text.x = element_text(face="bold", color="#993333", 
+                           size=14, angle=45),
+          axis.text.y = element_text(face="bold", color="#993333", 
+                           size=14, angle=45))
+p
+``` 
+
+
+### How To Make A Plot In `R` (Symbols and Colours I) 
+Colours are a great way of adding information to the plot. In this case, we want to visualise the quality of the cut of each diamond:
+\scriptsize
+```{r plot_col, tidy=FALSE, eval=TRUE, fig.height = 5, fig.width = 15, fig.align = 'center'}
+p <- ggplot(diamonds, aes(x=carat, y=price, color=cut)) + geom_point(shape = 4) + 
+  labs(title="Scatterplot", x="Carat", y="Price")
+p
+``` 
+
+### How To Make A Plot In `R` (Symbols and Colours II)
+\begincols[T]
+  \begincol{.5\linewidth}
+    \textbf{Symbols}:
+    \centering \includegraphics[width=1\linewidth]{Figures/PlotSymbols.jpg}
+  \endcol
+  \begincol{.5\linewidth}
+  \pause
+    \textbf{Colours}:
+    \begin{itemize}
+    \item Hex colour codes for most precise colour specifications (\url{https://www.color-hex.com/})
+    \item Name specification for easiest coding (\url{http://sape.inf.usi.ch/quick-reference/ggplot2/colour})
+    \end{itemize}
+  \endcol
+\endcols
+
+### How To Make A Plot In `R` (Themes)
+`ggplot` provides you with a set of themes for easy and quick adjustement of basic plotting components:
+\scriptsize
+```{r plot_themes, tidy=FALSE, eval=TRUE, fig.height = 5, fig.width = 15, fig.align = 'center'}
+p <- p + theme_bw() + theme(plot.title=element_text(size=20, face="bold"), 
+  axis.text.x=element_text(size=15), axis.text.y=element_text(size=15),
+  axis.title.x=element_text(size=15), axis.title.y=element_text(size=15))
+p
+``` 
+
+### How To Make A Plot In `R` (Legend) 
+Legends are added automatically when colours are used but may not satisfy the user:
+\scriptsize
+```{r plot_leg, tidy=FALSE, eval=TRUE, fig.height = 5, fig.width = 15, fig.align = 'center'}
+p <- p + 
+  theme(legend.justification=c(1,0), legend.position=c(1,0)) + # legend inside
+  scale_color_discrete(name="Cut Quality")  # Change legend title
+p
+``` 
+
+### How To Make A Plot In `R` (Complex Plots)
+Sometimes, you may want to show complex information that still includes the base data:
+\scriptsize
+```{r plot_complex, tidy=FALSE, eval=TRUE, fig.height = 5, fig.width = 15, fig.align = 'center'}
+p <- p + geom_smooth()
+p
+``` 
+
+### How To Make A Plot In `R` (Saving Graphs)
+Graphs can be \textbf{saved} either via the `ggsave()` function:
+
+```{r savingplots, eval=FALSE, tidy=FALSE}
+ggsave(filename = "Savedplot.jpg", 
+       width = 10, height = 10, units = cm)
+```
+
+or via the drop-down menu in the Files and Plots pane in RStudio.
+\vspace{0.5cm}
+
+\textbf{Combining} plots to appear in sets of any given number is done using the `grid.arrange()` command contained within the `gridExtra` package. For example, `grid.arrange(plot1, plot2, ncol=2)` will result in a plotting environment in which the plots (plot1 and plot 2) will be arranged side by side. These can be saved to the hard drive as follows:
+
+```{r savingplots2, eval=FALSE, tidy=FALSE}
+ggsave(filename = "Savedplot.jpg", 
+       arrangeGrob(plot1, plot2))
+```
+
+## Plot Types
+### Creating Some Data
+For some of the following plotting methods, we will need the following data:
+\small
+```{r Data, tidy.opts=list(width.cutoff=55)}
+set.seed(42) # making the code reproducible
+data_vec <- rnorm(mean = 20, sd = 2, n = 54)
+matrix(data_vec, nrow = 6)
+```
+
+### Pie Charts In Practice
+Accommodates frequency/count data.
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{itemize}
+    \pause
+    \item \textbf{For publications:}
+      \begin{itemize}
+      \item Can have merit when used to show proportions.
+      \item Used seldom.
+      \end{itemize}
+    \pause
+    \item \textbf{For behind-the-scenes work:}
+      \begin{itemize}
+      \item Can give some initial insight on data properties.
+      \item Other plot types are usually preferable.
+      \end{itemize}
+    \end{itemize}
+    $\rightarrow$ Only really useful for showing proportions and even then line graphs may be more useful.
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{center}
+    \includegraphics[width=0.8\linewidth]{Figures/pie.png}  
+    \end{center}
+    \tiny{\textit{Anderson, T. (2007) Biology of the Ubiquitous House Sparrow: From Genes to Populations, Biology of the Ubiquitous House Sparrow: From Genes to Populations. doi: 10.1093/acprof:oso/9780195304114.001.0001.}}
+  \end{column}
+\end{columns}
+
+### Pie Charts In `R`
+```{r datpie, tidy=FALSE, eval=FALSE}
+df <- data.frame(slices = c(4,9,16), 
+                 names = c("A", "B", "C"))
+```
+\begincols[T]
+  \begincol{.4\linewidth}
+  \scriptsize
+```{r pie, tidy=FALSE, eval=FALSE}
+ggplot(df, 
+       aes(x="", y = slices, 
+           fill = names)) + 
+  geom_bar(width = 1, 
+           stat = "identity") +
+  coord_polar("y", start=0) +
+  theme_void() +
+  labs(title = "Pie Chart")
+``` 
+  \endcol
+  \begincol{.6\linewidth}
+```{r pie_Disp, echo=FALSE, fig.height = 7}
+df <- data.frame(
+  slices = c(4,9,16), 
+  names = c("A", "B", "C"))
+
+ggplot(df, 
+       aes(x="", y = slices, fill = names)) + 
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start=0) +
+  theme_void() +
+  labs(title = "Pie Chart")
+``` 
+  \endcol
+\endcols
+
+
+### Scatterplots In Practice
+Accommodates all kinds of data.
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{itemize}
+    \pause
+    \item \textbf{For publications:}
+      \begin{itemize}
+      \item Great way of presenting unaltered data.
+      \item Used extremely often.
+      \end{itemize}
+    \pause
+    \item \textbf{For behind-the-scenes work:}
+      \begin{itemize}
+      \item Perfect method for data exploration and data mining.
+      \item Used in almost every analysis.
+      \end{itemize}
+    \end{itemize}
+    $\rightarrow$ Unavoidable data visualisation tool.
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{center}
+    \includegraphics[width=1\linewidth]{Figures/Scatter.png}  
+    \end{center}
+    \tiny{\textit{Scheffer, M. et al. (2012) 'Thresholds for boreal biome transitions.', Proceedings of the National Academy of Sciences of the United States of America, 109(52), pp. 21384-9. doi: 10.1073/pnas.1219844110.}}
+  \end{column}
+\end{columns}
+
+
+### Scatterplots In `R`
+```{r datscatter, tidy=FALSE, eval=FALSE}
+df <- data.frame(
+  Data = data_vec, 
+  Sequence = 1:length(data_vec))
+```
+\begincols[T]
+  \begincol{.4\linewidth}
+  \scriptsize
+```{r scatter, tidy=FALSE, eval=FALSE}
+ggplot(df, 
+       aes(x=Sequence, 
+           y = Data)) + 
+  geom_point() +
+  theme_classic() +
+  labs(title = "Scatterplot")
+``` 
+  \endcol
+  \begincol{.6\linewidth}
+```{r scatter_Disp, echo=FALSE, fig.height = 6.5}
+df <- data.frame(
+  Data = data_vec, 
+  Sequence = 1:length(data_vec))
+
+ggplot(df, 
+       aes(x=Sequence, y = Data)) + 
+  geom_point() +
+  theme_classic() +
+  labs(title = "Scatterplot")
+``` 
+  \endcol
+\endcols
+
+
+### Line Graphs In Practice
+Accommodates continuous data.
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{itemize}
+    \pause
+    \item \textbf{For publications:}
+      \begin{itemize}
+      \item Often used as a logical conclusion to emerging trends in scatter plots.
+      \item Used pretty often. Especially when showing relationships.
+      \end{itemize}
+    \pause
+    \item \textbf{For behind-the-scenes work:}
+      \begin{itemize}
+      \item Scatter plots may suffice.
+      \item When causal links between variables are the goal, then these are the way to go.
+      \end{itemize}
+    \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{center}
+    \includegraphics[width=1\linewidth]{Figures/Line.png}  
+    \end{center}
+    \tiny{\textit{Papagiannopoulou, C. et al. (2017) 'A non-linear Granger-causality framework to investigate climate-vegetation dynamics', Geoscientific Model Development, 10(5), pp. 1945-1960. doi: 10.5194/gmd-10-1945-2017.}}
+  \end{column}
+\end{columns}
+\vspace{0.2cm}
+$\rightarrow$ Remember only to use if continuity is actually implied
+
+### Line Graphs In `R`
+
+```{r datline, tidy=FALSE, eval=FALSE}
+df <- data.frame(
+  Data = sort(data_vec), 
+  Sequence = 1:length(data_vec))
+```
+\begincols[T]
+  \begincol{.4\linewidth}
+  \scriptsize
+```{r line, tidy=FALSE, eval=FALSE}
+ggplot(df, 
+       aes(x=Sequence, 
+           y = Data)) + 
+  geom_line() +
+  theme_classic() +
+  labs(title = "Line Plot")
+``` 
+  \endcol
+  \begincol{.6\linewidth}
+```{r line_Disp, echo=FALSE, fig.height = 6.5}
+df <- data.frame(
+  Data = sort(data_vec), 
+  Sequence = 1:length(data_vec))
+
+ggplot(df, 
+       aes(x=Sequence, y = Data)) + 
+  geom_line() +
+  theme_classic() +
+  labs(title = "Line Plot")
+``` 
+  \endcol
+\endcols
+
+
+### Bar Charts In Practice
+Accommodates count data.
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{itemize}
+    \pause
+    \item \textbf{For publications:}
+      \begin{itemize}
+      \item Mostly used when data can be arranged into distinct groups.
+      \item Used seldom.
+      \end{itemize}
+    \pause
+    \item \textbf{For behind-the-scenes work:}
+      \begin{itemize}
+      \item Can be helpful in data exploration but usually falls short of other methods.
+      \end{itemize}
+    \end{itemize}
+  $\rightarrow$ Useful for classifications.
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{center}
+    \includegraphics[width=0.6\linewidth]{Figures/bar.png}  
+    \end{center}
+    \tiny{\textit{Harris, A., Carr, A. S. and Dash, J. (2014) 'Remote sensing of vegetation cover dynamics and resilience across southern Africa', International Journal of Applied Earth Observation and Geoinformation. Elsevier B.V., 28(1), pp. 131-139. doi: 10.1016/j.jag.2013.11.014.}}
+  \end{column}
+\end{columns}
+
+
+### Bar Charts In `R`
+```{r datbar, tidy=FALSE, eval=FALSE}
+df <- data.frame(slices = c(4,9,16), 
+                 names = c("A", "B", "C"))
+```
+\begincols[T]
+  \begincol{.4\linewidth}
+  \scriptsize
+```{r bar, tidy=FALSE, eval=FALSE}
+ggplot(df, 
+       aes(x=names, 
+           y = slices)) + 
+  geom_bar(width = .5, 
+           stat = "identity") +
+  theme_void() +
+  labs(title = "Bar Chart")
+``` 
+  \endcol
+  \begincol{.6\linewidth}
+```{r bar_Disp, echo=FALSE, fig.height = 6.5}
+df <- data.frame(
+  slices = c(4,9,16), 
+  names = c("A", "B", "C"))
+
+ggplot(df, 
+       aes(x=names, y = slices)) + 
+  geom_bar(width = .5, 
+           stat = "identity") +
+  theme_void() +
+  labs(title = "Bar Chart")
+``` 
+  \endcol
+\endcols
+
+
+### Histograms In Practice
+Accommodates frequency count data.
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{itemize}
+    \pause
+    \item \textbf{For publications:}
+      \begin{itemize}
+      \item Great way of presenting data distributions.
+      \item Used extensively.
+      \end{itemize}
+    \pause
+    \item \textbf{For behind-the-scenes work:}
+      \begin{itemize}
+      \item Almost unavoidable in data exploration and assumption checking.
+      \end{itemize}
+    \end{itemize}
+    $\rightarrow$ Used to assess and understand data distributions.
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{center}
+    \includegraphics[width=1\linewidth]{Figures/Hist.png}  
+    \end{center}
+    \tiny{\textit{Scheffer, M. et al. (2012) 'Thresholds for boreal biome transitions.', Proceedings of the National Academy of Sciences of the United States of America, 109(52), pp. 21384-9. doi: 10.1073/pnas.1219844110.}}
+  \end{column}
+\end{columns}
+
+### Histograms In `R`
+\begincols[T]
+  \begincol{.4\linewidth}
+  \scriptsize
+```{r hist, tidy=FALSE, eval=FALSE}
+ggplot() + aes(data_vec)+ 
+  geom_histogram(binwidth=1, 
+                 colour="black", 
+                 fill="white")
+``` 
+  \endcol
+  \begincol{.6\linewidth}
+```{r hist_Disp, echo=FALSE}
+ggplot() + aes(data_vec)+ 
+  geom_histogram(binwidth=1, colour="black", fill="white")
+``` 
+  \endcol
+\endcols
+
+### Frequency Polygon In Practice
+Accommodates frequency count data.
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{itemize}
+    \pause
+    \item \textbf{For publications:}
+      \begin{itemize}
+      \item May be used as the logical conclusion to histogram displays.
+      \item Used rather sparingly due to a possible masking effect.
+      \end{itemize}
+    \pause
+    \item \textbf{For behind-the-scenes work:}
+      \begin{itemize}
+      \item You may wish to use this to add more information to the plot besides the distribution.
+      \item Histograms usually suffice.
+      \end{itemize}
+    \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{center}
+    \includegraphics[width=1\linewidth]{Figures/poly.png}  
+    \end{center}
+    \tiny{\textit{McGill, B. J. et al. (2006) 'Rebuilding community ecology from functional traits', Trends in Ecology and Evolution, 21(4), pp. 178-185. doi: 10.1016/j.tree.2006.02.002.}}
+  \end{column}
+\end{columns}
+\vspace{0.2cm}
+$\rightarrow$ Used to assess and understand data distributions.
+
+### Frequency Polygon In `R`
+\begincols[T]
+  \begincol{.4\linewidth}
+  \scriptsize
+```{r poly, tidy=FALSE, eval=FALSE}
+ggplot() + aes(data_vec) +
+  geom_freqpoly()
+``` 
+  \endcol
+  \begincol{.6\linewidth}
+```{r poly_Disp, echo=FALSE}
+ggplot() + aes(data_vec) +
+  geom_freqpoly()
+``` 
+  \endcol
+\endcols
+
+### Dendrograms In Practice
+Accommodates classification data.
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{itemize}
+    \pause
+    \item \textbf{For publications:}
+      \begin{itemize}
+      \item Usage almost exclusively to portraying phylogenetics.
+      \item Applicable to all clustering approaches.
+      \end{itemize}
+    \pause
+    \item \textbf{For behind-the-scenes work:}
+      \begin{itemize}
+      \item Intuitive display of data groups.
+      \item Coloured scatter plots may outperform dendrograms in certain situations.
+      \end{itemize}
+    \end{itemize}
+    $\rightarrow$ Great to visualise hierarchical clustering approaches.
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{center}
+    \includegraphics[width=0.7\linewidth]{Figures/dendro.png}  
+    \end{center}
+    \tiny{\textit{Anderson, T. (2007) Biology of the Ubiquitous House Sparrow: From Genes to Populations, Biology of the Ubiquitous House Sparrow: From Genes to Populations. doi: 10.1093/acprof:oso/9780195304114.001.0001.}}
+  \end{column}
+\end{columns}
+
+
+### Dendrograms In `R`
+`ggplot` can't handle certain objects (such as these hierarchical clusters):
+\begincols[T]
+  \begincol{.4\linewidth}
+  \scriptsize
+```{r dendro, tidy=FALSE, eval=FALSE}
+library(vegan)
+
+dist_mat <- vegdist(
+  matrix(data_vec[1:25], 
+         nrow=5))
+
+clust <- hclust(
+  d = dist_mat, 
+  method="single")
+
+plot(clust)
+``` 
+  \endcol
+  \begincol{.6\linewidth}
+```{r dendro_Disp, echo=FALSE}
+library(vegan)
+
+dist_mat <- vegdist(
+  matrix(data_vec[1:25]
+         , nrow=5))
+
+clust <- hclust(
+  d = dist_mat, 
+  method="single")
+
+plot(clust)
+``` 
+  \endcol
+\endcols
+
+### Boxplots In Practice
+Accommodates numerical data.
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{itemize}
+    \pause
+    \item \textbf{For publications:}
+      \begin{itemize}
+      \item Immensely useful data visualisation tool to represent parameters of groups of data.
+      \item Used very frequently.
+      \end{itemize}
+    \pause
+    \item \textbf{For behind-the-scenes work:}
+      \begin{itemize}
+      \item Always nice for data exploration.
+      \item Hard to avoid (not that you'd want to).
+      \end{itemize}
+    \end{itemize}
+    $\rightarrow$ Used to present basic parameters of descriptive statistics.
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{center}
+    \includegraphics[width=0.55\linewidth]{Figures/box.png}  
+    \end{center}
+    \tiny{\textit{Smith, A. P. et al. (2017) 'Shifts in pore connectivity from precipitation versus groundwater rewetting increases soil carbon loss after drought', Nature Communications. Springer US, 8(1), p. 1335. doi: 10.1038/s41467-017-01320-x.}}
+  \end{column}
+\end{columns}
+
+### Boxplots In Theory
+Box plots are less intuitive than other plotting displays:
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \textbf{Contained information:}
+      \begin{itemize}
+      \item Lower and upper 99.3\% intervals of the data (expressed as whiskers).
+      \item The cut-point for Quartile 1 and 3 (these are the outer edges of the box, so 50\% of the data fall inside the box).
+      \item The Median, usually represented by a bold line inside the box, because its behaviour is robust (more so than that of the mean).
+      \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{center}
+    \includegraphics[width=0.8\linewidth]{Figures/boxtheory.png}  
+    \end{center}
+  \end{column}
+\end{columns}
+
+### Boxplots In `R`
+You can also use `geom_violin()` for some fancy violin plots which result in a roughly equal depiction of the data.
+
+\begincols[c]
+  \begincol{.4\linewidth}
+  \scriptsize
+```{r box, tidy=FALSE, eval=FALSE}
+location <- as.factor(
+  c(rep("A",27), 
+    rep("B",27)))
+
+data_df <- data.frame(
+  data_vec,location)
+
+ggplot(data_df, 
+       aes(x = location, 
+           y = data_vec)) +
+  geom_boxplot() 
+``` 
+  \endcol
+  \begincol{.6\linewidth}
+```{r box_Disp, echo=FALSE}
+location <- as.factor(
+  c(rep("A",27), rep("B",27)))
+
+data_df <- data.frame(
+  data_vec,location)
+
+ggplot(data_df, 
+       aes(x = location, y = data_vec)) +
+  geom_boxplot() 
+``` 
+  \endcol
+\endcols
+
+
+### Contour Plots In Practice
+Accommodates all kinds of data.
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{itemize}
+    \pause
+    \item \textbf{For publications:}
+      \begin{itemize}
+      \item More complicated to understand.
+      \item Used sparingly.
+      \end{itemize}
+    \pause
+    \item \textbf{For behind-the-scenes work:}
+      \begin{itemize}
+      \item You might as well include it in your final manuscript if you bother coming up with one.
+      \end{itemize}
+      $\rightarrow$ Used to understanding the relationship of variables in a classification setting.
+    \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{center}
+    \includegraphics[width=1\linewidth]{Figures/Contour.png}  
+    \end{center}
+    \tiny{\textit{Brewer, M. J. et al. (2016) 'Plateau: A new method for ecologically plausible climate envelopes for species distribution modelling', Methods in Ecology and Evolution, pp. 1489-1502. doi: 10.1111/2041-210X.12609.}}
+  \end{column}
+\end{columns}
+
+### 3-D Plots In Practice
+Accommodates all kinds of data.
+\begin{columns}[T]
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{itemize}
+    \pause
+    \item \textbf{For publications:}
+      \begin{itemize}
+      \item $>$ 2 dimensions translate badly to paper.
+      \item Used extremely rarely.
+      \end{itemize}
+    \pause
+    \item \textbf{For behind-the-scenes work:}
+      \begin{itemize}
+      \item Good for data exploration.
+      \item Especially useful when inspecting PCA (Principal Component Analysis) results.
+      \end{itemize}
+      $\rightarrow$ Used to understanding the relationship of variables in a classification setting.
+    \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+    \vspace{0.2cm}
+    \begin{center}
+    \includegraphics[width=0.5\linewidth]{Figures/3d.png}  
+    \end{center}
+    \tiny{\textit{Díaz, S. et al. (2015) 'The global spectrum of plant form and function', Nature. Nature Publishing Group, 529(7585), pp. 167-171. doi: 10.1038/nature16489.}}
+  \end{column}
+\end{columns}
+
+### The Hat Goes Deeper!
+There are way more plot types that you may want to use at some point.  
+
+\vspace{.2cm}
+Flow charts to illustrate your workflow, for example:
+\begin{center}
+    \includegraphics[width=0.5\linewidth]{Figures/Flow.png}  
+    \end{center}
+\tiny\textit{Seddon, A. W. R. et al. (2016) 'Sensitivity of global terrestrial ecosystems to climate variability.', Nature, 531(7593), pp. 229-232. Available at: http://dx.doi.org/10.1038/nature16986.}
+
+# Exercise
+## `R`-internal data sets
+### The data that comes with `R`
+`R` is supplied with in-built data sets and more data sets will be added to your local library when you install additional packages. These data sets are immensely useful in creating **minimal working exmaples (MWEs)** which show how something works (or doesn't) with the least amount of code possible.
+
+\pause
+\vspace{1cm}
+
+You can **retrieve all available data** sets in your library using the command `data()` and **load** any of the given **data sets** by adding the name of the data set as the argument to the `data()` function. 
+
+## Making plots
+### Creating plots with `R`
+
+Your **ToDo-List** for this exercise:  
+
+\vspace{.2cm}
+
+* Load the `R`-internal `iris` data set (it is included in the `datasets` package)  
+* Inspect the data set  
+* Produce a **boxplot** of `Petal.Length` by `Species`  
+* Produce a **scatterplot** of `Petal.Length` and `Petal.Width`  
+* Produce a **scatterplot** of `Petal.Length` and `Petal.Width` grouped by `Species`  
+* Produce a **plot of your choice** to show the relationship of `Sepal.Length` and `Sepal.Width`  
+* Produce a **plot of your choice** to show the relationship of `Sepal.Length` and `Sepal.Width` when grouped by `Species`  
+
+\vspace{.2cm}
+\pause
+$\rightarrow$ Play around with other combinations of variables and plotting types

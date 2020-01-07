@@ -1,0 +1,353 @@
+---
+title: "" # needs to be empty since it is specified in Title.Rmd
+author: ""
+date: ""
+documentclass: "book"
+fontsize: 10pt
+output: 
+  pdf_document:
+    includes:
+      in_header: Style_Exercise.tex
+subparagraph: true # this is needed as a workaround to get titlesec to work
+geometry: "left= 2cm,right = 2cm, bottom = 1.5cm, top = 2cm"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=90),tidy=TRUE, fig.height=4, fig.width = 12)
+options(digits=2, width = 90)
+```
+
+<!--- ####### PREAMBLE -----------
+--------------------------------------------->
+\begin{center}
+\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
+\hspace{.05\linewidth}
+\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
+\end{center}
+
+\\
+
+\vspace{5.5cm}
+
+\begin{center}
+\textsc{\LARGE{
+\textbf{Descriptive Statistics}\\
+\vspace{0.15cm}
+Biostatistics for Beginners \\
+\vspace{0.3cm}
+- } \vspace{0.3cm}\\
+\large{BASIC STATISTICS FOR BIOLOGISTS\\
+}}
+\end{center}
+
+\vspace{6.5cm}
+
+\raggedleft
+\textbf{Erik Kusch}  
+\textit{PhD Student}  
+Aarhus University  
+Department of Bioscience  
+Section for Ecoinformatics \& Biodiversity  
+Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE)  
+Ny Munkegade 116, Building 1540  
+8000 Aarhus  
+Denmark  
+email: erik@i-solution.de  
+
+\raggedright
+\clearpage
+
+<!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
+\pagestyle{plain}
+\pagenumbering{roman}
+
+\begingroup
+\let\clearpage\relax
+\let\cleardoublepage\relax
+\begin{LARGE}
+ \textbf{Summary:}\\
+ \vspace{0.2cm}
+\end{LARGE}
+These are the solutions to the exercises contained within the handout to “Descriptive Statistics” which walks you through the basics of descriptive statistics and its parameters. The analyses presented here are using data from the `StarWars` data set supplied through the `dplyr` package that have been saved as a .csv file.  
+
+Keep in mind that there is probably a myriad of other ways to reach the same conclusions as presented in these solutions.
+
+
+\setcounter{secnumdepth}{3} 
+\setcounter{tocdepth}{4} 
+\tableofcontents
+\endgroup
+
+<!--- ####### DOCUMENT ---------------------------------------------------------->
+\pagestyle{fancy}
+\pagenumbering{arabic}
+
+# Packages
+As you will remember from our lecture slides, the calculation of the mode in `R` can either be achieved through some intense coding or simply by using the `mlv(..., method="mfv")` function contained within the `modeest` package (unfortunately, this package is out of date and can sometimes be cahellenging to install).  
+
+Conclusively, it is now time for you to get familiar with how packages work in `R`. Packages are the way by which `R` is supplied with user-created and moderator-mediated functionality that exceeds the base applicability of `R`. Many things you will want to accomplish in more advanced statistics is impossible without such packages and even basic tasks such as data visualisation (dealt with in our next seminar) are reliant on `R` packages.  
+
+If you want to get a package and its functions into `R` there are two ways we will discuss in the following. In general, it pays to load all packages at the beginning of a coding document before any actual analyses happen (in the preamble) so you get a good overview of what the program is calling upon.
+
+## Basic Preamble
+This is the most basic version of getting packages into `R` and is widely practised and taught. Unsurprisingly, I am not a big fan of it.  
+
+First, you use function `install.packages()` to download the desired package off dedicated servers (usually CRAN-mirrors) to your machine where it is then unpacked into a library (a folder that's located in your documents section by default). Secondly, you need to invoke the `library()` function to load the `R` package you need into your active `R` session. In our case of the package `modeest` it would look something like this:
+```{r RPack1, eval=FALSE}
+install.packages("modeest")
+library(modeest)
+```
+
+The reason I am not overly fond of this procedure is that it is clunky, can break easily through spelling mistakes and starts cluttering your preamble super fast if the analyses you are wanting to perform require excessive amounts of packages. Additionally, when you are some place with a bad internet connection you might not want to re-download packages that are already contained on your hard drive.
+
+## Advanced Preamble
+There is a myriad of different preamble styles (just as there are tons of different, personalised coding styles). I am left with presenting my preamble of choice here but I do not claim that this is the most sophisticated one out there.  
+
+The way this preamble works is that it is structured around a user-defined function (something we will touch on later in our seminar series) which first checks whether a package is already downloaded and then installs (if necessary) and/or loads it into `R`. This function is called `install.load.package()` and you can see its specification down below (don't worry if it doesn't make sense to you yet - it is not supposed to at this point). Unfortunately, it can only ever be applied to one package at a time and so we need a workaround to make it work on multiple packages at once. This can be achieved by establishing a vector of all desired package names (`package_vec`) and then applying (`sapply()`) the `install.load.package()` function to every item of the package name vector iteratively as follows:
+```{r Packages}
+# function to load packages and install them if they haven't been installed yet
+install.load.package <- function(x) {
+  if (!require(x, character.only = TRUE))
+    install.packages(x)
+  require(x, character.only = TRUE)
+}
+# packages to load/install if necessary
+package_vec <- c("modeest")
+# applying function install.load.package to all packages specified in package_vec
+sapply(package_vec, install.load.package)
+```
+
+Why do I prefer this? Firstly, it is way shorter than the basic method when dealing with many packages (which you will get into fast, I promise), reduces the chance for typos by 50\% and does not override already installed packages hence speeding up your processing time.
+
+\let\cleardoublepage\relax
+
+# Loading the Excel data into `R`
+Our data is located in the `Data` folder and is called `DescriptiveData.csv`. Since it is a .csv file, we can simply use the `R` in-built function `read.csv()` to load the data by combining the former two identifiers into one long string with a backslash separating the two (the backslash indicates a step down in the folder hierarchy). Given this argument, `read.csv()` will produce an object of type `data.frame` in `R` which we want to keep in our environment and hence need to assign a name to. In our case, let that name be `Data_df` (I recommend using endings to your data object names that indicate their type for easier coding without constant type checking):
+```{r RLoad}
+Data_df <- read.csv("Data/DescriptiveData.csv") # load data file from Data folder
+```
+
+# What's contained within our data?
+Now that our data set is finally loaded into `R`, we can finally get to trying to make sense of it. Usually, this shouldn't ever be something one has to do in `R` but should be manageable through a project-/data-specific README file (we will cover this in our seminar on hypotheses testing and project planning) but for now we are stuck with pure exploration of our data set. Get your goggles on and let's dive in!  
+
+Firstly, it always pays to asses the basic attributes of any data object (remember the Introduction to `R` seminar):  
+
+* *Name* - we know the name (it is `Data_df`) since we named it that  
+* *Type* - we already know that it is a `data.frame` because we created it using the `read.csv` function  
+* *Mode* - this is an interesting one as it means having to subset our data frame  
+* *Dimensions* - a crucial information about how many observations and variables are contained within our data set  
+
+## Dimensions
+Let's start with the *dimensions* because these will tell us how many *modes* (these are object attribute modes and not descriptive parameter modes) to asses:
+```{r Inspecting1}
+dim(Data_df)
+```
+Using the `dim()` function, we arrive at the conclusion that our `Data_df` contains `r dim(Data_df)[1]` rows and `r dim(Data_df)[2]` columns. Since data frames are usually ordered as observations $\times$ variables, we can conclude that we have `r dim(Data_df)[1]` observations and `r dim(Data_df)[2]` variables at our hands.  
+You can arrive at the same point by using the function `View()` in `R`. I'm not showing this here because it does not translate well to paper and would make whoever chooses to print this waste paper.
+
+\hfill \linebreak
+\hfill \linebreak
+\hfill
+
+## Modes
+Now it's time to get a hang of the *modes* of the variable records within our data set. To do so, we have two choices, we can either subset the data frame by columns and apply the `class()` function to each column subset or simply apply the `str()` function to the data frame object. The reason `str()` may be favourable in this case is due to the fact that `str()` automatically breaks down the structure of `R`-internal objects and hence saves us the sub-setting:
+```{r Inspecting2}
+str(Data_df)
+```
+As it turns out, our data frame knows the `r dim(Data_df)[2]` variables of `r colnames(Data_df)` which range from `integer` to `numeric` and `factor` modes.
+
+## Data Content
+So what does our data actually tell us? Answering this question usually comes down to some analyses but for now we are only really interested in what kind of information our data frame is storing.  
+
+Again, this would be easiest to asses using a README file or the `View()` function in `R`. However, for the sake of brevity we can make due with the following to commands which present the user with the first and last five rows of any respective data frame:
+```{r Inspectin3}
+head(Data_df)
+tail(Data_df)
+```
+The avid reader will surely have picked up on the fact that all the records in the `name` column of `Data_df` belong to characters from the Star Wars universe. In fact, this data set is a modified version of the `StarWars` data set supplied by the `dplyr` package and contains information of many of the important cast members of the Star Wars movie universe.
+
+\newpage
+
+# Parameters of descriptive statistics
+
+## Names
+As it turns out (and should've been obvious from the onset if we're honest), every major character in the cinematic Star Wars Universe has a unique name to themselves. Conclusively, the calculation of any parameters of descriptive statistics makes no sense with the names of our characters for the two following reasons:  
+
+\begin{minipage}{0.55\textwidth}
+\begin{itemize}
+\item The name variable is of mode character/factor and only allows for the calculation of the mode
+\item Since every name only appears once, there is no mode
+\end{itemize}
+
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\includegraphics[width=.7\linewidth]{Figures/itsatrap.jpg}
+\end{center}
+\end{minipage}
+
+As long as the calculation of descriptive parameters of the `name` variable of our data set is concerned, Admiral Ackbar said it best.
+
+## Height
+Let's get started on figuring out some parameters of descriptive statistics for the `height` variable of our Star Wars characters.
+
+### Subsetting
+First, we need to extract the data in question from our big data frame object. This can be achieved by indexing through the column name as follows:
+```{r HeightSubs}
+Height <- Data_df$height
+```
+
+### Location Parameters
+Now, with our `Height` vector being the numeric height records of the Star Wars characters in our data set, we are primed to calculate location parameters as follows:
+```{r HeightLoc}
+mean <- mean(Height, na.rm = TRUE)
+median <- median(Height, na.rm = TRUE)
+mode <- mlv(na.omit(Height), method="mfv")
+min <- min(Height, na.rm = TRUE)
+max <- max(Height, na.rm = TRUE)
+range <- max-min
+
+# Combining all location parameters into one vector for easier viewing 
+LocPars_vec <- c(mean, median, mode, min, max, range)
+names(LocPars_vec) <- c("mean", "median", "mode", "minimum", "maximum", "range")
+LocPars_vec
+```
+As you can clearly see, there is a big range in the heights of our respective Star Wars characters with mean and median being fairly disjunct due to the outliers in height on especially either end.
+
+\clearpage
+
+### Distribution Parameters
+Now that we are aware of the location parameters of the Star Wars height records, we can move on to the distribution parameters/parameters of spread. Those can be calculated in `R` as follows:
+```{r HeightDis}
+var <- var(Height, na.rm = TRUE)
+sd <- sd(Height, na.rm = TRUE)
+quantiles <- quantile(Height, na.rm = TRUE)
+
+# Combining all location parameters into one vector for easier viewing 
+DisPars_vec <- c(var, sd, quantiles)
+names(DisPars_vec) <- c("var", "sd", "0%", "25%", "50%", "75%", "100%")
+DisPars_vec
+```
+Notice how some of the quantiles (actually quartiles in this case) link up with some of the parameters of central tendency.
+
+### Summary
+Just to round this off, have a look at what the `summary()` function in `R` supplies you with:
+```{r HeightSumm}
+summary <- summary(na.omit(Height))
+summary
+```
+This is a nice assortment of location and dispersion parameters.
+
+## Mass
+Now let's focus on the weight of our Star Wars characters.
+
+### Subsetting
+Again, we need to extract our data from the data frame. For the sake of brevity, I will refrain from showing you the rest of the analysis and only present its results to save some space.
+```{r MassSubs}
+Mass <- Data_df$mass
+```
+### Location Parameters
+```{r MassLoc, echo = FALSE}
+mean <- mean(Mass, na.rm = TRUE)
+median <- median(Mass, na.rm = TRUE)
+mode <- mlv(na.omit(Mass), method="mfv")
+min <- min(Mass, na.rm = TRUE)
+max <- max(Mass, na.rm = TRUE)
+range <- max-min
+
+LocPars_vec <- c(mean, median, mode, min, max, range)
+names(LocPars_vec) <- c("mean", "median", "mode", "minimum", "maximum", "range")
+LocPars_vec
+```
+As you can see, there is a huge range in weight records of Star Wars characters and especially the outlier on the upper end (`r max(Mass, na.rm = TRUE)`kg) push the mean towards the upper end of the weight range and away from the median. We've got Jabba Desilijic Tiure to thank for that.
+
+### Distribution Parameters
+```{r MassDis, echo = FALSE}
+var <- var(Mass, na.rm = TRUE)
+sd <- sd(Mass, na.rm = TRUE)
+quantiles <- quantile(Mass, na.rm = TRUE)
+
+DisPars_vec <- c(var, sd, quantiles)
+names(DisPars_vec) <- c("var", "sd", "0%", "25%", "50%", "75%", "100%")
+DisPars_vec
+```
+Quite obviously, the wide range of weight records also prompts a large variance and standard deviation.
+
+\clearpage
+
+## Hair Color
+Hair colour in our data set is saved in column 4 of our data set and so when sub-setting the data frame to obtain information about a characters hair colour, instead of calling on `Data_df$hair_color` we can also do so as follows:
+```{r HCSubs}
+HCs <- Data_df[,4]
+```
+
+Of course, hair colour is not a `numeric` variable and much better represent by being of mode `factor`. Therefore, we are unable to obtain most parameters of descriptive statistics but we can show a frequency count as follows which allows for the calculation of the mode:
+```{r HCMode}
+table(HCs)
+```
+
+## Eye Colour
+Eye colour is another `factor` mode variable:
+```{r ECSubs}
+ECs <- Data_df$eye_color
+```
+
+We can only calculate the mode by looking for the maximum in our `table()` output:
+```{r ECMode}
+table(ECs)
+```
+## Birth Year
+### Subsetting
+As another `numeric` variable, birth year allows for the calculation of the full range of parameters of descriptive statistics:
+```{r BYSubs}
+BY <- Data_df$birth_year
+```
+Keep in mind that StarWars operates on a different time reference scale than we do.
+
+### Location Parameters
+```{r BYLoc, echo = FALSE}
+mean <- mean(BY, na.rm = TRUE)
+median <- median(BY, na.rm = TRUE)
+mode <- mlv(na.omit(BY), method="mfv")
+min <- min(BY, na.rm = TRUE)
+max <- max(BY, na.rm = TRUE)
+range <- max-min
+
+LocPars_vec <- c(mean, median, mode, min, max, range)
+names(LocPars_vec) <- c("mean", "median", "mode", "minimum", "maximum", "range")
+LocPars_vec
+```
+Again, there is a big disparity here between mean and median which stems from extreme outliers on both ends of the age spectrum (Yoda and Wicket Systri Warrick, respectively).
+
+### Distribution Parameters
+```{r BYDis, echo = FALSE}
+var <- var(BY, na.rm = TRUE)
+sd <- sd(BY, na.rm = TRUE)
+quantiles <- quantile(BY, na.rm = TRUE)
+
+DisPars_vec <- c(var, sd, quantiles)
+names(DisPars_vec) <- c("var", "sd", "0%", "25%", "50%", "75%", "100%")
+DisPars_vec
+```
+Unsurprisingly, there is a big variance and standard deviation for the observed birth year/age records.
+
+## Gender
+Gender is another `factor` mode variable (obviously):
+```{r GenderSubs}
+Gender <- Data_df$gender
+```
+
+We can, again, only judge the mode of our data from the output of the `table()` function:
+
+```{r GenderMode}
+table(Gender)
+```
+
+Keep in mind that StarWars characters can have some weird genders.  
+
+## Closing
+Congratulations on making it through this seminar. Descriptive statistics are a gateway into higher and more advanced statistic approaches so this feels appropriate:
+
+\begin{center}
+\includegraphics[width=.7\linewidth]{Figures/1p15mf.jpg}
+\end{center}
