@@ -19,6 +19,11 @@ options(digits=2, width = 90)
 
 <!--- ####### PREAMBLE -----------
 --------------------------------------------->
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\begin{center}
+\begin{tabular}{p{\textwidth}}
+
 \begin{center}
 \includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
 \hspace{.05\linewidth}
@@ -53,6 +58,8 @@ Ny Munkegade 116, Building 1540
 Denmark  
 email: erik@i-solution.de  
 
+\end{tabular}
+\end{center}
 \raggedright
 \clearpage
 

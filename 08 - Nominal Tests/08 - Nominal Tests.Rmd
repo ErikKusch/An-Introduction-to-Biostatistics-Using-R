@@ -332,3 +332,5 @@ So which of our major research questions (seminar 6) can we answer?
     \end{itemize} 
 \endcol
 \endcols
+\vspace{.4cm}
+\raggedright Use the `1 - Sparrow_Data_READY.rds` data set for these analyses.
