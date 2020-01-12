@@ -2,16 +2,16 @@
 title: "Metric Tests (Two-Sample Situations)"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "20/05/2019"
+date: ""
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
-    keep_tex: false
+    keep_tex: true
     toc: false # this is added through a later command
     slide_level: 3 # at how many pound signs (#) to assume slide title level
     includes:
       in_header: Style.tex
-classoption: t
+classoption: "handout"
 ---
 
 ```{r setup, include=FALSE}
@@ -210,39 +210,8 @@ The medians are significantly different (p = $`r p.val`$ ). Keep in mind that th
 \endcol
 \endcols
 
-## Research Questions
-### Research Questions And Hypotheses
-\begin{center}
-So which of our major research questions (seminar 6) can we answer?
-\end{center}
-
-\small
-\begincols[T]
-  \begincol{.5\linewidth}
-  \pause
-    \textbf{Mann Whitney U Test}
-    \begin{itemize}
-    \item \textit{Climate Warming/Extremes:} Does sparrow morphology depend on climate?
-    \item \textit{Predation:} Does nesting height depend on predator characteristics?
-    \item \textit{Competition:} Does home range depend on climate?
-    \item \textit{Sexual Dimorphism:} Does sparrow morphology depend on sex?
-    \end{itemize} 
-\endcol
-\begincol{.5\linewidth}
-  \pause
-    \textbf{Wilcoxon Signed Rank Test} (suppose a resettling program)
-    \begin{itemize}
-    \item \textit{Climate Warming/Extremes:} Does sparrow morphology change depend on climate?
-    \item \textit{Predation:} Does nesting height depend on predator characteristics?
-    \item \textit{Competition:} Does home range depend on climate?
-    \end{itemize} 
-    \footnotesize
-$\rightarrow$ Find the data in \linebreak \textit{2 - Sparrow\_Resettled\_READY.rds}
-\endcol
-\endcols
-
-# Exercise
-### The `with()` function
+## Methods
+### The `with()` function I
 The `with()` function can be used to **make** your **code**:  
 - easier to **write** and **read**  
 - more **accessible**  
@@ -263,3 +232,59 @@ with(data.object,
      expression(reference.to.object.within.data.object)
      )
 ```
+
+### The `with()` function II
+```{r with2}
+WithFrame <- data.frame(First = 1:10,
+                        Second = 11:20)
+WithFrame$First
+WithFrame$Second
+```
+\vspace{.5cm}
+\centering Now let's try two operations:
+\scriptsize
+\begincols[T]
+  \begincol{.5\linewidth}
+  
+    ```{r with3, tidy=FALSE}
+    WithFrame$First + WithFrame$Second
+    ```
+\endcol
+\begincol{.5\linewidth}
+    ```{r with4, tidy=FALSE}
+    with(WithFrame, First + Second)
+    ```
+\endcol
+\endcols
+\normalsize The results are the same!
+
+## Research Questions
+### Research Questions And Hypotheses
+\begin{center}
+So which of our major research questions (seminar 6) can we answer?
+\end{center}
+
+\small
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+    \textbf{Mann Whitney U Test}
+    \begin{itemize}
+    \item \textit{Climate Warming/Extremes:} Does sparrow morphology depend on climate?
+    \item \textit{Predation:} Does nesting height depend on predator characteristics?
+    \item \textit{Competition:} Does home range depend on climate?
+    \item \textit{Sexual Dimorphism:} Does sparrow morphology depend on sex?
+    \end{itemize} 
+    \raggedright Use the `1 - Sparrow_Data_READY.rds` data set for these analyses.
+\endcol
+\begincol{.5\linewidth}
+  \pause
+    \textbf{Wilcoxon Signed Rank Test} (suppose a resettling program)
+    \begin{itemize}
+    \item \textit{Climate Warming/Extremes:} Does sparrow morphology change depend on climate?
+    \item \textit{Predation:} Does nesting height depend on predator characteristics?
+    \item \textit{Competition:} Does home range depend on climate?
+    \end{itemize} 
+    \raggedright Use the `2b - Sparrow_ResettledSIUK_READY.rds` data set for these analyses.
+\endcol
+\endcols

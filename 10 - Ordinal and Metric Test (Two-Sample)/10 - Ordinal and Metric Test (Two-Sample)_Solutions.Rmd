@@ -19,8 +19,50 @@ options(digits=2, width =90)
 
 <!--- ####### PREAMBLE -----------
 --------------------------------------------->
-```{r child = 'Title.Rmd'}
-```
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\begin{center}
+\begin{tabular}{p{\textwidth}}
+
+\begin{center}
+\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
+\hspace{.05\linewidth}
+\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
+\end{center}
+
+\\
+
+\vspace{5.5cm}
+
+\begin{center}
+\textsc{\LARGE{
+\textbf{Ordinal and Metric Tests (Two-Sample Situations)}\\
+\vspace{0.15cm}
+Analysing the Sparrow Data Set \\
+\vspace{0.3cm}
+- } \vspace{0.3cm}\\
+\large{BASIC STATISTICS FOR BIOLOGISTS\\
+}}
+\end{center}
+
+\vspace{6.5cm}
+
+\raggedleft
+\textbf{Erik Kusch} \\
+\textit{PhD Student} \\
+Aarhus University \\
+Department of Bioscience \\
+Section for Ecoinformatics \& Biodiversity \\
+Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE) \\
+Ny Munkegade 116, Building 1540 \\
+8000 Aarhus \\
+Denmark \\
+email: erik@i-solution.de \\
+
+\end{tabular}
+\end{center}
+
+\raggedright
 \clearpage
 
 <!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
@@ -367,10 +409,10 @@ Obviously, none of our data records are paired as such. Whilst one may want to m
 Conclusively, we need an **additional data set with truly paired records** of sparrows. Within our study set-up, think of a **resettling experiment**, were you take *Passer domesticus* individuals from one site, transfer them to another and check back with them after some time has passed to see whether some of their characteristics have changed in their expression.  
 To this end, presume we have taken the entire *Passer domesticus* population found at our **Siberian** research station and moved them to the **United Kingdom**. Whilst this keeps the latitude stable, the sparrows *now experience a coastal climate instead of a continental one*. After some time (let's say: a year), we have come back and recorded all the characteristics for the same individuals again.  
 
-You will find the corresponding *new data* in `2 - Sparrow_Resettled_READY.rds`. Take note that this set only contains records for the transferred individuals in the **same order** as in the old data set.  
+You will find the corresponding *new data* in `2b - Sparrow_ResettledSIUK_READY.rds`. Take note that this set only contains records for the transferred individuals in the **same order** as in the old data set.  
 
 ```{r DataLoading2}
-Data_df_Resettled <- readRDS(file = paste(Dir.Data, "/2 - Sparrow_Resettled_READY.rds", sep=""))
+Data_df_Resettled <- readRDS(file = paste(Dir.Data, "/2b - Sparrow_ResettledSIUK_READY.rds", sep=""))
 ```
 
 With these data records, we can now re-evaluate how the characteristics of sparrows can change when subjected to different conditions than previously thus shedding light on their **plasticity**.
@@ -386,15 +428,11 @@ We have already concluded that the overall morphological aspects of populations 
 First, let's see how the average weight of our individual sparrows changed a year after they were relocated from Siberia to the UK:
 ```{r WWeightClimate, tidy=FALSE}
 with(Data_df[which(Data_df$Index == "SI"),], 
-     wilcox.test(x = Weight, 
-                 y = Data_df_Resettled$Weight, 
-                 paired = TRUE))
+     wilcox.test(x = Weight, y = Data_df_Resettled$Weight, paired = TRUE))
 ```
 ```{r p.val10, echo = FALSE}
 p.val <- with(Data_df[which(Data_df$Index == "SI"),], 
-     wilcox.test(x = Weight, 
-                 y = Data_df_Resettled$Weight, 
-                 paired = TRUE)
+     wilcox.test(x = Weight, y = Data_df_Resettled$Weight, paired = TRUE)
      )$p.value
 ```
 
@@ -412,14 +450,12 @@ Yes, it does. The resettled birds have reduced their median weight (probably not
 Secondly, have our relocated sparrows become taller or shorter?
 ```{r WHeightClimate, tidy=FALSE}
 with(Data_df[which(Data_df$Index == "SI"),], 
-     wilcox.test(x = Height, 
-                 y = Data_df_Resettled$Height, 
-                 paired = TRUE))
+     wilcox.test(x = Height, y = Data_df_Resettled$Height, paired = TRUE))
 ```
 Interestingly enough, we do not receive either meaningful W (`V`) statistic nor an informative p-value (`NA`).  
 
 This could only be due to one reason:
-```{r WHeightClimate2, tidy=FALSE, echo=FALSE}
+```{r WHeightClimate2, tidy=FALSE}
 unique(Data_df$Height[which(Data_df$Index == "SI")] == Data_df_Resettled$Height)
 ```
 Our sparrows have not become any shorter or taller! In fact, no height/length record has changed for any of the sparrows we relocated. This may usually be indicative of a data handling error but, in this case, makes a lot of sense when considering how difficult it may be for mature individuals to change in size.
@@ -428,9 +464,7 @@ Our sparrows have not become any shorter or taller! In fact, no height/length re
 Third, let's check whether wing chords have changed across the board. We can expect them to behave just like height records did:
 ```{r WWingChordClimate, tidy=FALSE}
 with(Data_df[which(Data_df$Index == "SI"),], 
-     wilcox.test(x = Wing.Chord, 
-                 y = Data_df_Resettled$Wing.Chord, 
-                 paired = TRUE))
+     wilcox.test(x = Wing.Chord, y = Data_df_Resettled$Wing.Chord, paired = TRUE))
 unique(Data_df$Wing.Chord[which(Data_df$Index == "SI")] == Data_df_Resettled$Wing.Chord)
 ```
 Indeed, none of the wing chord records have changed.
