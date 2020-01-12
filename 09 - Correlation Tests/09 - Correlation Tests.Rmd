@@ -2,7 +2,7 @@
 title: "Correlation Tests"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "14/05/2019"
+date: ""
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
@@ -11,7 +11,7 @@ output:
     slide_level: 3 # at how many pound signs (#) to assume slide title level
     includes:
       in_header: Style.tex
-classoption: t
+classoption: c
 ---
 
 ```{r setup, include=FALSE}
@@ -251,6 +251,27 @@ In general, correlation analyses can make use of all kinds of data as long as th
 \textit{What about Pearson correlation and normal distributed data?}  
 We need to check whether the assumption of normal distributed data records holds true for each variable before applying Pearson correlation. If that is not the case, we may wish to use Spearman correlation.
 
+\vspace{.5cm}
+\centering When dealing with climate types, remember to reduce confounding factors by only using data belonging to the stations `SI`, `UK`, `RE`, and `AU`.
+
+## Methods
+### What If There Are No Ranks?
+\begin{center}
+We \textit{order} our data!
+\end{center}
+```{r Ranks1, tidy = FALSE}
+set.seed(42)
+Data <- sort(round(rnorm(n=10, mean=50, sd=2), 0))
+Data # the data does not need to be sorted for ranking!
+```
+The `ties.method` argument in the `ranks()` function controls what to do when multiple values are the same.
+```{r Ranks2}
+rank(Data, ties.method = "average")
+rank(Data, ties.method = "min")
+```
+
+
+
 ## Research Questions
 ### Research Questions And Hypotheses
 \begin{center}
@@ -263,25 +284,28 @@ So which of our major research questions (seminar 6) can we answer?
   \pause
     \textbf{Contingency Coefficient}
     \begin{itemize}
-    \item \textit{Competition:} Are home ranges related to their stations?
     \item \textit{Predation:} Are colour/nesting site and predators associated?
     \item \textit{Sexual Dimorphism:} Are climate records and sex ratios associated?
     \end{itemize} 
   \pause
     \textbf{Kendall's Tau}
     \begin{itemize}
-    \item \textit{Climate Warming/Extremes:} Do heavier sparrows have heavier/less eggs? 
-    \item \textit{Competition:} Do heavier sparrows flock together?
+    \item \textit{Climate Warming/Extremes:} Do heavier sparrows have heavier/less eggs? You need to rank female sparrow weight and egg weight for this.
     \end{itemize} 
 \endcol
 \begincol{.5\linewidth}
   \pause
-    \textbf{Spearman \& Pearson}
+    \textbf{Spearman}
     \begin{itemize}
     \item \textit{Climate Warming/Extremes:} Do sparrow weight/height and wing chord correlate with latitude?
     \item \textit{Climate Warming/Extremes:} Do egg weight/number of eggs correlate with latitude?
-    \item \textit{Competition:} Do population/flock size correlate with latitude?
+    \end{itemize}
+  \pause
+    \textbf{Pearson}
+    \begin{itemize}
+    \item \textit{Fitness Constraints:} Dies psarrow weight and height correlate? Can you even run this analysis?
     \end{itemize} 
 \endcol
 \endcols
-
+\vspace{.4cm}
+\raggedright Use the `1 - Sparrow_Data_READY.rds` data set for these analyses.

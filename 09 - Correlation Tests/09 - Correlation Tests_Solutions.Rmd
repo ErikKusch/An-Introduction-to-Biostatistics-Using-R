@@ -19,8 +19,48 @@ options(digits=2, width = 90)
 
 <!--- ####### PREAMBLE -----------
 --------------------------------------------->
-```{r child = 'Title.Rmd'}
-```
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\begin{center}
+\begin{tabular}{p{\textwidth}}
+
+\begin{center}
+\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
+\hspace{.05\linewidth}
+\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
+\end{center}
+
+
+\vspace{5.5cm}
+
+\begin{center}
+\textsc{\LARGE{
+\textbf{Correlation Tests}\\
+\vspace{0.15cm}
+Analysing the Sparrow Data Set \\
+\vspace{0.3cm}
+- } \vspace{0.3cm}\\
+\large{BASIC STATISTICS FOR BIOLOGISTS\\
+}}
+\end{center}
+
+\vspace{6.5cm}
+
+\raggedleft
+\textbf{Erik Kusch} \\
+\textit{PhD Student} \\
+Aarhus University \\
+Department of Bioscience \\
+Section for Ecoinformatics \& Biodiversity \\
+Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE) \\
+Ny Munkegade 116, Building 1540 \\
+8000 Aarhus \\
+Denmark \\
+email: erik@i-solution.de \\
+
+\end{tabular}
+\end{center}
+\raggedright
 \clearpage
 
 <!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
@@ -83,19 +123,6 @@ We can analyse correlations/dependencies of variables of the categorical kind us
 
 Keep in mind that the contingency coefficient is not *really* a measure of correlation but merely of association of variables. A value of $c \approx 0$ indicates independent variables.
 
-## Competition
-
-\begin{center}
-\textit{Are Home Ranges of Passer domesticus related to the stations they are observed at?}
-\end{center}
-
-Testing this question is as easy as plugging the following into the `ContCoef()` function:
-```{r Contingency1}
-table(Data_df$Home.Range, Data_df$Index)
-ContCoef(table(Data_df$Home.Range, Data_df$Index))
-```
-As we can see, there seems to be a link between the two. However, we can't be sure if these are linked directly or through another variable.
-
 ## Predation
 
 \begin{center}
@@ -107,7 +134,7 @@ This analysis builds on our findings within our previous exercise (Nominal Tests
 table(Data_df$Colour, Data_df$Predator.Presence)
 ContCoef(table(Data_df$Colour, Data_df$Predator.Presence))
 ```
-\newpage
+
 ```{r Contingency2.25}
 table(Data_df$Colour, Data_df$Predator.Type)
 ContCoef(table(Data_df$Colour, Data_df$Predator.Type))
@@ -128,8 +155,6 @@ table(Data_df$Nesting.Site, Data_df$Predator.Type)
 ContCoef(table(Data_df$Nesting.Site, Data_df$Predator.Type))
 ```
 Whilst there doesn't seem to be any strong evidence linking nesting site and predator presence, predator type seems to be linked to what kind of nesting site *Passer domesticus* prefers thus supporting our Chi-Squared results.
-
-\newpage
 
 ## Sexual Dimorphism
 
@@ -168,15 +193,11 @@ Obviously, both weight variables are metric in nature and so we could use other 
 # overwriting changes in Data_df with base data
 Data_df <- Data_df_base
 # Establishing Ranks of Egg Weight
-RankedEggWeight <- c()
-RankedEggWeight[
-  order(Data_df$Egg.Weight[which(Data_df$Sex == "Female")])
-  ] <- 1:length(which(Data_df$Sex == "Female"))
+RankedEggWeight <- rank(Data_df$Egg.Weight[which(Data_df$Sex == "Female")],
+                        ties.method = "average")
 # Establishing Ranks of Female Weight
-RankedWeight_Female <- c()
-RankedWeight_Female[
-  order(Data_df$Weight[which(Data_df$Sex == "Female")])
-  ] <- 1:length(which(Data_df$Sex == "Female"))
+RankedWeight_Female <- rank(Data_df$Weight[which(Data_df$Sex == "Female")],
+                            ties.method = "average")
 # Extracting Numbers of Eggs
 RankedEggs <- Data_df$Number.of.Eggs[which(Data_df$Sex == "Female")]
 ```
@@ -215,61 +236,6 @@ ggplot(data = plot_df, aes(x = RankedWeight, y = RankedEggNumber)) +
 
 This highlights an obvious and intuitive trade-off in nature and has us **reject the null hypotheses**.
 
-\newpage
-
-## Competition
-
-\begin{center}
-\textit{Do heavier sparrows flock together?}
-\end{center}
-
-Birds of a feather flock together and one may argue that heavier birds may be found in flocks of heavy birds as these flock might share the same beneficial resources:
-```{r Kendall.5, tidy = FALSE}
-RankedWeight <- c()
-RankedWeight[order(Data_df$Weight)] <- 1:length(Data_df$Weight)
-
-cor.test(x = RankedWeight, y = as.numeric(Data_df$Flock), 
-         use = "pairwise.complete.obs", method = "kendall")
-```
-**ATTENTION!** Although this analysis shows a statistically significant negative correlation of ranked bird weight and flock membership this analysis holds **no value at all** since flock assignment at the stations was somewhat random (flock "A" was simply the first flock) and so flock assignment should be treated as intra-site variation and not as inter-site variation as seen here and one could even argue that it isn't an ordinal variable to begin with. 
-
-To test what we wanted to test initially (this is done **only to show you how it can be done and not expected of you at this stage**), we'd have to re-run the analysis for every station as follows and give some meaning to the flocks. Therefore, let's order individual sparrows by weight and flocks by their size per site:
-
-```{r Kendall.75, tidy=FALSE}
-# establishing an empty data frame and an index vector that doesn't repeat
-tau_df <- data.frame(Kendall = as.character(), stringsAsFactors = FALSE)
-Indices <- as.character(unique(Data_df$Index))
-for(i in 1:length(unique(Data_df$Index))){
-  # Ranked weight per station
-  RankedWeightStation <- c()
-  RankedWeightStation[order(
-    Data_df$Weight[which(Data_df$Index == Indices[i])]
-    )] <- 1:length(which(Data_df$Index == Indices[i]))
-  # ranked flock (by size) per station
-  flockranks <- rank(as.numeric(table(Data_df$Flock[which(Data_df$Index == Indices[i])])))
-  # flock rank vector and filling
-  RankedFlockStation <- rep(NA, length(Data_df$Flock[which(Data_df$Index == Indices[i])]))
-    for(k in 1:length(levels(Data_df$Flock))){
-      RankedFlockStation[which(
-        Data_df$Flock[which(
-          Data_df$Index == Indices[i])] 
-        == levels(Data_df$Flock)[k])] <- flockranks[k]
-    }
-  # analysis per station
-  stationtest <- cor.test(x = RankedWeightStation, y = RankedFlockStation, 
-                          use = "pairwise.complete.obs", method = "kendall")
-  # results to tau_df
-  tau_df[1,i] <- as.character(Indices[i])
-  tau_df[2,i] <- round(stationtest[["estimate"]][["tau"]],2)
-  tau_df[3,i] <- round(stationtest[["p.value"]], 2)
-}
-```
-\newpage
-```{r Kendall1, tidy=FALSE}
-tau_df
-```
-According to these site-wise results, there is no global support for the hypothesis of birds of heavier weights flocking in specific flocks when these are ordered by size. Even the significant site-wise Kendall's Tau results do not tell a holistic story (some show negative correlation, others show a positive correlation). Either we are missing some information here or there simply is no link between sparrow weight and flock membership.
-
 # Metric and Ordinal Scales
 
 Metric scale correlation analyses call for:
@@ -279,58 +245,30 @@ Metric scale correlation analyses call for:
 
 ## Testing for Normality
 
-Since most of our following analyses are focussing on latitude effects (i.e. "climate warming"), we need to alter our base data. Before we can run the analyses, we need to eliminate the sites that we have set aside for testing climate extreme effects on (Siberia, Unitked Kingdom, Reunion and Australia) from the data set.
+**DISCLAIMER:** I do not expect you to do it this way as of right now but wanted to give you reference material of how to automate this testing step.
+
+Since most of our following analyses are focussing on latitude effects (i.e. "climate warming"), we need to alter our base data. Before we can run the analyses, we need to eliminate the sites that we have set aside for testing climate extreme effects on (Siberia, United Kingdom, Reunion and Australia) from the data set. We are also not interested in all variables and so reduce the data set further.
 ```{r Spearman0}
 Data_df <- Data_df_base
 Index <- Data_df$Index
 Rows <- which(Index != "SI" & Index != "UK" & Index != "RE" & Index != "AU" )
-Data_df <- Data_df[Rows,]
-Data_df <- Data_df[, -which(colnames(Data_df)=="Population.Status")] # now redundant
+Data_df <- Data_df[Rows,c("Index", "Latitude", "Weight", "Height", "Wing.Chord", "Nesting.Height", 
+                             "Number.of.Eggs", "Egg.Weight")]
 ```
 
 In order to know which test we can use with which variable, we need to first identify whether our data is normal distributed using the Shapiro-Test (Seminar 3) as follows:
 ```{r Shapiro}
 Normal_df <- data.frame(Normality = as.character(), stringsAsFactors = FALSE)
-for(i in 1:length(colnames(Data_df))){
+for(i in 2:length(colnames(Data_df))){
   Normal_df[1,i] <- colnames(Data_df)[i]
   Normal_df[2,i] <- round(shapiro.test(as.numeric(Data_df[,i]))$p.value, 2)
 }
 colnames(Normal_df) <- c()
 rownames(Normal_df) <- c("Variable", "p")
+Normal_df <- Normal_df[,-1] # removing superfluous Index column
 Normal_df
 ```
-Unfortunately, none of these variables seems to be normal distributed (this was to be expected for some, to be fair) thus barring us from using Pearson correlation on the entire data set. How about site-wise variable value distributions, though?
-
-```{r Shapiro2, tidy=FALSE}
-# establishing an empty data frame and an index vector that doesn't repeat
-Normal_df <- data.frame(Normality = as.character(), stringsAsFactors = FALSE)
-Indices <- as.character(unique(Data_df$Index))
-# remove variables that don't make sense to test for site-wise:
-Data_df_Normal <- Data_df[,c("Weight", "Height", "Wing.Chord", "Nesting.Height", 
-                             "Number.of.Eggs", "Egg.Weight")]
-# site-wise shapiro test
-for(i in 1:length(colnames(Data_df_Normal))){ # variables
-  for(k in 1:length(unique(Data_df$Index))){ # sites
-    Normal_df[k,i] <- round(
-      shapiro.test(
-        as.numeric(
-          Data_df_Normal[,i][which(Data_df$Index == Indices[k])])
-        )
-      $p.value, 
-      2)
-  } # site loop
-} # variable loop
-colnames(Normal_df) <- colnames(Data_df_Normal)
-rownames(Normal_df) <- Indices
-Normal_df
-```
-
-According to these results intra-site correlations can be assessed using Pearson correlation for:
-
-- Weight  
-- Height  
-- Wing Chord  
-- Egg Weight  
+Unfortunately, none of these variables seem to be normal distributed (this was to be expected for some, to be fair) thus barring us from using Pearson correlation on the entire data set leaving us with the SPearman correlation method. 
 
 \newpage
 
@@ -429,38 +367,28 @@ Indeed, the higher the latitude, the heavier the average egg per nest of *Passer
 
 \newpage
 
-### Competition
-\begin{center}
-\textit{Do population sizes of Passer domesticus and latitude correlate?}
-\end{center}
-
-Due to increased constraints on avian physiology, we expect habitats of roughly the same size to support less individuals of *Passer domesticus* when moving from warmer to colder climates. To test this, we do the following:
-```{r Spearman5, fig.width=15, fig.height = 7, tidy=FALSE}
-# establishing an empty vector and an index vector that doesn't repeat
-Pops <- c()
-Indices <- as.character(unique(Data_df$Index))
-# indexing population sizes
-for(i in 1:length(unique(Data_df$Index))){
-  Pops[i] <- sum(Data_df$Index == Indices[i])
-}
-# getting latitudes
-Lats <- abs(unique(Data_df$Latitude))
-# running test
-cor.test(x = Pops, y = Lats, 
-         use = "pairwise.complete.obs", method = "spearman")
-# plot
-plot_df <- data.frame(Latitude = Lats, Populations = Pops)
-ggplot(data = plot_df, aes(x = Latitude, y = Populations)) +
-  geom_point() + theme_bw() + stat_smooth(method = "lm") + 
-  labs(title = "Population sizes of Passer domesticus vs. Latitude")
-```
-As it turns out, the correlation is not only significant but staggeringly strong and so we **reject the null hypothesis**!  
-
-Since we recorded five flocks per site, this trend will translate to average flock size in relation to absolute latitude values and we don't need to run a separate analysis.
-
 ## Pearson
 
-In order to show Pearson correlation, we run two simple, site-wise correlation analyses on some of our normal distributed variables.  
+We already know that we can't analyse the entire data set at once for these two variables since their data values are not normal distirbuted. How about site-wise variable value distributions, though?
+
+```{r Shapiro2, tidy=FALSE}
+# Further reducing the data set
+Data_df <- Data_df[,c("Index", "Weight", "Height")]
+# establishing an empty data frame and an index vector that doesn't repeat
+Normal_df <- data.frame(Normality = as.character(), stringsAsFactors = FALSE)
+Indices <- as.character(unique(Data_df_base$Index[Rows]))
+# site-wise shapiro test
+for(i in 2:length(colnames(Data_df))){ # variables
+  for(k in 1:length(Indices)){ # sites
+    Normal_df[i,k] <- round(shapiro.test(as.numeric(
+          Data_df[,i][which(Data_df_base$Index[Rows] == Indices[k])])
+        )$p.value, 2)}} # site loop, variable loop
+rownames(Normal_df) <- colnames(Data_df)
+colnames(Normal_df) <- Indices
+Normal_df[-1,] # remove superfluous index row
+```
+
+According to these results intra-site correlations of sparrow weight and height can be carried out! So, in order to show Pearson correlation, we run a simple, site-wise correlation analysis.  
 
 \hfill \linebreak
 
@@ -474,52 +402,19 @@ Take note that we are now using our entire data set again.
 ```{r Pearson1, tidy = FALSE}
 # overwriting altered Data_df
 Data_df <- Data_df_base
-
 # establishing an empty data frame and an index vector that doesn't repeat
 Pearson_df <- data.frame(Pearson = as.character(), stringsAsFactors = FALSE)
 Indices <- as.character(unique(Data_df$Index))
-
 # site-internal correlation tests, weight and height
 for(i in 1:length(unique(Data_df$Index))){
   Weights <- Data_df$Weight[which(Data_df$Index == Indices[i])]
   Heights <- Data_df$Height[which(Data_df$Index == Indices[i])]
-  
   Pearson_df[1,i] <- round(cor.test(x = Weights, y = Heights, 
                                     use = "pairwise.complete.obs")[["estimate"]][["cor"]], 2)
   Pearson_df[2,i] <- round(cor.test(x = Weights, y = Heights, 
-                                    use = "pairwise.complete.obs")$p.value, 2)
-  
-}
+                                    use = "pairwise.complete.obs")$p.value, 2)}
 colnames(Pearson_df) <- Indices
 rownames(Pearson_df) <- c("r", "p")
 Pearson_df
 ```
 Apparently, it does. Heavier birds are taller!
-
-\newpage
-
-\begin{center}
-\textit{Do nesting height and wing chord records of Passer domesticus correlate within each site?}
-\end{center}
-
-From a standpoint of flight economics, we might think that birds with shorter wings might prefer to nest closer to the ground to reduce costly flight-time (in terms of fitness):
-```{r Pearson2, tidy = FALSE}
-# establishing an empty data frame and an index vector that doesn't repeat
-Pearson_df <- data.frame(Pearson = as.character(), stringsAsFactors = FALSE)
-Indices <- as.character(unique(Data_df$Index))
-# site-internal correlation tests, nesting.height and wing.chord
-for(i in 1:length(unique(Data_df$Index))){
-  Wing.Chords <- Data_df$Wing.Chord[which(Data_df$Index == Indices[i])]
-  Nesting.Heights <- Data_df$Nesting.Height[which(Data_df$Index == Indices[i])]
-  
-  Pearson_df[1,i] <- round(cor.test(x = Wing.Chords, y = Nesting.Heights, 
-                                    use = "pairwise.complete.obs")[["estimate"]][["cor"]], 2)
-  Pearson_df[2,i] <- round(cor.test(x = Wing.Chords, y = Nesting.Heights, 
-                                    use = "pairwise.complete.obs")$p.value, 2)
-  
-}
-colnames(Pearson_df) <- Indices
-rownames(Pearson_df) <- c("r", "p")
-Pearson_df
-```
-Although our hypothesis about flight economics was not too far-fetched, we do not see any proof for this here. Keep in mind though that we are looking at intra-population variation here which might not be able to capture all the information that is out there.
