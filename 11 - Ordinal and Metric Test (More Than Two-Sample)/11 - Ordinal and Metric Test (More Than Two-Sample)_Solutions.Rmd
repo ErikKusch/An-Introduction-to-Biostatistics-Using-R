@@ -19,8 +19,50 @@ options(digits=2, width = 90)
 
 <!--- ####### PREAMBLE -----------
 --------------------------------------------->
-```{r child = 'Title.Rmd'}
-```
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\begin{center}
+\begin{tabular}{p{\textwidth}}
+
+\begin{center}
+\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
+\hspace{.05\linewidth}
+\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
+\end{center}
+
+\\
+
+\vspace{5.5cm}
+
+\begin{center}
+\textsc{\LARGE{
+\textbf{Ordinal and Metric Tests (More-Than-Two-Sample Situations)}\\
+\vspace{0.15cm}
+Analysing the Sparrow Data Set \\
+\vspace{0.3cm}
+- } \vspace{0.3cm}\\
+\large{BASIC STATISTICS FOR BIOLOGISTS\\
+}}
+\end{center}
+
+\vspace{5.5cm}
+
+\raggedleft
+\textbf{Erik Kusch} \\
+\textit{PhD Student} \\
+Aarhus University \\
+Department of Bioscience \\
+Section for Ecoinformatics \& Biodiversity \\
+Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE) \\
+Ny Munkegade 116, Building 1540 \\
+8000 Aarhus \\
+Denmark \\
+email: erik@i-solution.de \\
+
+\end{tabular}
+\end{center}
+
+\raggedright
 \clearpage
 
 <!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
@@ -298,30 +340,6 @@ AutomatedKruskal(Variables = "Home.Range", Groups = "Climate", Plotting = TRUE)
 Using our `Automated Kruskal()` function, we can conclude that the three-loevel climate variable serves as an excellent predictor for sparrow home range and **reject the null hypothesis** (p = $`r AutomatedKruskal(Variables = "Home.Range", Groups = "Climate", Plotting = FALSE)$p_value`$) thus being at odds with our Mann-Whitney U results (that were only based on two climate types).  
 
 Remember that small numeric ranges mean large actual ranges in this set-up and so we can conclude that  climates force common house sparrows to adapt to bigger home ranges.
-
-\newpage
-
-## Site-wise variation  
-\begin{center}
-\textit{Do characteristics of \textit{Passer domesticus} depend on the site they are recorded at?}
-\end{center}
-
-To test this, we can be very happy about our automated analysis and just run the following code as typing this analysis our would've taken a pretty sizeable chunk of code and increased the pure statistical chances for a typo to lead to erroneous resutls. 
-
-We may wish to use the entirety of our data set again for this purpose:
-```{r over}
-Data_df <- Data_df_base
-```
-
-Let's run our analysis:
-```{r KruskalSitesa, fig.height=14, fig.width=15}
-par(mfrow = c(3,1)) # adjust plotting panes
-AutomatedKruskal(Variables = c("Weight", "Height", "Wing.Chord", "Nesting.Height", "Number.of.Eggs", "Egg.Weight"), 
-                 Groups = "Index", 
-                 Plotting = TRUE)
-```
-
-Quite obviously, the stations hold necessary between-site variation for their indices to represent meaningful predictors for sparrow characteristics across the board. Note that the site index serves as a catch-all statement within this analysis which effectively combines latitude, climate, predator and population status characteristics and is, as such, rather meaningless since we can't entangle the effects from this alone.
 
 # Friedman Test  
 

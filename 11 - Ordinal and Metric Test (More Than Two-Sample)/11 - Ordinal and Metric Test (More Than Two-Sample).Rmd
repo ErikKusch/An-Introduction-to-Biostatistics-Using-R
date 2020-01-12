@@ -2,16 +2,16 @@
 title: "Metric Tests (More-Than-Two-Sample Situations)"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "27/05/2019"
+date: ""
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
-    keep_tex: false
+    keep_tex: true
     toc: false # this is added through a later command
     slide_level: 3 # at how many pound signs (#) to assume slide title level
     includes:
       in_header: Style.tex
-classoption: t
+classoption: "handout"
 ---
 
 ```{r setup, include=FALSE}
@@ -175,41 +175,8 @@ friedman.test(y = TestData)
 \endcol
 \endcols
 
-## Research Questions
-### Research Questions And Hypotheses
-\begin{center}
-So which of our major research questions (seminar 6) can we answer?
-\end{center}
-
-\small
-\begincols[T]
-  \begincol{.5\linewidth}
-  \pause
-    \textbf{Kruskal-Wallis Test}
-    \begin{itemize}
-    \item \textit{Site-wise variation:} Do characteristics of \textit{Passer domesticus} depend on the site they are recorded at?
-    \item \textit{Climate Warming/Extremes:} Does sparrow morphology depend on climate?
-    \item \textit{Predation:} Does nesting height depend on predator characteristics?
-    \item \textit{Competition:} Does home range depend on climate?
-    \end{itemize} 
-\endcol
-\begincol{.5\linewidth}
-  \pause
-    \textbf{Friedman Test} (suppose a resettling program)
-    \begin{itemize}
-    \item \textit{Climate Warming/Extremes:} Does sparrow morphology change depend on climate?
-    \item \textit{Predation:} Does nesting height depend on predator characteristics?
-    \item \textit{Competition:} Does home range depend on climate?
-    \end{itemize} 
-    \footnotesize
-    $\rightarrow$ Find the data in \linebreak \textit{2a - Sparrow\_ResettledSIMA\_READY.rds} \linebreak and 
-    \textit{2b - Sparrow\_ResettledSIUK\_READY.rds}
-\endcol
-\endcols
-
-# Exercise
-
-### Writng A Function In `R`
+## Methods
+### Writng A Function In `R` I
 \begin{center}
 Establishing \textit{user-defined} functions is at the \textbf{heart of `R`}!
 \end{center}
@@ -224,3 +191,51 @@ Fun <- function(argument){
 }
 Fun(argument = "Test")
 ```
+
+### Writng A Function In `R` II
+\begin{center}
+A function that adds 1 to whatever the input is:
+\end{center}
+
+```{r Func2}
+AddFun <- function(input){
+  output <- input + 1
+  # this gives the result back to the non-function environment
+  return(output) 
+}
+AddFun(input = 1)
+AddFun(input = 2)
+```
+
+## Research Questions
+### Research Questions And Hypotheses
+\begin{center}
+So which of our major research questions (seminar 6) can we answer?
+\end{center}
+
+\small
+\begincols[T]
+  \begincol{.5\linewidth}
+  \pause
+    \textbf{Kruskal-Wallis Test}
+    \begin{itemize}
+    \item \textit{Climate Warming/Extremes:} Does sparrow morphology depend on climate?
+    \item \textit{Predation:} Does nesting height depend on predator characteristics?
+    \item \textit{Competition:} Does home range depend on climate?
+    \end{itemize} 
+    \footnotesize
+    \raggedright Use the `1 - Sparrow_Data_READY.rds` data set for these analyses.
+    \normalsize
+\endcol
+\begincol{.5\linewidth}
+  \pause
+    \textbf{Friedman Test} (suppose a resettling program)
+    \begin{itemize}
+    \item \textit{Climate Warming/Extremes:} Does sparrow morphology change depend on climate?
+    \item \textit{Predation:} Does nesting height depend on predator characteristics?
+    \item \textit{Competition:} Does home range depend on climate?
+    \end{itemize} 
+    \footnotesize
+    Use the `2a - Sparrow_ResettledSIMA_READY.rds` and `2b - Sparrow_ResettledSIUK_READY.rds` data sets for these analyses.
+\endcol
+\endcols
