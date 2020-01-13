@@ -246,16 +246,17 @@ WithFrame$Second
 \begincols[T]
   \begincol{.5\linewidth}
   
-    ```{r with3, tidy=FALSE}
-    WithFrame$First + WithFrame$Second
-    ```
+```{r with3, tidy=FALSE}
+WithFrame$First + WithFrame$Second
+```
 \endcol
 \begincol{.5\linewidth}
-    ```{r with4, tidy=FALSE}
-    with(WithFrame, First + Second)
-    ```
+```{r with4, tidy=FALSE}
+with(WithFrame, First + Second)
+```
 \endcol
 \endcols
+\vspace{.3cm}
 \normalsize The results are the same!
 
 ## Research Questions
