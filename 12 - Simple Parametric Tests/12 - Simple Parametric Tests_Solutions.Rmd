@@ -19,8 +19,50 @@ options(digits=2, width = 90)
 
 <!--- ####### PREAMBLE -----------
 --------------------------------------------->
-```{r child = 'Title.Rmd'}
-```
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\begin{center}
+\begin{tabular}{p{\textwidth}}
+
+\begin{center}
+\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
+\hspace{.05\linewidth}
+\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
+\end{center}
+
+\\
+
+\vspace{5.5cm}
+
+\begin{center}
+\textsc{\LARGE{
+\textbf{Simple Parametric Tests}\\
+\vspace{0.15cm}
+Analysing the Sparrow Data Set \\
+\vspace{0.3cm}
+- } \vspace{0.3cm}\\
+\large{BASIC STATISTICS FOR BIOLOGISTS\\
+}}
+\end{center}
+
+\vspace{6.5cm}
+
+\raggedleft
+\textbf{Erik Kusch} \\
+\textit{PhD Student} \\
+Aarhus University \\
+Department of Bioscience \\
+Section for Ecoinformatics \& Biodiversity \\
+Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE) \\
+Ny Munkegade 116, Building 1540 \\
+8000 Aarhus \\
+Denmark \\
+email: erik@i-solution.de \\
+
+\end{tabular}
+\end{center}
+
+\raggedright
 \clearpage
 
 <!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
@@ -205,110 +247,112 @@ Again, before we can use our data in a t-Test for this purpose, we have to make 
 ```{r ShapiroSex0}
 ShapiroTest(Variables = c("Weight", "Height", "Wing.Chord"), Grouping = "Sex")
 ```
-As it turns out, our data does not allow for any t-Test (this happens often in real studies). However, we can create sex-driven subgroups within each site and test whether these meet the requirements for our t-Test. In order to do so, we need to do some minor tweaking to our `ShapiroTest()` function:
-```{r ShapiroSex}
-ShapiroTestSites <- function(Variables, Grouping){
-  list <- list()
-  for(k in 1:length(unique(Data_df$Index))){
-    Output <- data.frame(x = Variables)
-    Data <- Data_df[which(Data_df$Index == unique(Data_df$Index)[k]), ]
-    for(i in 1:length(Variables)){
-    
-      X <- Data[,Variables[i]]
-      Levels <- levels(Data[,Grouping])
-    
-      Output[i,2] <- shapiro.test(X[which(Data[,Grouping] == Levels[1])])$p.value
-      Output[i,3] <- shapiro.test(X[which(Data[,Grouping] == Levels[2])])$p.value
-      Output[i,4] <- var.test(x = X[which(Data_df[,Grouping] == Levels[1])], 
-                            y = X[which(Data_df[,Grouping] == Levels[2])])
-    }
-    colnames(Output) <- c("Variable", "P.value1", "P.value2", "Var.Test")
-    list[[k]] <- Output
-  }
-  return(list)
-}
-```
+As it turns out, our data does not allow for any t-Test (this happens often in real studies). However, we can create sex-driven subgroups within each site and test whether these meet the requirements for our t-Test. This is out of the scope of this course though and so we will skip it. Spoler alert: I have done this and the findings did not reveal anything we didn't uncover so far.
 
-This function (`ShapiroTestSites()`) takes two arguments: (1) `Variables` - a vector of characters holding the names of the variables we want to have tested, and (2) `Grouping` - the binary variable by which to group our variables. The function returns a list of data frames for each site holding the p-values of the Shapiro tests on each variable group values as well as the `var.test()` p-value. 
+<!-- In order to do so, we need to do some minor tweaking to our `ShapiroTest()` function: -->
+<!-- ```{r ShapiroSex} -->
+<!-- ShapiroTestSites <- function(Variables, Grouping){ -->
+<!--   list <- list() -->
+<!--   for(k in 1:length(unique(Data_df$Index))){ -->
+<!--     Output <- data.frame(x = Variables) -->
+<!--     Data <- Data_df[which(Data_df$Index == unique(Data_df$Index)[k]), ] -->
+<!--     for(i in 1:length(Variables)){ -->
 
-\newpage
+<!--       X <- Data[,Variables[i]] -->
+<!--       Levels <- levels(Data[,Grouping]) -->
 
-Let's put this function to the test:
-```{r ShapiroSex1}
-ShapiroTestSites(Variables = c("Weight", "Height", "Wing.Chord"), Grouping = "Sex")
-```
-With the exception for sparrow morphology records at:  
-- Siberia (`r unique(Data_df$Index)[1]`, height and wing chord of males)  
-- Manitoba (`r unique(Data_df$Index)[6]`, morphology of females)  
-- South Africa (`r unique(Data_df$Index)[10]`, morphology of females)  
-all of our data groups variables are normal distributed with equal variances between the groups per site.  
+<!--       Output[i,2] <- shapiro.test(X[which(Data[,Grouping] == Levels[1])])$p.value -->
+<!--       Output[i,3] <- shapiro.test(X[which(Data[,Grouping] == Levels[2])])$p.value -->
+<!--       Output[i,4] <- var.test(x = X[which(Data_df[,Grouping] == Levels[1])],  -->
+<!--                             y = X[which(Data_df[,Grouping] == Levels[2])]) -->
+<!--     } -->
+<!--     colnames(Output) <- c("Variable", "P.value1", "P.value2", "Var.Test") -->
+<!--     list[[k]] <- Output -->
+<!--   } -->
+<!--   return(list) -->
+<!-- } -->
+<!-- ``` -->
 
-Since our problematic sites are still relatively close to fulfilling our requirements of the data, we will use them going forward as if they did.
+<!-- This function (`ShapiroTestSites()`) takes two arguments: (1) `Variables` - a vector of characters holding the names of the variables we want to have tested, and (2) `Grouping` - the binary variable by which to group our variables. The function returns a list of data frames for each site holding the p-values of the Shapiro tests on each variable group values as well as the `var.test()` p-value.  -->
 
-### Analyses
+<!-- \newpage -->
 
-Running three t-Tests (Weight, Height, Wing Chord) for each of our eleven sites is absolute mania! Therefore, we write our own function again that let's us apply the tests exactly the way we want to:
-```{r ttestSex0}
-t_testSite <- function(Variables, Grouping, data, VarEqual){
-  Data <- data
-  Index <- unique(Data$Index)
-  Indexes <- Data$Index
-  list <- list()
-  for(i in 1:length(Variables)){
-    Output <- data.frame(NA)
-    for(k in 1:length(Index)){
-      # data and test
-      X <- Data[, Variables[i]][which(Indexes == Index[k])]
-      Y <- Data[, Grouping][which(Indexes == Index[k])]
-      Test <- t.test(X ~ Y, paired = FALSE, var.equal = VarEqual)
-      # filling data frame
-      Output[1,k] <- Test[["p.value"]]
-      Output[2,k] <- Test[["estimate"]][[1]]
-      Output[3,k] <- Test[["estimate"]][[2]]
-    }
-    # data frame to list
-    colnames(Output) <- Index
-    rownames(Output) <- c("p", "Mean1", "Mean2")
-    list[[i]] <- Output
-  }
-  return(list)
-}
-```
+<!-- Let's put this function to the test: -->
+<!-- ```{r ShapiroSex1} -->
+<!-- ShapiroTestSites(Variables = c("Weight", "Height", "Wing.Chord"), Grouping = "Sex") -->
+<!-- ``` -->
+<!-- With the exception for sparrow morphology records at:   -->
+<!-- - Siberia (`r unique(Data_df$Index)[1]`, height and wing chord of males)   -->
+<!-- - Manitoba (`r unique(Data_df$Index)[6]`, morphology of females)   -->
+<!-- - South Africa (`r unique(Data_df$Index)[10]`, morphology of females)   -->
+<!-- all of our data groups variables are normal distributed with equal variances between the groups per site.   -->
 
-This `t_testSite()` function takes four arguments: (1) `Variables` - a vector of characters holding the names of the variables we want to have tested, (2) `Grouping` - the binary variable by which to group our variables, (3) `data` - the data frame which contains the `Variables` and the `Grouping` factor, and (4) `VarEqual` - a logical indicator of whether to perform a t-Test assuming equal variance of the groups or not.  
-The function returns a list of data frames (one per variable) containing the p-values of the unpaired t-Tests for each variable at every site as well as the predicted group means.
+<!-- Since our problematic sites are still relatively close to fulfilling our requirements of the data, we will use them going forward as if they did. -->
 
-\newpage
+<!-- ### Analyses -->
 
-Although our function `t_testSite()` can handle multiple variables at once, we will now use it on each of our morphological sparrow variables individually to disentangle them a bit easier:  
+<!-- Running three t-Tests (Weight, Height, Wing Chord) for each of our eleven sites is absolute mania! Therefore, we write our own function again that let's us apply the tests exactly the way we want to: -->
+<!-- ```{r ttestSex0} -->
+<!-- t_testSite <- function(Variables, Grouping, data, VarEqual){ -->
+<!--   Data <- data -->
+<!--   Index <- unique(Data$Index) -->
+<!--   Indexes <- Data$Index -->
+<!--   list <- list() -->
+<!--   for(i in 1:length(Variables)){ -->
+<!--     Output <- data.frame(NA) -->
+<!--     for(k in 1:length(Index)){ -->
+<!--       # data and test -->
+<!--       X <- Data[, Variables[i]][which(Indexes == Index[k])] -->
+<!--       Y <- Data[, Grouping][which(Indexes == Index[k])] -->
+<!--       Test <- t.test(X ~ Y, paired = FALSE, var.equal = VarEqual) -->
+<!--       # filling data frame -->
+<!--       Output[1,k] <- Test[["p.value"]] -->
+<!--       Output[2,k] <- Test[["estimate"]][[1]] -->
+<!--       Output[3,k] <- Test[["estimate"]][[2]] -->
+<!--     } -->
+<!--     # data frame to list -->
+<!--     colnames(Output) <- Index -->
+<!--     rownames(Output) <- c("p", "Mean1", "Mean2") -->
+<!--     list[[i]] <- Output -->
+<!--   } -->
+<!--   return(list) -->
+<!-- } -->
+<!-- ``` -->
 
-\begin{center}
-\textit{Does sparrow weight depend on sex when assessed at each of our sites individually?}
-\end{center}
-```{r tTestSex1}
-t_testSite(Variables = "Weight", Grouping = "Sex", data = Data_df, VarEqual = TRUE)
-```
-As it turns out, sex is a statistically significant predictor for sparrow weight at each site. This was to be expected. Using a binomial test in our second practical, we identified no bias in sexes for our sparrow populations. In addition, using the Mann-Whitney U-Test in our fourth practical, we identified sex to be an important information criterion for sparrow weight across all of our sites. Given these two conditions, we were expecting a results like the one presented here with males being, on average, heavier than females in *Passer domesticus* and we **reject the null hypothesis**.  
+<!-- This `t_testSite()` function takes four arguments: (1) `Variables` - a vector of characters holding the names of the variables we want to have tested, (2) `Grouping` - the binary variable by which to group our variables, (3) `data` - the data frame which contains the `Variables` and the `Grouping` factor, and (4) `VarEqual` - a logical indicator of whether to perform a t-Test assuming equal variance of the groups or not.   -->
+<!-- The function returns a list of data frames (one per variable) containing the p-values of the unpaired t-Tests for each variable at every site as well as the predicted group means. -->
 
-\hfill \linebreak
-\begin{center}
-\textit{Does sparrow height depend on sex when assessed at each of our sites individually?}
-\end{center}
-```{r tTestSex2}
-t_testSite(Variables = "Height", Grouping = "Sex", data = Data_df, VarEqual = TRUE)
-```
-Like with our Mann-Whitney U-Test, we fail to identify a significant effect of sex on sparrow height records at each of our sites and so we **accept the null hypothesis**.
+<!-- \newpage -->
 
-\hfill \linebreak
-\begin{center}
-\textit{Does sparrow wing chord depend on sex when assessed at each of our sites individually?}
-\end{center}
-```{r tTestSex3}
-t_testSite(Variables = "Wing.Chord", Grouping = "Sex", data = Data_df, VarEqual = TRUE)
-```
-Like with our Mann-Whitney U-Test, we fail to identify a significant effect of sex on sparrow wing chord records at each of our sites and so we **accept the null hypothesis**.
+<!-- Although our function `t_testSite()` can handle multiple variables at once, we will now use it on each of our morphological sparrow variables individually to disentangle them a bit easier:   -->
 
-\newpage
+<!-- \begin{center} -->
+<!-- \textit{Does sparrow weight depend on sex when assessed at each of our sites individually?} -->
+<!-- \end{center} -->
+<!-- ```{r tTestSex1} -->
+<!-- t_testSite(Variables = "Weight", Grouping = "Sex", data = Data_df, VarEqual = TRUE) -->
+<!-- ``` -->
+<!-- As it turns out, sex is a statistically significant predictor for sparrow weight at each site. This was to be expected. Using a binomial test in our second practical, we identified no bias in sexes for our sparrow populations. In addition, using the Mann-Whitney U-Test in our fourth practical, we identified sex to be an important information criterion for sparrow weight across all of our sites. Given these two conditions, we were expecting a results like the one presented here with males being, on average, heavier than females in *Passer domesticus* and we **reject the null hypothesis**.   -->
+
+<!-- \hfill \linebreak -->
+<!-- \begin{center} -->
+<!-- \textit{Does sparrow height depend on sex when assessed at each of our sites individually?} -->
+<!-- \end{center} -->
+<!-- ```{r tTestSex2} -->
+<!-- t_testSite(Variables = "Height", Grouping = "Sex", data = Data_df, VarEqual = TRUE) -->
+<!-- ``` -->
+<!-- Like with our Mann-Whitney U-Test, we fail to identify a significant effect of sex on sparrow height records at each of our sites and so we **accept the null hypothesis**. -->
+
+<!-- \hfill \linebreak -->
+<!-- \begin{center} -->
+<!-- \textit{Does sparrow wing chord depend on sex when assessed at each of our sites individually?} -->
+<!-- \end{center} -->
+<!-- ```{r tTestSex3} -->
+<!-- t_testSite(Variables = "Wing.Chord", Grouping = "Sex", data = Data_df, VarEqual = TRUE) -->
+<!-- ``` -->
+<!-- Like with our Mann-Whitney U-Test, we fail to identify a significant effect of sex on sparrow wing chord records at each of our sites and so we **accept the null hypothesis**. -->
+
+<!-- \newpage -->
 
 # t-Test (paired)
 
@@ -324,10 +368,10 @@ Like with our Mann-Whitney U-Test, we fail to identify a significant effect of s
 For this purpose, we need an **additional data set with truly paired records** of sparrows and so we implement the same solution as we've used within our fourth seminar using the Wilcoxon Signed Rank Test. Within our study set-up, think of a **resettling experiment**, were you take *Passer domesticus* individuals from one site, transfer them to another and check back with them after some time has passed to see whether some of their characteristics have changed in their expression.  
 To this end, presume we have taken the entire *Passer domesticus* population found at our **Siberian** research station and moved them to the **United Kingdom**. Whilst this keeps the latitude stable, the sparrows *now experience a coastal climate instead of a continental one*. After some time (let's say: a year), we have come back and recorded all the characteristics for the same individuals again.  
 
-You will find the corresponding *new data* in `2 - Sparrow_Resettled_READY.rds`. Take note that this set only contains records for the transferred individuals in the **same order** as in the old data set.  
+You will find the corresponding *new data* in `2b - Sparrow_ResettledSIUK_READY.rds`. Take note that this set only contains records for the transferred individuals in the **same order** as in the old data set.  
 
 ```{r DataLoading2}
-Data_df_Resettled <- readRDS(file = paste(Dir.Data, "/2 - Sparrow_Resettled_READY.rds", sep=""))
+Data_df_Resettled <- readRDS(file = paste(Dir.Data, "/2b - Sparrow_ResettledSIUK_READY.rds", sep=""))
 ```
 
 Since earlier analysis such as the Wilcoxon Signed Rank test (fourth practical) and the Friedman Test (fifth practical) showed that height and wing chord records do not change when sparrows are resettled at all, we have excluded these here and **focus solely on sparrow weight**.
@@ -455,10 +499,29 @@ Let's run our analysis for height as grouped by the three-level climate variable
 model <- lm(Data_df$Height ~ Data_df$Climate)
 anova(model)
 ```
-According to this, climate is a meaningful predictor of height of sparrows and we **reject the null hypothesis** thus confirming the results of our Kruskall-Wallis analysis.
+According to this, climate is a meaningful predictor of height of sparrows and we **reject the null hypothesis** thus confirming the results of our Kruskall-Wallis analysis.  
+
+Now, let's analyse the output a bit more in-depth:
+```{r Analysis1b}
+summary(model)
+```
+
+- The mean sparrow height in coastal climates is `r model$coefficients[1]`cm (this is our **Intercept**/*Baseline*)  
+- The mean sparrow height in continental climates is `r model$coefficients[2]`cm bigger than the **Intercept**  
+- The mean sparrow height in semi-coastal climates is `r model$coefficients[3]`cm bigger than the **Intercept**
+- Only the estimates in coastal and semi-coastal climates are statistically significant  
+
+\hfill \linebreak
+
+Personally, I would not place too much confidence in these results due to a couple of reasons:  
+
+- Our only semi-coastal site is on the northern hemisphere whereas two of our stations are located in the southern hemisphere  
+- Confounding factors such as population status might have an effect which we are not considering here  
+
+\newpage
 
 Let's end this by plotting all of our data:
-```{r Analysis1, fig.height=9}
+```{r Analysis1, fig.height=12}
 par(mfrow=c(2,2))
 plot(Data_df$Weight ~ Data_df$Climate)
 plot(Data_df$Height ~ Data_df$Climate)
@@ -484,7 +547,7 @@ Data_df <- Data_df_base
 ### Assumption Check
 
 Let's use our `ANOVACeck()` function to test whether we can run our analysis. Before we can do so, however, we need to slightly adjust our predator type variable just like we did in our last exercise and as follows:
-```{r AssCheck2, fig.height = 5}
+```{r AssCheck2, fig.height = 7}
 # changing levels in predator type
 levels(Data_df$Predator.Type) <- c(levels(Data_df$Predator.Type), "None")
 Data_df$Predator.Type[which(is.na(Data_df$Predator.Type))] <- "None"
@@ -500,63 +563,10 @@ Again, our data fails the assumption check. The residuals are definitely not nor
 ### Analysis
 
 Since none of our assumptions are met, we cannot run an ANOVA and therefore resort to data visualisation alone:
-```{r Analysis2, fig.height=8}
+```{r Analysis2, fig.height=12}
 plot(Data_df$Nesting.Height ~ Data_df$Predator.Type)
 ```
 Once more, we can see why our homogeneity of variances test failed.
-
-\newpage
-
-## Site-wise Variation
-\begin{center}
-Does sparrow morphology depend on sites?
-\end{center}
-
-Again, using the Kruskal-Wallis Test in our last exercise, we already identified the site index to be an important factor in determining *Passer domesticus* morphology. Let's see if this holds true.
-
-### Assumption Check
-
-Let's use our `ANOVACeck()` function to test whether we can run our analysis:
-```{r AssCheck3, fig.height = 10}
-par(mfrow=c(3,2))
-ANOVACheck(Variables = c("Weight", "Height", "Wing.Chord"), Grouping = "Index",
-               data = Data_df, plotting = TRUE)
-```
-
-This time, our data does not fail the assumption test (except for the weight attribute of our sparrows).
-
-\newpage
-
-### Analysis
-Let's run only one One-Way ANOVA then, because we have already looked at this with our Kruskal-Wallis Test and site-wise variation wasn't really part of our big research questions (seminar 4);
-```{r Analysis3, fig.height=4.5}
-LM_fit1 <- lm(Height ~ Index, data = Data_df)
-anova(LM_fit1)
-summary(LM_fit1)
-```
-The `anova()` command tells us that the influence of `Index` on sparrow `Height` records is statistical significant. The output yielded by the `summary()` command of our model object lets us interpret the effect of the site a sparrow is located at on its predicted height record. These effects are also referred to as **coefficients**.  
-
-Let's interpret these:  
-- The mean sparrow height in Australia (AU) is `r LM_fit1$coefficients[1]`cm (this is our **Intercept**/*Baseline*)
-- The mean sparrow height in Belize (BE) is `r LM_fit1$coefficients[2]`cm bigger than the **Intercept**  
-- The mean sparrow height in Belize (BE) is `r LM_fit1$coefficients[2]`cm bigger than the **Intercept**  
-- The mean sparrow height in French Guiana (FG) is `r LM_fit1$coefficients[3]`cm bigger than the **Intercept**  
-- The mean sparrow height in the Falkland Isles (FI) is `r LM_fit1$coefficients[4]`cm bigger than the **Intercept**  
-- The mean sparrow height in Louisiana (LO) is `r LM_fit1$coefficients[5]`cm bigger than the **Intercept** (although this is not statistically significant)  
-- The mean sparrow height in Manitoba (MA) is `r LM_fit1$coefficients[6]`cm bigger than the **Intercept**  
-- The mean sparrow height in Nunavut (NU) is `r LM_fit1$coefficients[7]`cm bigger than the **Intercept**  
-- The mean sparrow height in the Reunion Island is `r LM_fit1$coefficients[8]`cm bigger than the **Intercept** (although this is not statistically significant)  
-- The mean sparrow height in South America (SA) is `r LM_fit1$coefficients[9]`cm bigger than the **Intercept**  
-- The mean sparrow height in Siberia (SI) is `r LM_fit1$coefficients[10]`cm bigger than the **Intercept**  
-- The mean sparrow height in the United Kingdom (UK) is `r LM_fit1$coefficients[10]`cm bigger than the **Intercept**  
-
-These relations can be visualised as follows:
-
-```{r Analysis3b, fig.height=8}
-plot(Data_df$Height ~ Data_df$Index)
-```
-
-
 
 # Two-Way ANOVA
 
@@ -605,46 +615,6 @@ ANOVACheck_TWO <- function(Formulas, data, plotting){
 
 This `ANOVACheck_TWO()` function takes four arguments: (1) `Formulas` - a vector of formula specification for our ANOVA models we want to have tested, (2) `data` - the data frame which contains the variables and the grouping factor called upon in our `Formulas`, and (3) `plotting` - a logical indicator of whether to produce plots visualising the test results or not.  
 The function returns a data frames containing the p-values indexing whether to accept or reject the notion of the normality of residuals per variable (`RN`), and the p-values indexing whether variances between groups are homogeneous or not (`HoV`).
-
-## Climate Warming/Extremes
-\begin{center}
-Does sparrow morphology depend on climate and sex?
-\end{center}
-
-Now this is a novel research question to which we have no answer yet. Whilst we have shed light on whether sparrow morphology depends of sex (only weight does) and climate (it does) respectively, we lack knowledge on whether these two factors interact when determining sparrow morphology. We can use a two-way ANOVA to check this.
-
-Take note that we need to limit our analysis to our climate type testing sites again as follows (we include Manitoba this time as it is at the same latitude as the UK and Siberia and holds a semi-coastal climate type):
-```{r Remove4}
-# prepare climate type testing data
-Data_df <- Data_df_base
-Index <- Data_df$Index
-Rows <- which(Index == "SI" | Index == "UK" | Index == "RE" | Index == "AU" | Index == "MA")
-Data_df <- Data_df[Rows,]
-```
-
-### Assumption Check
-Let's put the `ANOVACkeck_TWO()` function to the test and check whether an ANOVA approach is viable give our data:
-```{r AssCheck4b, fig.height=7.5}
-par(mfrow=c(3,2))
-ANOVACheck_TWO(Formulas = c(Weight ~ Climate*Sex, 
-                            Height ~ Climate*Sex, 
-                            Wing.Chord ~ Climate*Sex), 
-               data = Data_df, plotting = TRUE)
-```
-Sadly, not enough of our assumptions are met.
-
-\newpage
-
-### Analysis
-Since none of our assumptions are met, we cannot run an ANOVA and therefore resort to data visualisation alone:
-```{r Analysis4, fig.height = 12}
-par(mfrow=c(2,2))
-boxplot(Weight ~ Sex*Climate, data = Data_df, col = c("purple", "blue"))
-boxplot(Height ~ Sex*Climate, data = Data_df, col = c("purple", "blue"))
-boxplot(Wing.Chord ~ Sex*Climate, data = Data_df, col = c("purple", "blue"))
-```
-
-\newpage
 
 ## Sexual Dimorphism
 \begin{center}

@@ -2,16 +2,16 @@
 title: "Simple Parametric Tests"
 # subtitle: "And Introduction to the Course and The Importance of Proper Statistics"
 author: "Erik Kusch"
-date: "26/06/2019"
+date: ""
 fontsize: 10pt
 output: 
   beamer_presentation: # handouts can be established by setting classoption: "handout" instead of classoption: t
-    keep_tex: false
+    keep_tex: true
     toc: false # this is added through a later command
     slide_level: 3 # at how many pound signs (#) to assume slide title level
     includes:
       in_header: Style.tex
-classoption: t
+classoption: c
 ---
 
 ```{r setup, include=FALSE}
@@ -151,6 +151,9 @@ The output above tells us that the means of our two groups are significantly dif
      \\
   \end{tabular}}
 \end{table}
+\pause
+\scriptsize
+$\rightarrow$ Test whether variance of response variable values in groups are equal (`var.test()`) and adjust `t.test()` argument `var.equal` accordingly.
 
 ### Minimal Working Example
 \small
@@ -218,21 +221,58 @@ head(crabs)
      \\
   \end{tabular}}
 \end{table}
+\pause
+\scriptsize
+$\rightarrow$ Test whether residuals are normal distributed with `shapiro.test()` in base `R`, test for homogeneity with `leveneTest()` in the `car` package.
 
-### Minimal Working Example
-\small
+### Minimal Working Example - Assumptions
 Let's test whether body depth (BD) of crabs are varying when grouped by sex:
 \vspace{.1cm}
-\scriptsize
+\tiny
 ```{r One-Way}
-OneWay <- with(crabs,  lm(BD ~ sex))
+OneWay <- with(crabs,  lm(BD ~ sex)) # MODEL
+```
+\tiny
+\begincols[T]
+  \begincol{.5\linewidth}
+  \tiny
+```{r One-Waya, tidy = FALSE, fig.height = 5.5}
+plot(OneWay, 2)# Normality
+shapiro.test(residuals(OneWay))
+```
+\endcol
+\begincol{.5\linewidth}
+```{r One-Wayb, tidy = FALSE, fig.height = 5.5}
+plot(OneWay, 3)# Homogeneity
+library("car")
+leveneTest(BD ~ sex, data = crabs)
+```  
+\endcol
+\endcols
+
+\normalsize
+\vspace{.2cm}
+All good on the assumption check!
+
+### Minimal Working Example - Analysis
+Now let's run the analysis:
+```{r One-Wayc}
 anova(OneWay)
 ```
-\small
 \vspace{.1cm}
-As we can see, sex does not make for a statistically significant predictor of crab body depth.  
+As we can see, sex does not make for a statistically significant predictor of crab body depth.
 
-Take note that we do not deal with testing the assumptions here.
+### Minimal Working Example - Interpretation
+\scriptsize
+Let's interpret the result anyways:
+\tiny
+```{r One-Wayd}
+summary(OneWay)
+```
+\vspace{.1cm}
+\scriptsize
+- Female crabs are estimated to have a body depth of `r OneWay$coefficients[1]`cm (**Intercept**) with males being `r OneWay$coefficients[2]`cm bigger, on average.  
+- While we can be certain of the female estimate, we cannot say the same about the different to males.
 
 ## Two-Way ANOVA
 ### Purpose And Assumptions
@@ -258,19 +298,60 @@ Take note that we do not deal with testing the assumptions here.
      \\
   \end{tabular}}
 \end{table}
-
-### Minimal Working Example
-\small
-Let's test whether body depth (BD) of crabs are varying when grouped by sex and species as well as their interaction:
+\pause
 \scriptsize
+$\rightarrow$ Test whether residuals are normal distributed with `shapiro.test()` in base `R`, test for homogeneity with `leveneTest()` in the `car` package.
+
+### Minimal Working Example - Assumptions
+Let's test whether body depth (BD) of crabs are varying when grouped by sex and species as well as their interaction:
 \vspace{.1cm}
+\tiny
 ```{r Two-Way}
 TwoWay <- with(crabs,  lm(BD ~ sex*sp))
+```
+\tiny
+\begincols[T]
+  \begincol{.5\linewidth}
+  \tiny
+```{r Two-Waya, tidy = FALSE, fig.height = 5.5}
+plot(TwoWay, 2)# Normality
+shapiro.test(residuals(TwoWay))
+```
+\endcol
+\begincol{.5\linewidth}
+```{r Two-Wayb, tidy = FALSE, fig.height = 5.5}
+plot(TwoWay, 3)# Homogeneity
+library("car")
+leveneTest(BD ~ sex*sp, data = crabs)
+```  
+\endcol
+\endcols
+
+\normalsize
+\vspace{.2cm}
+All good on the assumption check!
+
+### Minimal Working Example - Analysis
+Now let's run the analysis:
+\scriptsize
+```{r Two-Wayc}
 anova(TwoWay)
 ```
-\small
 \vspace{.1cm}
+\normalsize
 The output above tells us that species and the interaction effect of sex and species are meaningful for understanding body depth of crabs.
+
+### Minimal Working Example - Interpretation
+\tiny
+```{r Two-Wayd}
+summary(TwoWay)
+```
+\vspace{.1cm}
+- Female crabs of species B are estimated to have a body depth of `r TwoWay$coefficients[1]`cm (**Intercept**) with males of species B being `r TwoWay$coefficients[2]`cm bigger, on average.  
+- Female crabs of species O are estimated to have a body depth of `r TwoWay$coefficients[3]`cm bigger than their female species B counterparts.  
+- The difference in sex- vs. species-dependant change in body depth is `r TwoWay$coefficients[4]`cm.
+- All estimates are statistically significant.
+
 
 
 ## ANCOVA
@@ -282,7 +363,7 @@ The output above tells us that species and the interaction effect of sex and spe
   \centering
   \resizebox{\textwidth}{!}{%
   \begin{tabular}{L{0.2\linewidth}L{0.8\linewidth}}
-    \textit{Purpose:} & To explain the variance of a continuous response variable in relation to mixed (continuous and categorical) predictor variables. \vspace{5pt} \\
+    \textit{Purpose:} & To explain the variance of a continuous response variable in relation to mixed (continuous and categorical) predictor variables. \vspace{2pt} \\
     \pause
     $H_0$ & \textit{Adjusted variance and means of response variable values is equal between levels of predictor variables.}\\
     \pause
@@ -298,17 +379,60 @@ The output above tells us that species and the interaction effect of sex and spe
      \\
   \end{tabular}}
 \end{table}
+\vspace{-.2cm}
+\pause
+\tiny
+$\rightarrow$ Test whether residuals are normal distributed with `shapiro.test()` in base `R`, test for homogeneity with `leveneTest()` in the `car` package.
 
-### Minimal Working Example
-\small
-Let's test whether body depth (BD) of crabs are varying when grouped by species and the carapace width as a covariate:
+### Minimal Working Example - Assumptions
+Let's test whether carapace length (CL) of crabs are varying when grouped by species and the carapace width as a covariate:
+\vspace{.1cm}
+\tiny
+```{r Ancova}
+Ancova <- with(crabs,  lm(CL ~ sp*CW))
+```
+\tiny
+\begincols[T]
+  \begincol{.5\linewidth}
+  \tiny
+```{r Ancovaa, tidy = FALSE, fig.height = 5.5}
+plot(Ancova, 2)# Normality
+shapiro.test(residuals(Ancova))
+```
+\endcol
+\begincol{.5\linewidth}
+```{r Ancovab, tidy = FALSE, fig.height = 5.5}
+plot(Ancova, 3)# Homogeneity
+library("car")
+leveneTest(CL ~ sp, data = crabs)
+```  
+\endcol
+\endcols
+
+\normalsize
+\vspace{.2cm}
+Assumptions are met!
+
+### Minimal Working Example - Analysis
+Now let's run the analysis:
 \scriptsize
-```{r ANCOVA}
-Ancova <- with(crabs,  lm(BD ~ sp*CW))
+```{r Ancovac}
 anova(Ancova)
 ```
-\small
+\vspace{.1cm}
+\normalsize
 The output above tells us that all of our model coefficients are significant.
+
+### Minimal Working Example - Interpretation
+\tiny
+```{r Ancovad}
+summary(Ancova)
+```
+\vspace{.1cm}
+- Crabs of species B have an estimated carapace length of `r Ancova$coefficients[1]`cm when their carpace width would be 0cm (**Intercept**) with members of species B being `r Ancova$coefficients[2]`cm bigger, on average at 0cm carapace width.  
+- For each additional cm in carapace width, carapacae length in species B increases by `r Ancova$coefficients[3]`cm.  
+- For each additional cm in carapace width, carapacae length in species O increases by `r Ancova$coefficients[3]`cm more than in species B.  
+- All estimates except for the species-difference are statistically significant.
 
 
 
@@ -361,24 +485,28 @@ So which of our major research questions (seminar 6) can we answer?
     \item \textit{Climate Warming/Extremes:} Does sparrow morphology change depend on climate?
     \item \textit{Sexual Dimorphism:} Does sparrow morphology change depend on Sex?
     \end{itemize} 
+    \tiny
+    \raggedright Use the `1 - Sparrow_Data_READY.rds` data set for these analyses. \vspace{.4cm} \linebreak
+    \scriptsize
   \pause
     \textbf{paired t-Test} (suppose a resettling program)
     \begin{itemize}
     \item \textit{Climate Warming/Extremes:} Does sparrow morphology change depend on climate?
     \end{itemize} 
-  \pause
+    \tiny
+    \raggedright Use the `2b - Sparrow_ResettledSIUK_READY.rds` data set for these analyses. \vspace{.4cm} \linebreak
+    \scriptsize 
+\endcol
+\begincol{.5\linewidth}
+\pause
     \textbf{One-Way ANOVA}
     \begin{itemize}
     \item \textit{Climate Warming/Extremes:} Does sparrow morphology depend on climate?
     \item \textit{Predation:} Does nesting height depend on predator characteristics?
-    \item \textit{Site-wise variation:} Does sparrow morphology depend on sites?
     \end{itemize} 
-\endcol
-\begincol{.5\linewidth}
   \pause
     \textbf{Two-Way ANOVA}
     \begin{itemize}
-    \item \textit{Climate Warming/Extremes:} Does sparrow morphology depend on climate and sex?
     \item \textit{Sexual Dimorphism:} Does sparrow morphology depend on population status and sex?
     \end{itemize}
   \pause
@@ -386,11 +514,13 @@ So which of our major research questions (seminar 6) can we answer?
     \begin{itemize}
     \item \textit{Climate Warming/Extremes:} Do sparrow characteristics depend on climate and latitude?
     \end{itemize} 
-  \pause
-  \small
-  \vspace{0.4cm}
-    \begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title=]
-    \centering \textit{Remember to \textbf{check assumptions} and find ways to circumvent violations of assumptions!}
-    \end{tcolorbox}
+  \tiny
+    \raggedright Use the `1 - Sparrow_Data_READY.rds` data set for these analyses. \vspace{.4cm} \linebreak
+    \scriptsize
 \endcol
 \endcols
+\pause
+\begin{tcolorbox}[colback=burgundy!5,colframe=burgundy!40!black,title= ]
+\centering Remember to diligently \textbf{check assumptions}!
+\end{tcolorbox}
+
