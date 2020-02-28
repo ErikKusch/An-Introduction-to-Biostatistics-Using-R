@@ -6,7 +6,6 @@
 !*_Handout.pdf
 !*_Solutions.pdf
 !*_EX.*
-!Style_Exercise.tex
 !*.csv
 !*.xlsx
 !*.rds
@@ -25,3 +24,4 @@
 
 */Data/Sparrow_Data_RGenerated.csv
 .Rproj.user
+/*/Style_Exercise.tex
