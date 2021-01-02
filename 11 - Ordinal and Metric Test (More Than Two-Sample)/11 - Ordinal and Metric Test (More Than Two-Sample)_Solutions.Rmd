@@ -1,92 +1,23 @@
 ---
-title: "" # needs to be empty since it is specified in Title.Rmd
-author: ""
+title: "Ordinal & Metric Tests (More-Than-Two-Sample Situations)"
+subtitle: 'Analysing the Sparrow Data Set'
+author: "Erik Kusch"
 date: ""
-documentclass: "book"
+documentclass: "report"
 fontsize: 10pt
 output: 
-  pdf_document:
-    includes:
-      in_header: Style_Exercise.tex
-subparagraph: true # this is needed as a workaround to get titlesec to work
-geometry: "left= 2cm,right = 2cm, bottom = 1.5cm, top = 2cm"
+  # rmdformats::material:
+  html_document:
+    self_contained: true
+    highlight: tango
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = FALSE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=70),tidy=TRUE, fig.height=4)
-options(digits=2, width = 90)
-```
+knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, fig.height = 4.5)
+``` 
 
-<!--- ####### PREAMBLE -----------
---------------------------------------------->
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\begin{center}
-\begin{tabular}{p{\textwidth}}
-
-\begin{center}
-\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
-\hspace{.05\linewidth}
-\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
-\end{center}
-
-\\
-
-\vspace{5.5cm}
-
-\begin{center}
-\textsc{\LARGE{
-\textbf{Ordinal and Metric Tests (More-Than-Two-Sample Situations)}\\
-\vspace{0.15cm}
-Analysing the Sparrow Data Set \\
-\vspace{0.3cm}
-- } \vspace{0.3cm}\\
-\large{BASIC STATISTICS FOR BIOLOGISTS\\
-}}
-\end{center}
-
-\vspace{5.5cm}
-
-\raggedleft
-\textbf{Erik Kusch} \\
-\textit{PhD Student} \\
-Aarhus University \\
-Department of Bioscience \\
-Section for Ecoinformatics \& Biodiversity \\
-Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE) \\
-Ny Munkegade 116, Building 1540 \\
-8000 Aarhus \\
-Denmark \\
-email: erik@i-solution.de \\
-
-\end{tabular}
-\end{center}
-
-\raggedright
-\clearpage
-
-<!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
-\pagestyle{plain}
-\pagenumbering{roman}
-
-\begingroup
-\let\clearpage\relax
-\let\cleardoublepage\relax
-\begin{LARGE}
- \textbf{Summary:}\\
- \vspace{0.2cm}
-\end{LARGE}
 Welcome to our fifth practical experience in R. Throughout the following notes, I will introduce you to a couple statistical approaches for metric or ordinal data when wanting to compare more than two samples/populations that might be useful to you and are, to varying degrees, often used in biology.  
 To do so, I will enlist the sparrow data set we handled in our first exercise.
-
-\setcounter{secnumdepth}{3} 
-\setcounter{tocdepth}{4} 
-\tableofcontents
-\endgroup
-
-<!--- ####### DOCUMENT ---------------------------------------------------------->
-\pagestyle{fancy}
-\pagenumbering{arabic}
 
 # Preparing Our Procedure
 To ensure others can reproduce our analysis we run the following three lines of code at the beginning of our `R` coding file.
@@ -123,9 +54,7 @@ Data_df <- Data_df_base # duplicate and save initial data on a new object
 # Kruskal-Wallis Test  
 
 ## Climate Warming/Extremes  
-\begin{center}
-\textit{Does morphology of Passer domesticus depend on climate?}
-\end{center}
+**Does morphology of Passer domesticus depend on climate?**
 
 Using the Mann-Witney U Test in our last practical, we concluded that climate (when recorded as "Continental" and "Non-Continental") is an important driver of *Passer domesticus* morphology. Now we will see whether this holds true when considering non-continental climates as coastal and semi-coastal ones.
 
@@ -158,7 +87,7 @@ kruskal.test(Weights_vec, Climates)
 
 We conclude that the three-level climate variable is an important source of information to understand what drives weight records of *Passer domesticus* and thus **reject the null hypothesis** (p = $`r kruskal.test(Weights_vec, Climates)[["p.value"]]`$).  
 
-\newpage
+
 
 ```{r KruskalSite1b, fig.height=12, fig.width=15}
 boxplot(Weights_vec ~ Climates)
@@ -166,7 +95,7 @@ boxplot(Weights_vec ~ Climates)
 
 Looking at the boxplot, we can understand the distribution of weight records as grouped by climate types and identify weight records to be biggest for continental climates followed by semi-coastal ones with similar spreads. Coastal climates, on the other hand, show a remarkable spread of weight records of *Passer domesticus* with a markedly lower median than the two previous categories.
 
-\newpage
+
 
 ### Height
 
@@ -192,7 +121,7 @@ We conclude that the three-level climate variable is an important source of info
 
 Looking at the boxplot, we can understand the distribution of height records as grouped by climate types and identify height records to be smallest for continental climates followed by semi-coastal ones with similar spreads. Coastal climates, on the other hand, show a remarkable spread of height records of *Passer domesticus* with a markedly higher median than the two previous categories.
 
-\newpage
+
 
 ### Wing Chord
 
@@ -219,7 +148,7 @@ We conclude that the three-level climate variable is an important source of info
 
 Looking at the boxplot, we can understand the distribution of wing chord records as grouped by climate types and identify wing chord records to be smallest for continental climates followed by semi-coastal ones with similar spreads. Coastal climates, on the other hand, show a remarkable spread of wing chord records of *Passer domesticus* with a markedly higher median than the two previous categories.
 
-\newpage
+
 
 ### Automating the Analysis
 As we have seen, running seperate tests for every research question may be a bit cumbersome and so we may want to automate the analysis by establishing our own user-defined function as follows:
@@ -271,7 +200,7 @@ This function is *named* `AutomatedKruskal()` and takes three *arguments*: (1) `
 
 The function then proceeds to establish an empty data frame which it will store the results of our Kurskal-Wallis Tests in. Afterwards, it cycles through all variables contained within the `Variables` statement, extracts the relevant data, grouping it according to the specified grouping variable (`Groups`), runs the test, fills the data frame and plots the data if `Plotting` has ben set to `TRUE`.
 
-\newpage
+
 
 Let's re-run our earlier test on sparrow morphology as influenced by climate using this function by *calling* it:
 ```{r KruskalSite7b, fig.height=15, fig.width=15}
@@ -285,12 +214,10 @@ As we can see from the results above, our function works flawlessly and we can u
 
 Furthermore, we can confirm some of the results of our Mann-Whitney U Test from last seminar.
 
-\newpage
+
 
 ## Predation
-\begin{center}
-\textit{Does nesting height depend on predator characteristics?}
-\end{center}
+**Does nesting height depend on predator characteristics?**
 
 Again, using the Mann-WHitney U Test in our last exercise, we identified both predator presence as well as predator type to be important predictors for nesting height of *Passer domesticus*. 
 
@@ -313,12 +240,10 @@ Using our `Automated Kruskal()` function, we can conclude that the aggregation o
 
 Therefore, we can argue that avian predation forces sparrows into low nesting sites, non-avian predation leads to more elevated nesting sites in *Passer domesticus* and absence of predators seems to not force nesting height in any direction or restricting its spread.
 
-\newpage
+
 
 ## Competition  
-\begin{center}
-\textit{Does home range depend on climate?}
-\end{center}
+**Does home range depend on climate?**
 
 Having used the Mann-Whitney U Test to identify possible climate-driven changes in home ranges of *Passer domesticus* in our last seminar, we concluded that climate types largely affect home ranges of the common house sparrow. 
 
@@ -368,12 +293,10 @@ As such, this program is very reminiscent of the resettling program in our last 
 
 All of this serves to **maximise variation** that we want to research whilst **minising constraining factors**.
 
-\newpage
+
 
 ## Climate Warming/Extremes  
-\begin{center}
-\textit{Does sparrow morphology change depend on climate?}
-\end{center}
+**Does sparrow morphology change depend on climate?**
 
 Thinking back to out Wilcoxon Signed Rank test, we can already argue that weight records of sparrows should change according to climate whilst height and wing chord records should remain unaltered for every individual. 
 
@@ -439,12 +362,10 @@ AutomatedFried(Variables = c("Weight", "Height", "Wing.Chord"), Plotting = TRUE)
 
 Indeed, whilst climate is a good predictor for the weight of resettled sparrows (weight in continental climates is higher than in semi-coastal or coastal ones), height and wing chord records couldn't be properly tested on using the `friedman.test()` function since they have remained unalterd. Thetrefore, we **reject the null hypothesis** for weight records of *Passer domesticus* and **accept the null hypothesis** for height and wing chord records.
 
-\newpage
+
 
 ## Predation
-\begin{center}
-\textit{Does nesting height depend on predator characteristics?}
-\end{center}
+**Does nesting height depend on predator characteristics?**
 
 According to the results of our last practical, we would assume *Passer doemsticus* to adhere to local conditions when chosing a nesting site and corresponding nesting height depending on predator presence:
 ```{r FriedPreda, fig.height=4.5, fig.width=15}
@@ -454,9 +375,7 @@ AutomatedFried(Variables = "Nesting.Height", Plotting = TRUE)
 Just like we expected, nesting height of resettled sparrows depends hugely on predator presence at the sties they have been moved to (p = $`r AutomatedKruskal(Variables = "Nesting.Height", Groups = "Predator.Type", Plotting = FALSE)$p_value`$) and we **reject the null hypothesis**.
 
 ## Competition  
-\begin{center}
-\textit{Does home range depend on climate?}
-\end{center}
+**Does home range depend on climate?**
 
 As we've seen in our last seminar, a statistically signficant change in home ranges did not occur when resettling Siberian sparrows directly to the UK. How about when we resettle them via Manitoba?
 ```{r FriedCompetitiona, fig.height=4.5, fig.width=15}

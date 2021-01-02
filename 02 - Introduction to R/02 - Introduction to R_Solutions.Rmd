@@ -1,90 +1,22 @@
 ---
-title: "" # needs to be empty since it is specified in Title.Rmd
-author: ""
+title: "Introduction to R"
+subtitle: 'First Steps in R'
+author: "Erik Kusch"
 date: ""
-documentclass: "book"
+documentclass: "report"
 fontsize: 10pt
 output: 
-  pdf_document:
-    includes:
-      in_header: Style_Exercise.tex
-subparagraph: true # this is needed as a workaround to get titlesec to work
-geometry: "left= 2cm,right = 2cm, bottom = 1.5cm, top = 2cm"
+  # rmdformats::material:
+  html_document:
+    self_contained: true
+    highlight: tango
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=70),tidy=TRUE, fig.height=4, fig.width = 12)
-options(digits=2, width = 90)
+knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, fig.height = 4.5)
 ```
 
-<!--- ####### PREAMBLE -----------
---------------------------------------------->
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\begin{center}
-\begin{tabular}{p{\textwidth}}
-
-\begin{center}
-\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
-\hspace{.05\linewidth}
-\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
-\end{center}
-
-
-\vspace{5.5cm}
-
-\begin{center}
-\textsc{\LARGE{
-\textbf{Data Handling and Data Mining}\\
-\vspace{0.15cm}
-Fixing The Sparrow Data Set \\
-\vspace{0.3cm}
-- } \vspace{0.3cm}\\
-\large{BASIC STATISTICS FOR BIOLOGISTS\\
-}}
-\end{center}
-
-\vspace{6.5cm}
-
-\raggedleft
-\textbf{Erik Kusch} \\
-\textit{PhD Student} \\
-Aarhus University \\
-Department of Bioscience \\
-Section for Ecoinformatics \& Biodiversity \\
-Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE) \\
-Ny Munkegade 116, Building 1540 \\
-8000 Aarhus \\
-Denmark \\
-email: erik@i-solution.de \\
-
-\end{tabular}
-\end{center}
-\raggedright
-
-\pagebreak
-
-<!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
-\pagestyle{plain}
-\pagenumbering{roman}
-
-\begingroup
-\let\clearpage\relax
-\let\cleardoublepage\relax
-\begin{LARGE}
- \textbf{Summary:}\\
- \vspace{0.2cm}
-\end{LARGE}
 These are the solutions to the exercises contained within the handout to Introduction to R which walks you through the basics of the `R` machinery. `R` is a coding language that can be highly individualised and hence there are often multiple solutions to the same problem. Within these solutions, I shall only present you with one solution for every given task. However, do keep in mind that there is probably a myriad of other ways to achieve your goal.
-
-\setcounter{secnumdepth}{3} 
-\setcounter{tocdepth}{4} 
-\tableofcontents
-\endgroup
-
-<!--- ####### DOCUMENT ---------------------------------------------------------->
-\pagestyle{fancy}
-\pagenumbering{arabic}
 
 # Creating and Inspecting Objects
 ## Vector
@@ -146,7 +78,7 @@ Expanded_fac
 length(Expanded_fac)
 ```
 
-\newpage
+
 
 ## Matrix
 - The first two vectors we established in distinct columns of a matrix
@@ -169,7 +101,7 @@ Names_mat
 dim(Names_mat)
 ```
 
-\newpage
+
 
 ## Data Frame
 - The first matrix we established as a data frame

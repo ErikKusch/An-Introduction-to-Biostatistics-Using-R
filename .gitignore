@@ -4,7 +4,7 @@
 # But not these files...
 !.gitignore
 !*_Handout.pdf
-!*_Solutions.pdf
+!*_Solutions.html
 !*_EX.*
 !*.csv
 !*.xlsx

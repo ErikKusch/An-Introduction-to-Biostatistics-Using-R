@@ -1,91 +1,23 @@
 ---
-title: "" # needs to be empty since it is specified in Title.Rmd
-author: ""
+title: "Nominal Tests"
+subtitle: 'Analysing the Sparrow Data Set'
+author: "Erik Kusch"
 date: ""
-documentclass: "book"
+documentclass: "report"
 fontsize: 10pt
 output: 
-  pdf_document:
-    includes:
-      in_header: Style_Exercise.tex
-subparagraph: true # this is needed as a workaround to get titlesec to work
-geometry: "left= 2cm,right = 2cm, bottom = 1.5cm, top = 2cm"
+  # rmdformats::material:
+  html_document:
+    self_contained: true
+    highlight: tango
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=80),tidy=TRUE, fig.height=4)
-options(digits=2, width = 90)
+knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, fig.height = 4.5)
 ```
-
-<!--- ####### PREAMBLE -----------
---------------------------------------------->
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\begin{center}
-\begin{tabular}{p{\textwidth}}
-
-\begin{center}
-\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
-\hspace{.05\linewidth}
-\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
-\end{center}
-
-
-\vspace{5.5cm}
-
-\begin{center}
-\textsc{\LARGE{
-\textbf{Nominal Tests}\\
-\vspace{0.15cm}
-Analysing the Sparrow Data Set \\
-\vspace{0.3cm}
-- } \vspace{0.3cm}\\
-\large{BASIC STATISTICS FOR BIOLOGISTS\\
-}}
-\end{center}
-
-\vspace{6.5cm}
-
-\raggedleft
-\textbf{Erik Kusch}  
-\textit{PhD Student}  
-Aarhus University  
-Department of Bioscience  
-Section for Ecoinformatics \& Biodiversity  
-Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE)  
-Ny Munkegade 116, Building 1540  
-8000 Aarhus  
-Denmark  
-email: erik@i-solution.de  
-
-\end{tabular}
-\end{center}
-\raggedright
-\clearpage
-
-<!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
-\pagestyle{plain}
-\pagenumbering{roman}
-
-\begingroup
-\let\clearpage\relax
-\let\cleardoublepage\relax
-\begin{LARGE}
- \textbf{Summary:}\\
- \vspace{0.2cm}
-\end{LARGE}
 
 Welcome to our second practical experience in `R`. Throughout the following notes, I will introduce you to a couple nominal statistical test approaches that might be useful to you and are often used in biology.  
 To do so, I will enlist the sparrow data set we handled in our last exercise.
-
-\setcounter{secnumdepth}{3} 
-\setcounter{tocdepth}{4} 
-\tableofcontents
-\endgroup
-
-<!--- ####### DOCUMENT ---------------------------------------------------------->
-\pagestyle{fancy}
-\pagenumbering{arabic}
 
 # Preparing Our Procedure
 To ensure others can reproduce our analysis we run the following three lines of code at the beginning of our `R` coding file.
@@ -123,9 +55,7 @@ As the name would suggest, a binomial test can only accommodate variables on a b
 
 ## Sexual Dimorphism
 
-\begin{center}
-\textit{Are the sexes represented in equal proportions?}
-\end{center}
+**Are the sexes represented in equal proportions?**
 
 First, we want to test whether our data has a bias leaning towards either sex of the surveyed sparrows. To do so, we may wish to first convert the binomial data into count records using the `table()` command of R as follows. The result of this can then be feed to `binom.test()`.
 ```{r Binomial1}
@@ -136,13 +66,9 @@ As we can see, there is no skew towards either male or female abundance of indiv
 
 This is to be expected. After all no bias for sex is known in *Passer domesticus* and indeed the species does reproduce monogamously so a skew between the sexes wouldn't go anywhere as far as evolution is concerned.
 
-\newpage
-
 ## Predation
 
-\begin{center}
-\textit{Are the sites dominated by predators?}
-\end{center}
+**Are the sites dominated by predators?**
 
 Now, let's see if there is a skew towards predators being present at our sites or not. This time, however we make use of a different syntax for the `binom.test()` function. We do this for no reason of functionality but simply to show that there are multiple ways to using it.
 ```{r Binomial2}
@@ -157,13 +83,11 @@ This is in concordance with what we'd expect from the natural world since predat
 
 The McNemar Test (sometimes referred to as McNemar's Chi-Square test because the test statistic has a chi-square distribution) is used when you are interested in finding a change in proportion for paired data. This is very common in repeated sampling analyses.  
 
-The **null hypothesis** reads: **Class assignment probablities do not change within different treatments**.  
+The **null hypothesis** reads: **Class assignment probabilities do not change within different treatments**.  
 
 ## Preparing The Data
 
-\begin{center}
-\textit{Do sex ratios change over time?}
-\end{center}
+**Do sex ratios change over time?**
 
 Unfortunately, our data does not allow for these types of analyses and so we will need to create some additional data here.  
 
@@ -187,8 +111,6 @@ Here's the data we will be testing:
 table(Sexes_AU_Now_vec) 
 table(Sexes_AU_Next_vec)
 ```
-
-\newpage
 
 ## Running The Test
 Now let's go on to test the unbiased vs. the male-skewed sex ratio:
@@ -224,9 +146,7 @@ The **null hypothesis** for Cochran's Q postulates an **equal proportion of clas
 
 ## Preparing The Data
 
-\begin{center}
-\textit{Are colours related to sex or predator parameters?}
-\end{center}
+**Are colours related to sex or predator parameters?**
 
 When exploring our data, we can clearly see a pattern concerning the colour polymorphism of house sparrows arise which is dependant on the value of Predator Presence.
 ```{r ChochranPrep}
@@ -240,8 +160,6 @@ ggplot(plot_df, aes(x = Predation, y = Data, fill = Identifiers)) + geom_bar(sta
 ```
 
 This might lead us to believe that the presence of predators cause an evolutionary change of the plumage colour of *Passer domesticus* (we will have a more in-depth look on this in later seminars) and we might even postulate that "Black" and "Grey" serve as camouflage.  
-
-\newpage
 
 Cochran's Q requires data to be delivered as binomial records. Therefore, we prepare colour as a binary variable of "Brown" and "Camouflage" (which we postulate to encompass "Grey" and "Black"). Since Colour is of type `factor` within our data set, we need to take some precautions in changing the data records. Predator Presence and Sex don't need any additional preparation.
 ```{r Chochran1}
@@ -266,6 +184,7 @@ CochMatrix <- matrix(c(CochColour, CochPredator.Presence, CochSex), ncol = 3) - 
 colnames(CochMatrix) <- c("Colour", "Predator Presence", "Sex")
 head(CochMatrix)
 ```
+
 ## Runing The Test
 Now let's run our test using the `cochrans.q()` function that comes with the `nonpar` package:
 ```{r Chochran2}
@@ -290,16 +209,16 @@ Based on this result, we **reject the null hypothesis** of binary colour records
 table(CochPredator.Presence)
 binom.test(table(CochPredator.Presence))
 ```
-Based on this result, we **reject the null hypothesis** of opredator presence records being equally likely to occur.  
+Based on this result, we **reject the null hypothesis** of predator presence records being equally likely to occur.  
 
 *Lastly*, recall the binomial test run on the **sex** data records which exhibit an almost even 50/50 split.  
 
-Whilst none of these test give us any idea about the overlap of similar assignments along these variable vectors, a 50/50 split (sex) can never link up comparably with a roughly 30/70 split (predator presence and binary colour). Therefore, wo could hypothesize a linkage of predator presence and colour rather than sex and colour morphs.
+Whilst none of these test give us any idea about the overlap of similar assignments along these variable vectors, a 50/50 split (sex) can never link up comparably with a roughly 30/70 split (predator presence and binary colour). Therefore, we could hypothesize a linkage of predator presence and colour rather than sex and colour morphs.
 
 # Chi-Squared
-The Chi-Squared (also known as Chi\textsuperscript{2}) Test can be regarded as a functional extension of the binomial test and is used to test the similarity of class assignment proportions for a categorical/nominal variable. Unlike the binomial test, however, this test is not constrained to binomial records alone.  
+The Chi-Squared (also known as $Chi^2$) Test can be regarded as a functional extension of the binomial test and is used to test the similarity of class assignment proportions for a categorical/nominal variable. Unlike the binomial test, however, this test is not constrained to binomial records alone.  
 
-The null hypothesis states that: **Every class assignment conatined within a given variable is equally likely**.  
+The null hypothesis states that: **Every class assignment contained within a given variable is equally likely**.  
 
 The Chi-Squared Test can be applied in a one or two sample situation. One sample represents one variable in this setting.
 
@@ -321,16 +240,14 @@ chisq.test(table(Data_df$Colour))
 ```
 Again, we **reject the null hypothesis** thus concluding differing class proportions for every possible class of "Colour".
 
-\newpage
+
 
 ## Two Sample Situation
 The two sample Chi-Squared approach lets us identify whether class assignment proportions of one variable differ when they are considered in a dependency of another nominal variable.  
 
 ### Sexual Dimorphism
 
-\begin{center}
-\textit{Are colours of Passer domesticus related to their sexes?}
-\end{center}
+**Are colours of Passer domesticus related to their sexes?**
 
 *Firstly*, let's see if males and females share the same likelihoods of being of a certain colour:
 ```{r Chi3}
@@ -341,9 +258,7 @@ Clearly, they don't and we **reject the null hypothesis**.
 
 ### Predation
 
-\begin{center}
-\textit{Are colours of Passer domesticus related to predator parameters?}
-\end{center}
+**Are colours of Passer domesticus related to predator parameters?**
 
 *Secondly*, we test whether colour proportions change when considering predator presence. Although we partially considered this already in the Cochran's Q section. This time, however, we use a non-binary version of the colour variable:
 ```{r Chi4}
@@ -352,19 +267,16 @@ chisq.test(table(Data_df$Colour, Data_df$Predator.Presence))
 ```
 The statement holds. Predator presence seems likely to be a driver of the colour polymorphism in *Passer domesticus* and we **reject the null hypothesis**.  
 
-\newpage
+
 
 So what about a possible link of sparrow colour and predator type?
 ```{r Chi4.5}
 table(Data_df$Colour, Data_df$Predator.Type)
 chisq.test(table(Data_df$Colour, Data_df$Predator.Type))
 ```
-Nope, no link here. We have to **accept the null hypotesis** and conclude that there may be no causal link of predator type and sparrow colour.  
+Nope, no link here. We have to **accept the null hypothesis** and conclude that there may be no causal link of predator type and sparrow colour.  
 
-\hfill \linebreak
-\begin{center}
-\textit{Are nesting sites of Passer domesticus related to predator parameters?}
-\end{center}
+**Are nesting sites of Passer domesticus related to predator parameters?**
 
 *Third*, let's test whether nesting site assignments might differ based on predator presence:
 ```{r Chi5}

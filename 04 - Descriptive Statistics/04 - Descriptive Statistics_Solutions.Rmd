@@ -1,93 +1,24 @@
 ---
-title: "" # needs to be empty since it is specified in Title.Rmd
-author: ""
+title: "Descriptive Statistics"
+subtitle: 'Getting to know the Data'
+author: "Erik Kusch"
 date: ""
-documentclass: "book"
+documentclass: "report"
 fontsize: 10pt
 output: 
-  pdf_document:
-    includes:
-      in_header: Style_Exercise.tex
-subparagraph: true # this is needed as a workaround to get titlesec to work
-geometry: "left= 2cm,right = 2cm, bottom = 1.5cm, top = 2cm"
+  # rmdformats::material:
+  html_document:
+    self_contained: true
+    highlight: tango
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=90),tidy=TRUE, fig.height=4, fig.width = 12)
-options(digits=2, width = 90)
+knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, fig.height = 4.5)
 ```
 
-<!--- ####### PREAMBLE -----------
---------------------------------------------->
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\begin{center}
-\begin{tabular}{p{\textwidth}}
-
-\begin{center}
-\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
-\hspace{.05\linewidth}
-\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
-\end{center}
-
-
-\vspace{5.5cm}
-
-\begin{center}
-\textsc{\LARGE{
-\textbf{Data Handling and Data Mining}\\
-\vspace{0.15cm}
-Fixing The Sparrow Data Set \\
-\vspace{0.3cm}
-- } \vspace{0.3cm}\\
-\large{BASIC STATISTICS FOR BIOLOGISTS\\
-}}
-\end{center}
-
-\vspace{6.5cm}
-
-\raggedleft
-\textbf{Erik Kusch} \\
-\textit{PhD Student} \\
-Aarhus University \\
-Department of Bioscience \\
-Section for Ecoinformatics \& Biodiversity \\
-Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE) \\
-Ny Munkegade 116, Building 1540 \\
-8000 Aarhus \\
-Denmark \\
-email: erik@i-solution.de \\
-
-\end{tabular}
-\end{center}
-\raggedright
-
-\pagebreak
-
-<!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
-\pagestyle{plain}
-\pagenumbering{roman}
-
-\begingroup
-\let\clearpage\relax
-\let\cleardoublepage\relax
-\begin{LARGE}
- \textbf{Summary:}\\
- \vspace{0.2cm}
-\end{LARGE}
 These are the solutions to the exercises contained within the handout to Descriptive Statistics which walks you through the basics of descriptive statistics and its parameters. The analyses presented here are using data from the `StarWars` data set supplied through the `dplyr` package that have been saved as a .csv file.  
 
 Keep in mind that there is probably a myriad of other ways to reach the same conclusions as presented in these solutions.
-
-
-\setcounter{secnumdepth}{3} 
-\setcounter{tocdepth}{4} 
-\tableofcontents
-\endgroup
-
-<!--- ####### DOCUMENT ---------------------------------------------------------->
-\pagestyle{fancy}
-\pagenumbering{arabic}
 
 # Packages
 As you will remember from our lecture slides, the calculation of the mode in `R` can either be achieved through some intense coding or simply by using the `mlv(..., method="mfv")` function contained within the `modeest` package (unfortunately, this package is out of date and can sometimes be cahellenging to install).  
@@ -125,8 +56,6 @@ sapply(package_vec, install.load.package)
 ```
 
 Why do I prefer this? Firstly, it is way shorter than the basic method when dealing with many packages (which you will get into fast, I promise), reduces the chance for typos by 50\% and does not override already installed packages hence speeding up your processing time.
-
-\let\cleardoublepage\relax
 
 # Loading the Excel data into `R` 
 Our data is located in the `Data` folder and is called `DescriptiveData.csv`. Since it is a .csv file, we can simply use the `R` in-built function `read.csv()` to load the data by combining the former two identifiers into one long string with a backslash separating the two (the backslash indicates a step down in the folder hierarchy). Given this argument, `read.csv()` will produce an object of type `data.frame` in `R` which we want to keep in our environment and hence need to assign a name to. In our case, let that name be `Data_df` (I recommend using endings to your data object names that indicate their type for easier coding without constant type checking):
@@ -169,27 +98,16 @@ tail(Data_df)
 ```
 The avid reader will surely have picked up on the fact that all the records in the `name` column of `Data_df` belong to characters from the Star Wars universe. In fact, this data set is a modified version of the `StarWars` data set supplied by the `dplyr` package and contains information of many of the important cast members of the Star Wars movie universe.
 
-\newpage
 
 # Parameters of descriptive statistics 
 
 ## Names
 As it turns out (and should've been obvious from the onset if we're honest), every major character in the cinematic Star Wars Universe has a unique name to themselves. Conclusively, the calculation of any parameters of descriptive statistics makes no sense with the names of our characters for the two following reasons:  
 
-\begin{minipage}{0.55\textwidth}
-\begin{itemize}
-\item The name variable is of mode character/factor and only allows for the calculation of the mode
-\item Since every name only appears once, there is no mode
-\end{itemize}
+- The name variable is of mode character/factor and only allows for the calculation of the mode  
+- Since every name only appears once, there is no mode  
 
-\end{minipage}
-\begin{minipage}{0.4\textwidth}
-\begin{center}
-\includegraphics[width=.7\linewidth]{Figures/itsatrap.jpg}
-\end{center}
-\end{minipage}
-
-As long as the calculation of descriptive parameters of the `name` variable of our data set is concerned, Admiral Ackbar said it best.
+As long as the calculation of descriptive parameters of the `name` variable of our data set is concerned, Admiral Ackbar said it best: "It's a trap".
 
 ## Height
 Let's get started on figuring out some parameters of descriptive statistics for the `height` variable of our Star Wars characters.
@@ -217,7 +135,7 @@ LocPars_vec
 ```
 As you can clearly see, there is a big range in the heights of our respective Star Wars characters with mean and median being fairly disjunct due to the outliers in height on especially either end.
 
-\clearpage
+
 
 ### Distribution Parameters 
 Now that we are aware of the location parameters of the Star Wars height records, we can move on to the distribution parameters/parameters of spread. Those can be calculated in `R` as follows:
@@ -276,7 +194,7 @@ DisPars_vec
 ```
 Quite obviously, the wide range of weight records also prompts a large variance and standard deviation.
 
-\clearpage
+
 
 ## Hair Color 
 Hair colour in our data set is saved in column 4 of our data set and so when sub-setting the data frame to obtain information about a characters hair colour, instead of calling on `Data_df$hair_color` we can also do so as follows:
@@ -311,7 +229,7 @@ Keep in mind that StarWars operates on a different time reference scale than we 
 ```{r BYLoc, echo = FALSE}
 mean <- mean(BY, na.rm = TRUE)
 median <- median(BY, na.rm = TRUE)
-mode <- mlv(na.omit(BY), method="mfv")
+mode <- mlv(na.omit(BY), method="mfv")[1]
 min <- min(BY, na.rm = TRUE)
 max <- max(BY, na.rm = TRUE)
 range <- max-min
@@ -345,12 +263,3 @@ We can, again, only judge the mode of our data from the output of the `table()` 
 ```{r GenderMode}
 table(Gender)
 ```
-
-Keep in mind that StarWars characters can have some weird genders.  
-
-## Closing
-Congratulations on making it through this seminar. Descriptive statistics are a gateway into higher and more advanced statistic approaches so this feels appropriate:
-
-\begin{center}
-\includegraphics[width=.4\linewidth]{Figures/1p15mf.jpg}
-\end{center}

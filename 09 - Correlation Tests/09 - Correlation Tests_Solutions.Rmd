@@ -1,90 +1,23 @@
 ---
-title: "" # needs to be empty since it is specified in Title.Rmd
-author: ""
+title: "Correlation Tests"
+subtitle: 'Analysing the Sparrow Data Set'
+author: "Erik Kusch"
 date: ""
-documentclass: "book"
+documentclass: "report"
 fontsize: 10pt
 output: 
-  pdf_document:
-    includes:
-      in_header: Style_Exercise.tex
-subparagraph: true # this is needed as a workaround to get titlesec to work
-geometry: "left= 2cm,right = 2cm, bottom = 1.5cm, top = 2cm"
+  # rmdformats::material:
+  html_document:
+    self_contained: true
+    highlight: tango
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=80),tidy=TRUE, fig.height=4)
-options(digits=2, width = 90)
+knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, fig.height = 4.5)
 ```
 
-<!--- ####### PREAMBLE -----------
---------------------------------------------->
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\begin{center}
-\begin{tabular}{p{\textwidth}}
-
-\begin{center}
-\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
-\hspace{.05\linewidth}
-\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
-\end{center}
-
-
-\vspace{5.5cm}
-
-\begin{center}
-\textsc{\LARGE{
-\textbf{Correlation Tests}\\
-\vspace{0.15cm}
-Analysing the Sparrow Data Set \\
-\vspace{0.3cm}
-- } \vspace{0.3cm}\\
-\large{BASIC STATISTICS FOR BIOLOGISTS\\
-}}
-\end{center}
-
-\vspace{6.5cm}
-
-\raggedleft
-\textbf{Erik Kusch} \\
-\textit{PhD Student} \\
-Aarhus University \\
-Department of Bioscience \\
-Section for Ecoinformatics \& Biodiversity \\
-Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE) \\
-Ny Munkegade 116, Building 1540 \\
-8000 Aarhus \\
-Denmark \\
-email: erik@i-solution.de \\
-
-\end{tabular}
-\end{center}
-\raggedright
-\clearpage
-
-<!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
-\pagestyle{plain}
-\pagenumbering{roman}
-
-\begingroup
-\let\clearpage\relax
-\let\cleardoublepage\relax
-\begin{LARGE}
- \textbf{Summary:}\\
- \vspace{0.2cm}
-\end{LARGE}
 Welcome to our third practical experience in R. Throughout the following notes, I will introduce you to a couple statistical correlation approaches that might be useful to you and are, to varying degrees, often used in biology.  
 To do so, I will enlist the sparrow data set we handled in our first exercise.
-
-\setcounter{secnumdepth}{3} 
-\setcounter{tocdepth}{4} 
-\tableofcontents
-\endgroup
-
-<!--- ####### DOCUMENT ---------------------------------------------------------->
-\pagestyle{fancy}
-\pagenumbering{arabic}
 
 # Preparing Our Procedure
 To ensure others can reproduce our analysis we run the following three lines of code at the beginning of our `R` coding file.
@@ -125,9 +58,7 @@ Keep in mind that the contingency coefficient is not *really* a measure of corre
 
 ## Predation
 
-\begin{center}
-\textit{Are colour morphs of Passer domesticus linked to predator presence and/or predator type?}
-\end{center}
+**Are colour morphs of Passer domesticus linked to predator presence and/or predator type?**
 
 This analysis builds on our findings within our previous exercise (Nominal Tests - Analysing The Sparrow Data Set). Remember that, using the two-sample situation Chi-Squared Test, we found no change in treatment effects (as far as colour polymorphism went) for predator type values but did so regarding the presence of predators. Let's repeat this here:
 ```{r Contingency2}
@@ -141,11 +72,7 @@ ContCoef(table(Data_df$Colour, Data_df$Predator.Type))
 ```
 Here, we find the same results as when using the Chi-Squared statistic and conclude that colour morphs of the common house sparrow are likely to be driven by predator presence but not the type of predator that is present.  
 
-\hfill \linebreak
-
-\begin{center}
-\textit{Are nesting sites of Passer domesticus linked to predator presence and/or predator type?}
-\end{center}
+**Are nesting sites of Passer domesticus linked to predator presence and/or predator type?**
 
 Again, following our two-sample situation Chi-Squared analysis from last exercise, we want to test whether nesting site and predator presence/predator type are linked. The Chi-Squared analyses identified a possible link of nesting site and predator type but nor predator presence.
 ```{r Contingency2.5}
@@ -158,9 +85,7 @@ Whilst there doesn't seem to be any strong evidence linking nesting site and pre
 
 ## Sexual Dimorphism
 
-\begin{center}
-\textit{Are sex ratios of Passer domesticus related to climate types?}
-\end{center}
+**Are sex ratios of Passer domesticus related to climate types?**
 
 Recall that, in our last exercise, we found no discrepancy of proportions of the sexes among the entire data set using a binomial test. What we didn't check yet was whether the sexes are distributed across the sites somewhat homogeneously or whether the sex ratios might be skewed according to climate types. Let's do this:
 ```{r Contingency3}
@@ -182,9 +107,7 @@ Quite obviously, they aren't and, if there are any patterns in sex ratios to eme
 
 ## Climate Warming/Extremes
 
-\begin{center}
-\textit{Do heavier sparrows have heavier/less eggs?}
-\end{center}
+**Do heavier sparrows have heavier/less eggs?**
 
 A heavier weight of individual females alludes to a higher pool of resources being allocated by said individuals. There are multiple ways they might make use of it, one of them being investment in reproduction. To test how heavier females of *Passer domesticus* utilise their resources in reproduction, we use a Kendall's Tau approach to finding links between female weight and average egg weight per nest/number of eggs per nest.  
 Obviously, both weight variables are metric in nature and so we could use other methods as well. On top of that, we first need to convert these into ranks before being able to run a Kendall's Tau analysis as follows:
@@ -209,8 +132,6 @@ cor.test(x = RankedWeight_Female, y = RankedEggWeight,
          use = "pairwise.complete.obs", method = "kendall")
 ```
 There is strong evidence to suggest that heavier females tend to lay heavier eggs (tau = `r cor.test(x = RankedWeight_Female, y = RankedEggWeight, use = "pairwise.complete.obs", method = "kendall")[["estimate"]][["tau"]]` at p $\approx$ `r round(cor.test(x = RankedWeight_Female, y = RankedEggWeight, use = "pairwise.complete.obs", method = "kendall")[["p.value"]], 2)`).
-
-\newpage
 
 ```{r Kendall.26, tidy = FALSE}
 # Test ranked female weight vs. number of eggs
@@ -268,9 +189,7 @@ rownames(Normal_df) <- c("Variable", "p")
 Normal_df <- Normal_df[,-1] # removing superfluous Index column
 Normal_df
 ```
-Unfortunately, none of these variables seem to be normal distributed (this was to be expected for some, to be fair) thus barring us from using Pearson correlation on the entire data set leaving us with the SPearman correlation method. 
-
-\newpage
+Unfortunately, none of these variables seem to be normal distributed (this was to be expected for some, to be fair) thus barring us from using Pearson correlation on the entire data set leaving us with the Spearman correlation method. 
 
 ## Spearman
 
@@ -278,9 +197,7 @@ Unfortunately, none of these variables seem to be normal distributed (this was t
 
 #### Height/Length
 
-\begin{center}
-\textit{Do height/length records of Passer domesticus and latitude correlate?}
-\end{center}
+**Do height/length records of Passer domesticus and latitude correlate?**
 
 Following Bergmann's rule, we expect a positive correlation between sparrow height/length and absolute values of latitude:
 ```{r Spearman1, fig.width=15, fig.height = 8, tidy=FALSE}
@@ -292,13 +209,9 @@ ggplot(data = Data_df, aes(x = abs(Latitude), y = Height)) +
 ```
 Interestingly enough, our analysis yields a negative correlation which would disproof Bermann's rule. This is a good example to show how important biological background knowledge is when doing biostatistics. Whilst a pure statistician might now believe to have just dis-proven a big rule of biology, it should be apparent to any biologist that Bergmann spoke of "bigger" organisms in colder climates (higher latitudes) and not of "taller" individuals. What our sparrows lack in height, they might make up for in circumference. This is an example where we would **reject the null hypothesis** but shouldn't **accept the alternative hypothesis** based on biological understanding.
 
-\newpage
-
 #### Weight
 
-\begin{center}
-\textit{Do weight records of Passer domesticus and latitude correlate?}
-\end{center}
+**Do weight records of Passer domesticus and latitude correlate?**
 
 Again, following Bergmann's rule, we expect a positive correlation between sparrow weight and absolute values of latitude.
 ```{r Spearman, fig.width=15, fig.height = 8, tidy=FALSE}
@@ -310,13 +223,9 @@ ggplot(data = Data_df, aes(x = abs(Latitude), y = Weight)) +
 ```
 Bergmann was obviously right and we **reject the null hypothesis**.
 
-\newpage
-
 #### Wing Chord
 
-\begin{center}
-\textit{Do wing chord/wing span records of Passer domesticus and latitude correlate?}
-\end{center}
+**Do wing chord/wing span records of Passer domesticus and latitude correlate?**
 
 We would expect sparrows in higher latitudes (e.g. colder climates) to have smaller wings as to radiate less body heat.
 ```{r Spearman2, fig.width=15, fig.height = 8, tidy=FALSE}
@@ -329,13 +238,9 @@ ggplot(data = Data_df, aes(x = abs(Latitude), y = Wing.Chord)) +
 
 And we were right! Sparrows have shorter wingspans in higher latitudes and we **reject the null hypothesis**.
 
-\newpage
-
 #### Number of Eggs
 
-\begin{center}
-\textit{Do numbers of eggs per nest of Passer domesticus and latitude correlate?}
-\end{center}
+**Do numbers of eggs per nest of Passer domesticus and latitude correlate?**
 
 Due to resource constraints in colder climates, we expect female *Passer domesticus* individuals to invest in quality over quantity by prioritising caring your fledglings by educing the amount of eggs they produce.
 ```{r Spearman3, fig.width=15, fig.height = 8, tidy=FALSE}
@@ -347,13 +252,9 @@ ggplot(data = Data_df, aes(x = abs(Latitude), y = Number.of.Eggs)) +
 ```
 We were right. Female house sparrows produce less eggs per capita in higher latitudes and we **reject the null hypothesis**.
 
-\newpage
-
 #### Egg Weight
 
-\begin{center}
-\textit{Does average weight of eggs per nest of Passer domesticus and latitude correlate?}
-\end{center}
+**Does average weight of eggs per nest of Passer domesticus and latitude correlate?**
 
 Due to the reduced investment in egg numbers that we have just proven, we expect females of *Passer domesticus* to allocate some of their saved resources into heavier eggs which may nurture unhatched offspring for longer and more effectively.
 ```{r Spearman4, fig.width=15, fig.height = 8, tidy=FALSE}
@@ -364,8 +265,6 @@ ggplot(data = Data_df, aes(x = abs(Latitude), y = Egg.Weight)) +
   labs(title = "Weight of Passer domesticus eggs vs. Latitude")
 ```
 Indeed, the higher the latitude, the heavier the average egg per nest of *Passer domesticus* and we **reject the null hypothesis**.
-
-\newpage
 
 ## Pearson
 
@@ -390,11 +289,7 @@ Normal_df[-1,] # remove superfluous index row
 
 According to these results intra-site correlations of sparrow weight and height can be carried out! So, in order to show Pearson correlation, we run a simple, site-wise correlation analysis.  
 
-\hfill \linebreak
-
-\begin{center}
-\textit{Do weight and height records of Passer domesticus correlate within each site?}
-\end{center}
+**Do weight and height records of Passer domesticus correlate within each site?**
 
 To shed some light on our previous findings, we might want to see whether weight and height of sparrows correlate. Without running the analysis, we can conclude that they do because both correlate with latitude and are thus what we call **collinear**. However, now we are running the analysis on a site level - does the correlation still exist?  
 

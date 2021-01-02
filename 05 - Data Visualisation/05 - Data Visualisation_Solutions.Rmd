@@ -1,98 +1,29 @@
 ---
-title: "" # needs to be empty since it is specified in Title.Rmd
-author: ""
+title: "Data Visualisation"
+# subtitle: ''
+author: "Erik Kusch"
 date: ""
-documentclass: "book"
+documentclass: "report"
 fontsize: 10pt
 output: 
-  pdf_document:
-    includes:
-      in_header: Style_Exercise.tex
-subparagraph: true # this is needed as a workaround to get titlesec to work
-geometry: "left= 2cm,right = 2cm, bottom = 1.5cm, top = 2cm"
+  # rmdformats::material:
+  html_document:
+    self_contained: true
+    highlight: tango
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=90),tidy=TRUE, fig.height=4, fig.width = 12)
-options(digits=2, width = 90)
+knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, fig.height = 4.5)
 ```
 
-<!--- ####### PREAMBLE -----------
---------------------------------------------->
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\begin{center}
-\begin{tabular}{p{\textwidth}}
-
-\begin{center}
-\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
-\hspace{.05\linewidth}
-\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
-\end{center}
-
-
-\vspace{5.5cm}
-
-\begin{center}
-\textsc{\LARGE{
-\textbf{Data Handling and Data Mining}\\
-\vspace{0.15cm}
-Fixing The Sparrow Data Set \\
-\vspace{0.3cm}
-- } \vspace{0.3cm}\\
-\large{BASIC STATISTICS FOR BIOLOGISTS\\
-}}
-\end{center}
-
-\vspace{6.5cm}
-
-\raggedleft
-\textbf{Erik Kusch} \\
-\textit{PhD Student} \\
-Aarhus University \\
-Department of Bioscience \\
-Section for Ecoinformatics \& Biodiversity \\
-Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE) \\
-Ny Munkegade 116, Building 1540 \\
-8000 Aarhus \\
-Denmark \\
-email: erik@i-solution.de \\
-
-\end{tabular}
-\end{center}
-\raggedright
-
-\pagebreak
-
-<!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
-\pagestyle{plain}
-\pagenumbering{roman}
-
-\begingroup
-\let\clearpage\relax
-\let\cleardoublepage\relax
-\begin{LARGE}
- \textbf{Summary:}\\
- \vspace{0.2cm}
-\end{LARGE}
 These are the solutions to the exercises contained within the handout to Data Visualisation which walks you through the basics of data visualisation in `R`using `ggplot2`. The plots presented here are using data from the `iris` data set supplied through the `datasets` package. 
 
 Keep in mind that there is probably a myriad of other ways to reach the same conclusions as presented in these solutions.
 
-
-\setcounter{secnumdepth}{3} 
-\setcounter{tocdepth}{4} 
-\tableofcontents
-\endgroup
-
-<!--- ####### DOCUMENT ---------------------------------------------------------->
-\pagestyle{fancy}
-\pagenumbering{arabic}
-
 # Packages
-Recall the exercise that went along with the last seminar (Descriptive Statistics) where we learnt the difference between a basic and andvanced preamble for package loading in `R`. Here (and in future exercises) I will only supply you with the advanced version of the preamble.  
+Recall the exercise that went along with the last seminar (Descriptive Statistics) where we learnt the difference between a basic and advanced preamble for package loading in `R`. Here (and in future exercises) I will only supply you with the advanced version of the preamble.  
 
-Now let's load the `ggplot2` package into our `R` session so we'll be able to use its functionality for data visualisation as well as the `datasets` package to get the `iris` dat set.
+Now let's load the `ggplot2` package into our `R` session so we'll be able to use its functionality for data visualisation as well as the `datasets` package to get the `iris` data set.
 
 ```{r Packages}
 # function to load packages and install them if they haven't been installed yet
@@ -107,15 +38,11 @@ package_vec <- c("ggplot2", "datasets")
 sapply(package_vec, install.load.package)
 ```
 
-\let\cleardoublepage\relax
-
 # Loading `R`-internal data sets (`iris`)  
 The `iris` data set is included in the `datasets` package in `R`. An `R`-internal data set is loaded through the command `data()`. Take note that you do not have to assign this command's output to a new object (via `<-`). Instead, the dataset is loaded to your current environment by its name (iris, in this case). Keep in mind that this **can override** objects of the same name that are already present in your current session of `R`.
 ```{r RLoad}
 data("iris")
 ```
-
-\let\cleardoublepage\relax
 
 # Inspect the data set    
 Since we know that `iris` is a dataset, we can be reasonably sure that this object will be complex enough to warrant using the `str()` function for inspection:
@@ -125,10 +52,10 @@ str(iris)
 
 The `iris` dataset contains four measurements (`Sepal.Length`, `Sepal.Width`, `Petal.Length`, `Petal.Width`) for 150 flowers representing three species of iris (*Iris setosa*, *versicolor* and *virginica*).
 
-\newpage
+
 
 # **Boxplot** of `Petal.Length` by `Species`    
-```{r PlottingExercise1, fig.height=8, tidy=FALSE}
+```{r PlottingExercise1, tidy=FALSE}
 ggplot(iris, # the data set
        aes(x=Species, y=Petal.Length) # aesthetics
        ) + geom_boxplot() + # this is the end of the bare minimum plot
@@ -137,7 +64,7 @@ ggplot(iris, # the data set
 
 THis boxplot shows us exactly how the distributions of petal length measurements of our three species of Iris are differing from one another. Despite the obvious trend in the data, **be sure not to report results through figures alone!** We will find out how to test whether the pattern we can observe here holds up to scrutiny at a later point in time of our seminars.
 
-\newpage
+
 
 # **Scatterplot** of `Petal.Length` and `Petal.Width`    
 ```{r PlottingExercise2, tidy=FALSE}
@@ -158,7 +85,7 @@ ggplot(iris, # the data set
   scale_color_discrete(name="Iris Species")  # Change legend title
 ```
 
-\newpage
+
 
 # Relationship of `Sepal.Length` and `Sepal.Width`    
 ```{r PlottingExercise4, tidy=FALSE}

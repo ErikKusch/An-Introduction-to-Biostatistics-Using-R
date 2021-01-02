@@ -1,98 +1,27 @@
 ---
-title: "" # needs to be empty since it is specified in Title.Rmd
-author: ""
+title: "A Primer For Statistical Tests"
+subtitle: 'Getting to Terms With Variables'
+author: "Erik Kusch"
 date: ""
-documentclass: "book"
+documentclass: "report"
 fontsize: 10pt
 output: 
-  pdf_document:
-    includes:
-      in_header: Style_Exercise.tex
-subparagraph: true # this is needed as a workaround to get titlesec to work
-geometry: "left= 2cm,right = 2cm, bottom = 1.5cm, top = 2cm"
+  # rmdformats::material:
+  html_document:
+    self_contained: true
+    highlight: tango
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=70),tidy=TRUE, fig.height=4, fig.width = 12)
-options(digits=2, width = 90)
+knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, fig.height = 4.5)
 ```
 
-<!--- ####### PREAMBLE -----------
---------------------------------------------->
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\begin{center}
-\begin{tabular}{p{\textwidth}}
-
-\begin{center}
-\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
-\hspace{.05\linewidth}
-\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
-\end{center}
-
-
-\vspace{5.5cm}
-
-\begin{center}
-\textsc{\LARGE{
-\textbf{Data Handling and Data Mining}\\
-\vspace{0.15cm}
-Fixing The Sparrow Data Set \\
-\vspace{0.3cm}
-- } \vspace{0.3cm}\\
-\large{BASIC STATISTICS FOR BIOLOGISTS\\
-}}
-\end{center}
-
-\vspace{6.5cm}
-
-\raggedleft
-\textbf{Erik Kusch} \\
-\textit{PhD Student} \\
-Aarhus University \\
-Department of Bioscience \\
-Section for Ecoinformatics \& Biodiversity \\
-Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE) \\
-Ny Munkegade 116, Building 1540 \\
-8000 Aarhus \\
-Denmark \\
-email: erik@i-solution.de \\
-
-\end{tabular}
-\end{center}
-\raggedright
-
-\pagebreak
-
-<!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
-\pagestyle{plain}
-\pagenumbering{roman}
-
-\begingroup
-\let\clearpage\relax
-\let\cleardoublepage\relax
-\begin{LARGE}
- \textbf{Summary:}\\
- \vspace{0.2cm}
-\end{LARGE}
 These are the solutions to the exercises contained within the handout to A Primer For Statistical Tests which walks you through the basics of variables, their scales and distributions. Keep in mind that there is probably a myriad of other ways to reach the same conclusions as presented in these solutions.
 
-\setcounter{secnumdepth}{3} 
-\setcounter{tocdepth}{4} 
-\tableofcontents
-\endgroup
-
-<!--- ####### DOCUMENT ---------------------------------------------------------->
-\pagestyle{fancy}
-\pagenumbering{arabic}
-
 # Loading the `R` Environment Object 
-
 ```{r RLoad}
 load("Data/Primer.RData") # load data file from Data folder
 ```
-
-\let\cleardoublepage\relax
 
 # Variables
 ## Finding Variables 
@@ -112,10 +41,10 @@ barplot(table(Colour)) # fitting?
 | What's implied? | Categorical data that can't be ordered |
 | Does data fit scale? | Yes |
 
-\clearpage
+
 
 ## `Depth` 
-```{r VDepth, fig.height=10}
+```{r VDepth}
 class(Depth) # mode
 barplot(Depth) # fitting?
 ```
@@ -128,10 +57,10 @@ barplot(Depth) # fitting?
 | What's implied? | Continuous data with a non-absence point of origin |
 | Does data fit scale? | Debatable (is 0 depth absence of depth?) |
 
-\newpage
+
 
 ## `IndividualsPassingBy` 
-```{r VIndPass, fig.height=10}
+```{r VIndPass}
 class(IndividualsPassingBy) # mode
 barplot(IndividualsPassingBy) # fitting?
 ```
@@ -143,10 +72,10 @@ barplot(IndividualsPassingBy) # fitting?
 | What's implied? | Only integer numbers with an absence point of origin |
 | Does data fit scale? | Yes |
 
-\newpage
+
 
 ## `Length` 
-```{r VLength, fig.height=10}
+```{r VLength}
 class(Length) # mode
 barplot(Length) # fitting?
 ```
@@ -158,10 +87,10 @@ barplot(Length) # fitting?
 | What's implied? | Continuous data with an absence point of origin |
 | Does data fit scale? | Yes |
 
-\newpage
+
 
 ## `Reproducing` 
-```{r VRepro, fig.height=10}
+```{r VRepro}
 class(Reproducing) # mode
 barplot(Reproducing) # fitting?
 ```
@@ -173,10 +102,10 @@ barplot(Reproducing) # fitting?
 | What's implied? | Only integer numbers with an absence point of origin |
 | Does data fit scale? | Yes |
 
-\newpage
+
 
 ## `Sex`
-```{r VSex, fig.height=10}
+```{r VSex}
 class(Sex) # mode
 barplot(table(Sex)) # fitting?
 ```
@@ -188,10 +117,10 @@ barplot(table(Sex)) # fitting?
 | What's implied? | Only two possible outcomes |
 | Does data fit scale? | Yes |
 
-\newpage
+
 
 ## `Size` 
-```{r VSize, fig.height=10}
+```{r VSize}
 class(Size) # mode
 barplot(table(Size)) # fitting?
 ```
@@ -203,10 +132,10 @@ barplot(table(Size)) # fitting?
 | What's implied? | Categorical data that can be ordered |
 | Does data fit scale? | Yes |
 
-\newpage
+
 
 ## `Temperature` 
-```{r VTemp, fig.height=10}
+```{r VTemp}
 class(Temperature) # mode
 barplot(Temperature) # fitting?
 ```
@@ -218,39 +147,35 @@ barplot(Temperature) # fitting?
 | What's implied? | Continuous data with a non-absence point of origin |
 | Does data fit scale? | Yes (the data is clearly recorded in degree Celsius) |
 
-\newpage
 
 # Distributions
-
 ## `Length`  
-```{r DLength, fig.height=10}
+```{r DLength}
 plot(density(Length)) # distribution plot
 shapiro.test(Length) # normality check
 ```
+
 The data is **normal distributed**.
 
-\newpage
-
 ## `Reproducing` 
-```{r DRepro, fig.height=10}
+```{r DRepro}
 plot(density(Reproducing)) # distribution
 shapiro.test(Reproducing) # normality check
 ```
+
 The data is **binomial distributed** (i.e. "How many individuals manage to reproduce") but looks **normal distributed**. The normal distribution doesn't make sense here because it implies continuity whilst the data only comes in integers.
 
-\newpage
-
 ## `IndividualsPassingBy`  
-```{r DIndiv, fig.height=10}
+```{r DIndiv}
 plot(density(IndividualsPassingBy)) # distribution
 shapiro.test(IndividualsPassingBy) # normality check
 ```
+
 The data is **poisson distributed** (i.e. "How many individuals pass by an observer in a given time frame?").
 
-\newpage
-
 ## `Depth` 
-```{r DDepth, fig.height=10}
+```{r DDepth}
 plot(density(Depth)) # distribution
 ```
-The data is **uniform distributed**. You don't know this distribution class from the lectures and I only wanted to confuse you with this to show you that there's much more out there than I can show in our lectures.
+
+ data is **uniform distributed**. You don't know this distribution class from the lectures and I only wanted to confuse you with this to show you that there's much more out there than I can show in our lectures.

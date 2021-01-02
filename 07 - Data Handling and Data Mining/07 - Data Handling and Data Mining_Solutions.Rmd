@@ -1,90 +1,22 @@
 ---
-title: "" # needs to be empty since it is specified in Title.Rmd
-author: ""
+title: "Data Handling and Data Mining"
+subtitle: 'Fixing the Sparrow Data Set'
+author: "Erik Kusch"
 date: ""
-documentclass: "book"
+documentclass: "report"
 fontsize: 10pt
 output: 
-  pdf_document:
-    includes:
-      in_header: Style_Exercise.tex
-subparagraph: true # this is needed as a workaround to get titlesec to work
-geometry: "left= 2cm,right = 2cm, bottom = 1.5cm, top = 2cm"
+  # rmdformats::material:
+  html_document:
+    self_contained: true
+    highlight: tango
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, cache.lazy=TRUE, tidy.opts=list(width.cutoff=80),tidy=TRUE, fig.height=5.5)
-options(digits=2, width = 90)
+knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, fig.height = 4.5)
 ```
 
-<!--- ####### PREAMBLE -----------
---------------------------------------------->
-\pagestyle{empty}
-\setlength{\parindent}{0pt}
-\begin{center}
-\begin{tabular}{p{\textwidth}}
-
-\begin{center}
-\includegraphics[width=0.42\linewidth]{Figures/UiA-logo.png}
-\hspace{.05\linewidth}
-\includegraphics[width=0.42\linewidth]{Figures/UL-logo.jpg}
-\end{center}
-
-
-\vspace{5.5cm}
-
-\begin{center}
-\textsc{\LARGE{
-\textbf{Data Handling and Data Mining}\\
-\vspace{0.15cm}
-Fixing The Sparrow Data Set \\
-\vspace{0.3cm}
-- } \vspace{0.3cm}\\
-\large{BASIC STATISTICS FOR BIOLOGISTS\\
-}}
-\end{center}
-
-\vspace{6.5cm}
-
-\raggedleft
-\textbf{Erik Kusch} \\
-\textit{PhD Student} \\
-Aarhus University \\
-Department of Bioscience \\
-Section for Ecoinformatics \& Biodiversity \\
-Center for Biodiversity and Dynamics in a Changing World (BIOCHANGE) \\
-Ny Munkegade 116, Building 1540 \\
-8000 Aarhus \\
-Denmark \\
-email: erik@i-solution.de \\
-
-\end{tabular}
-\end{center}
-\raggedright
-
-\pagebreak
-
-<!--- ####### TOC, TOF, TOT, TOL ------------------------------------------------>  
-\pagestyle{plain}
-\pagenumbering{roman}
-
-\begingroup
-\let\pagebreak\relax
-\let\cleardoublepage\relax
-\begin{LARGE}
- \textbf{Summary:}\\
- \vspace{0.2cm}
-\end{LARGE}
 Welcome to our first "real" practical experience in `R`. The following notes present you with an example of how data handling (also known as data cleaning) can be done. Obviously, the possibility for flaws to occur in any given data set are seemingly endless and so the following, tedious procedure should be thought of as less of an recipe of how to fix common flaws in biological data sets but make you aware of how important proper data collection and data entry is.
-
-\setcounter{secnumdepth}{3} 
-\setcounter{tocdepth}{4} 
-\tableofcontents
-\endgroup
-
-<!--- ####### DOCUMENT ---------------------------------------------------------->
-\pagestyle{fancy}
-\pagenumbering{arabic}
 
 # Preparing Our Procedure 
 The following three sections are what I consider to be *essential* parts of the preamble to any `R`-based analysis. I highly recommend clearly indicating these bits in your code. 
@@ -123,7 +55,7 @@ sapply(package_vec, install.load.package)
 
 Using the above function is way more sophisticated than the usual `install.packages()` + `library()` approach since it automatically detects which packages require installing and only install these thus not overwriting already installed packages.
 
-\clearpage
+
 
 ## Loading The Data 
 Loading data is crucial to any analysis in `R`. Period.  
@@ -217,7 +149,7 @@ Before we alter any column contents, we will first need to identify columns whos
 
 # Our Data 
 ## Site
-\textbf{Variable Class Expectation:} `factor` (only 11 possible values)
+**Variable Class Expectation:** `factor` (only 11 possible values)
 
 ### Identifying Problems 
 Let's asses our Site records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -231,10 +163,10 @@ Indeed, they do behave just like we'd expect them to.
 We don't need to fix anything here.
 
 
-\vspace{1.5cm}
+
 
 ## Index
-\textbf{Variable Class Expectation:} `factor` (only 11 possible values)
+**Variable Class Expectation:** `factor` (only 11 possible values)
 
 ### Identifying Problems 
 Let's asses our Index records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -250,7 +182,7 @@ We don't need to fix anything here.
 \newpage
 
 ## Latitude
-\textbf{Variable Class Expectation:} `numeric` (Latitude is inherently continuous)
+**Variable Class Expectation:** `numeric` (Latitude is inherently continuous)
 
 ### Identifying Problems 
 Let's asses our Latitude records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -263,10 +195,10 @@ Indeed, they do behave just like we'd expect them to.
 ### Fixing Problems 
 We don't need to fix anything here.
 
-\vspace{1.5cm}
+
 
 ## Longitude
-\textbf{Variable Class Expectation:} `numeric` (Longitude is inherently continuous)
+**Variable Class Expectation:** `numeric` (Longitude is inherently continuous)
 
 ### Identifying Problems 
 Let's asses our Longitude records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -280,10 +212,10 @@ Indeed, they do behave just like we'd expect them to.
 We don't need to fix anything here.
 
 
-\clearpage
+
 
 ## Climate
-\textbf{Variable Class Expectation:} `factor` (three levels: coastal, semi-coastal, continental)
+**Variable Class Expectation:** `factor` (three levels: coastal, semi-coastal, continental)
 
 ### Identifying Problems 
 Let's asses our Climate records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -296,10 +228,10 @@ Indeed, they do behave just like we'd expect them to.
 ### Fixing Problems 
 We don't need to fix anything here.
 
-\vspace{1.5cm}
+
 
 ## Population Status 
-\textbf{Variable Class Expectation:} `factor` (two levels: native, introduced)
+**Variable Class Expectation:** `factor` (two levels: native, introduced)
 
 ### Identifying Problems 
 Let's asses our Population Status records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -312,10 +244,10 @@ Indeed, they do behave just like we'd expect them to.
 ### Fixing Problems 
 We don't need to fix anything here.
 
-\clearpage
+
 
 ## Weight
-\textbf{Variable Class Expectation:} `numeric` (weight is a continuous metric)
+**Variable Class Expectation:** `numeric` (weight is a continuous metric)
 
 ### Identifying Problems 
 Let's asses our Weight records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -359,11 +291,11 @@ hist(Data_df$Weight, breaks = 100)
   
 We finally fixed it!
 
-\clearpage
+
 
 
 ## Height
-\textbf{Variable Class Expectation:} `numeric` (height is a continuous metric)
+**Variable Class Expectation:** `numeric` (height is a continuous metric)
 
 ### Identifying Problems 
 Let's asses our Height records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -375,7 +307,7 @@ Again, some of our data don't behave the way the should (a `r max(Data_df$Height
 
 ### Fixing Problems 
 Height (or "Length") records of *Passer domesticus* should fall roughly between 10cm and 22cm. Looking at the data which exceed these thresholds, it is apparent that these are generated simply through misplaced decimal delimiters. So we fix them as follows and use a histogram to check if it worked.  
-```{r ColContHeight, fig.height=3}
+```{r ColContHeight}
 Data_df$Height[which(Data_df$Height < 10)] # decimal point placed wrong here
 Data_df$Height[which(Data_df$Height < 10)] <- Data_df$Height[which(Data_df$Height < 10)] * 10 # FIXED IT!
 Data_df$Height[which(Data_df$Height > 22)] # decimal point placed wrong here
@@ -387,7 +319,7 @@ hist(Data_df$Height, breaks = 100)
 We finally fixed it!
 
 ## Wing Chord 
-\textbf{Variable Class Expectation:} `numeric` (wing chord is a continuous metric)
+**Variable Class Expectation:** `numeric` (wing chord is a continuous metric)
 
 ### Identifying Problems 
 Let's asses our Wing Chord records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -400,10 +332,10 @@ Indeed, they do behave just like we'd expect them to.
 ### Fixing Problems 
 We don't need to fix anything here.
 
-\vspace{1.5cm}
+
 
 ## Colour
-\textbf{Variable Class Expectation:} `factor` (three levels: black, grey, brown)
+**Variable Class Expectation:** `factor` (three levels: black, grey, brown)
 
 ### Identifying Problems 
 Let's asses our Colour records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -418,16 +350,16 @@ The colour records "Bright black" and "Grey with black spots" should be "Grey". 
 ```{r ColContColour}
 Data_df$Colour[which(Data_df$Colour == "Bright black")] <- "Grey"
 Data_df$Colour[which(Data_df$Colour == "Grey with black spots")] <- "Grey"
-Data_df$Colour <- droplevels(Data_df$Colour) # drop unused factor levels
+Data_df$Colour <- droplevels(factor(Data_df$Colour)) # drop unused factor levels
 summary(Data_df$Colour) # FIXED IT!
 ```
 We finally fixed it!
 
 
-\clearpage
+
 
 ## Sex
-\textbf{Variable Class Expectation:} `factor` (two levels: male and female)
+**Variable Class Expectation:** `factor` (two levels: male and female)
 
 ### Identifying Problems 
 Let's asses our Climate records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -441,7 +373,7 @@ Indeed, they do behave just like we'd expect them to.
 We don't need to fix anything here.
 
 ## Nesting Site 
-\textbf{Variable Class Expectation:} `factor` (two levels: shrub and tree)
+**Variable Class Expectation:** `factor` (two levels: shrub and tree)
 
 ### Identifying Problems 
 Let's asses our Nesting Site records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -462,14 +394,14 @@ We just deleted a data record. This affects the flock size of the flock it belon
 Still, there are manually entered `NA` records present which we have to get rid of. These can be fixed easily without altering column classes and simply making use of logic by indexing their dependencies on other column values. The nesting site for a data record where sex reads "Male" has to be `NA`.
 ```{r ColContNAsNS}
 Data_df$Nesting.Site[which(Data_df$Sex == "Male")] <- NA 
-Data_df$Nesting.Site <- droplevels(Data_df$Nesting.Site) # drop unused factor levels
+Data_df$Nesting.Site <- droplevels(factor(Data_df$Nesting.Site)) # drop unused factor levels
 summary(Data_df$Nesting.Site)# FIXED IT!
 ```
 
 
 
 ## Nesting Height 
-\textbf{Variable Class Expectation:} `numeric` (continuous records in two clusters corresponding to shrubs and trees)
+**Variable Class Expectation:** `numeric` (continuous records in two clusters corresponding to shrubs and trees)
 
 ### Identifying Problems 
 Let's asses our Nesting Height records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -504,7 +436,7 @@ This quite clearly fixed our problems.
 <!-- ``` -->
 
 ## Number of Eggs 
-\textbf{Variable Class Expectation:} `numeric` (no a priori knowledge of levels)
+**Variable Class Expectation:** `numeric` (no a priori knowledge of levels)
 
 ### Identifying Problems 
 Let's asses our Number of Eggs records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -541,10 +473,10 @@ summary(Data_df$Number.of.Eggs)
 ```
 We did it!
 
-\clearpage  
+  
 
 ## Egg Weight 
-\textbf{Variable Class Expectation:} `numeric` (another weight measurement that needs to be continuous)
+**Variable Class Expectation:** `numeric` (another weight measurement that needs to be continuous)
 
 ### Identifying Problems 
 Let's asses our Egg Weight records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -573,7 +505,7 @@ summary(Data_df$Egg.Weight)
 ```
 
 ## Flock
-\textbf{Variable Class Expectation:} `factor` (each sparrow was assigned to one particular flock)
+**Variable Class Expectation:** `factor` (each sparrow was assigned to one particular flock)
 
 ### Identifying Problems 
 Let's asses our Flock records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -586,10 +518,10 @@ Indeed, they do behave just like we'd expect them to.
 ### Fixing Problems 
 We don't need to fix anything here.
 
-\vspace{1.5cm}
+
 
 ## Home Range 
-\textbf{Variable Class Expectation:} `factor` (three levels: small, medium, large)
+**Variable Class Expectation:** `factor` (three levels: small, medium, large)
 
 ### Identifying Problems 
 Let's asses our Home Range records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -602,10 +534,10 @@ Indeed, they do behave just like we'd expect them to.
 ### Fixing Problems 
 We don't need to fix anything here.
 
-\clearpage
+
 
 ## Flock Size 
-\textbf{Variable Class Expectation:} `numeric` (continuous measurement of how many sparrows are in each flock - measured as integers)
+**Variable Class Expectation:** `numeric` (continuous measurement of how many sparrows are in each flock - measured as integers)
 
 ### Identifying Problems 
 Let's asses our Flock Size records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -618,10 +550,10 @@ Indeed, they do behave just like we'd expect them to.
 ### Fixing Problems 
 We don't need to fix anything here.
 
-\vspace{1.5cm}
+
 
 ## Predator Presence 
-\textbf{Variable Class Expectation:} `factor` (two levels: yes and no)
+**Variable Class Expectation:** `factor` (two levels: yes and no)
 
 ### Identifying Problems 
 Let's asses our Predator Presence records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -635,10 +567,10 @@ Indeed, they do behave just like we'd expect them to.
 We don't need to fix anything here.
 
 
-\clearpage 
+ 
 
 ## Predator Type 
-\textbf{Variable Class Expectation:} `factor` (three levels: Avian, Non-Avian, and `NA`)
+**Variable Class Expectation:** `factor` (three levels: Avian, Non-Avian, and `NA`)
 
 ### Identifying Problems 
 Let's asses our Predator Type records for our *Passer domesticus* individuals and check whether they behave as expected:
@@ -658,7 +590,7 @@ summary(Data_df$Predator.Type)
 This fixed it  but there are still manually entered `NA` records present which we have to get rid of. These can be fixed easily without altering column classes and simply making use of logic by indexing their dependencies on other column values. The predator type for a data record where predator presence reads "No" has to be `NA`.
 ```{r ColContNAsPredator}
 Data_df$Predator.Type[which(Data_df$Predator.Presence == "No")] <- NA 
-Data_df$Predator.Type <- droplevels(Data_df$Predator.Type) # drop unused factor levels
+Data_df$Predator.Type <- droplevels(factor(Data_df$Predator.Type)) # drop unused factor levels
 summary(Data_df$Predator.Type)# FIXED IT!
 ```
 
