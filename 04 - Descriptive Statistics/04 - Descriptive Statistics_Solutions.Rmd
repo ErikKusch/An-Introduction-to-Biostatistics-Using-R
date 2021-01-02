@@ -21,7 +21,7 @@ These are the solutions to the exercises contained within the handout to Descrip
 Keep in mind that there is probably a myriad of other ways to reach the same conclusions as presented in these solutions.
 
 # Packages
-As you will remember from our lecture slides, the calculation of the mode in `R` can either be achieved through some intense coding or simply by using the `mlv(..., method="mfv")` function contained within the `modeest` package (unfortunately, this package is out of date and can sometimes be cahellenging to install).  
+As you will remember from our lecture slides, the calculation of the mode in `R` can either be achieved through some intense coding or simply by using the `mlv(..., method="mfv")` function contained within the `modeest` package (unfortunately, this package is out of date and can sometimes be challenging to install).  
 
 Conclusively, it is now time for you to get familiar with how packages work in `R`. Packages are the way by which `R` is supplied with user-created and moderator-mediated functionality that exceeds the base applicability of `R`. Many things you will want to accomplish in more advanced statistics is impossible without such packages and even basic tasks such as data visualisation (dealt with in our next seminar) are reliant on `R` packages.  
 
