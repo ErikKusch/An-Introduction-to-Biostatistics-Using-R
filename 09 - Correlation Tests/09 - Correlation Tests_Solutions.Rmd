@@ -16,8 +16,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, fig.height = 4.5)
 ```
 
-Welcome to our third practical experience in R. Throughout the following notes, I will introduce you to a couple statistical correlation approaches that might be useful to you and are, to varying degrees, often used in biology.  
-To do so, I will enlist the sparrow data set we handled in our first exercise.
+Welcome to our third practical experience in R. Throughout the following notes, I will introduce you to a couple statistical correlation approaches that might be useful to you and are, to varying degrees, often used in biology. To do so, I will enlist the sparrow data set we handled in our first exercise.
 
 # Preparing Our Procedure
 To ensure others can reproduce our analysis we run the following three lines of code at the beginning of our `R` coding file.
@@ -95,7 +94,7 @@ Index <- Data_df$Index
 # select all data belonging to the stations at which all parameters except for climate type are held constant
 Rows <- which(Index == "SI" | Index == "UK" | Index == "RE" | Index == "AU" )
 Data_df <- Data_df[Rows,]
-Data_df$Climate <- droplevels(Data_df$Climate)
+Data_df$Climate <- droplevels(factor(Data_df$Climate))
 
 # analysis
 table(Data_df$Sex, Data_df$Climate)

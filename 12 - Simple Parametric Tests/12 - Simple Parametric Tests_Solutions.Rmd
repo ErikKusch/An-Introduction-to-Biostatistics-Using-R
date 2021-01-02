@@ -16,8 +16,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, fig.height = 4.5)
 ```  
 
-Welcome to our sixth practical experience in R. Throughout the following notes, I will introduce you to a couple of simple parametric test. Whilst parametric tests are used extremely often in biological statistics, they can be somewhat challenging to fit to your data as you will see soon.    
-To do so, I will enlist the sparrow data set we handled in our first exercise. Additionally, todays seminar is showing plotting via base plot instead of `ggplot2` to highlight the usefulness of base plot and show you the base notation.
+Welcome to our sixth practical experience in R. Throughout the following notes, I will introduce you to a couple of simple parametric test. Whilst parametric tests are used extremely often in biological statistics, they can be somewhat challenging to fit to your data as you will see soon. To do so, I will enlist the sparrow data set we handled in our first exercise. Additionally, todays seminar is showing plotting via base plot instead of `ggplot2` to highlight the usefulness of base plot and show you the base notation.
 
 # Preparing Our Procedure
 To ensure others can reproduce our analysis we run the following three lines of code at the beginning of our `R` coding file.
@@ -69,7 +68,7 @@ ShapiroTest <- function(Variables, Grouping){
   for(i in 1:length(Variables)){
     
     X <- Data_df[,Variables[i]]
-    Levels <- levels(Data_df[,Grouping])
+    Levels <- levels(factor(Data_df[,Grouping]))
     
     Output[i,2] <- shapiro.test(X[which(Data_df[,Grouping] == Levels[1])])$p.value
     Output[i,3] <- shapiro.test(X[which(Data_df[,Grouping] == Levels[2])])$p.value
@@ -104,7 +103,7 @@ Before we can make use of our data with a t-Test, we need to do an **assumption 
 ```{r ShapiroClimate0}
 # Make climate binary
 Data_df$Climate[which(Data_df$Climate == "Semi-Coastal")] <- "Coastal"
-Data_df$Climate <- droplevels(Data_df$Climate)
+Data_df$Climate <- droplevels(factor(Data_df$Climate))
 ```
 
 Let's make sure our assumptions are met:
@@ -360,9 +359,9 @@ ANOVACheck <- function(Variables, Grouping, data, plotting){
   Output <- data.frame(x = NA)
   for(i in 1:length(Variables)){
     # data
-    Y <- as.numeric(data[,Variables[i]])
+    Y <- as.numeric(factor(data[,Variables[i]]))
     X <- data[,Grouping]
-    Levels <- levels(data[,Grouping])
+    Levels <- levels(factor(Data_df[,Grouping]))
     # Residuals?
     model <- lm(Y ~ X)
     Output[1,i] <- shapiro.test(residuals(model))$p.value
@@ -441,9 +440,9 @@ Personally, I would not place too much confidence in these results due to a coup
 Let's end this by plotting all of our data:
 ```{r Analysis1, fig.height=12}
 par(mfrow=c(2,2))
-plot(Data_df$Weight ~ Data_df$Climate)
-plot(Data_df$Height ~ Data_df$Climate)
-plot(Data_df$Wing.Chord ~ Data_df$Climate)
+plot(Data_df$Weight ~ factor(Data_df$Climate))
+plot(Data_df$Height ~ factor(Data_df$Climate))
+plot(Data_df$Wing.Chord ~ factor(Data_df$Climate))
 ```
 
 As you can see, the variances are definitely not equal between our groups which explains why part of our assumption test failed.
@@ -599,8 +598,8 @@ ANCOVACheck <- function(Variables, Grouping, Covariate, data, plotting){
   Output <- data.frame(x = NA)
   for(i in 1:length(Variables)){
     # data
-    Y <- as.numeric(data[,Variables[i]])
-    X <- data[,Grouping]
+    Y <- as.numeric(factor(data[,Variables[i]]))
+    X <- factor(data[,Grouping])
     Z <- data[, Covariate]
     # Residuals?
     model <- lm(Y ~ X*Z)
@@ -638,8 +637,9 @@ Since none of our assumptions are met, we cannot run an ANOVA and therefore reso
 PlotAncovas <- function(Variables, Grouping, Covariate, data){
   for(i in 1:length(Variables)){
     Y <- Data_df[,Variables[i]]
+    if(class(Y) == "character"){Y <- factor(Y)}
     X <- Data_df[,Covariate]
-    G <- Data_df[, Grouping]
+    G <- factor(Data_df[, Grouping])
     plot(X, Y, col = G, xlab = Covariate, ylab = Variables[i])
     legend("top", # place legend at the top
            inset = -0.35, # move legend away from plot centre

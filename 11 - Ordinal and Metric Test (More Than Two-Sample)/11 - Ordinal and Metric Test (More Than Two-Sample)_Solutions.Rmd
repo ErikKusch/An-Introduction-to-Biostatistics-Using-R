@@ -16,8 +16,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, fig.height = 4.5)
 ``` 
 
-Welcome to our fifth practical experience in R. Throughout the following notes, I will introduce you to a couple statistical approaches for metric or ordinal data when wanting to compare more than two samples/populations that might be useful to you and are, to varying degrees, often used in biology.  
-To do so, I will enlist the sparrow data set we handled in our first exercise.
+Welcome to our fifth practical experience in R. Throughout the following notes, I will introduce you to a couple statistical approaches for metric or ordinal data when wanting to compare more than two samples/populations that might be useful to you and are, to varying degrees, often used in biology. To do so, I will enlist the sparrow data set we handled in our first exercise.
 
 # Preparing Our Procedure
 To ensure others can reproduce our analysis we run the following three lines of code at the beginning of our `R` coding file.
@@ -186,7 +185,7 @@ Export[i, 5] <- kruskal.test(Data, Grouping)[["p.value"]]
 
 # optional plotting
 if(Plotting == TRUE){
-plot(Data ~ Grouping, ylab = Variables[i])
+plot(Data ~ factor(Grouping), ylab = Variables[i])
 }
 
 } # end of i loop
@@ -198,7 +197,7 @@ return(Export)
 
 This function is *named* `AutomatedKruskal()` and takes three *arguments*: (1) `Variables` - a vector of character typed identifiers for the variables we want to have tested, (2) `Groups` - a character string identifying the grouping variable, (3) `Plotting` - a logical statement (`TRUE` or `FALSE`) whether boxplots shall be produced.  
 
-The function then proceeds to establish an empty data frame which it will store the results of our Kurskal-Wallis Tests in. Afterwards, it cycles through all variables contained within the `Variables` statement, extracts the relevant data, grouping it according to the specified grouping variable (`Groups`), runs the test, fills the data frame and plots the data if `Plotting` has ben set to `TRUE`.
+The function then proceeds to establish an empty data frame which it will store the results of our Kurskal-Wallis Tests in. Afterwards, it cycles through all variables contained within the `Variables` statement, extracts the relevant data, grouping it according to the specified grouping variable (`Groups`), runs the test, fills the data frame and plots the data if `Plotting` has been set to `TRUE`.
 
 
 
@@ -258,7 +257,7 @@ Data_df <- Data_df[Rows,]
 
 Let's test this for our three-level climate variable:
 ```{r KruskalCompetitiona, fig.height=7, fig.width=15}
-Data_df$Home.Range <- as.numeric(Data_df$Home.Range)
+Data_df$Home.Range <- as.numeric(factor(Data_df$Home.Range))
 AutomatedKruskal(Variables = "Home.Range", Groups = "Climate", Plotting = TRUE)
 ```
 

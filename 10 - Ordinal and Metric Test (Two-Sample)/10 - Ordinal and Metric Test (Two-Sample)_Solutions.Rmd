@@ -16,8 +16,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, fig.height = 4.5)
 ``` 
 
-Welcome to our fourth practical experience in R. Throughout the following notes, I will introduce you to a couple statistical approaches for metric or ordinal data when wanting to compare two samples/populations that might be useful to you and are, to varying degrees, often used in biology.  
-To do so, I will enlist the sparrow data set we handled in our first exercise.
+Welcome to our fourth practical experience in R. Throughout the following notes, I will introduce you to a couple statistical approaches for metric or ordinal data when wanting to compare two samples/populations that might be useful to you and are, to varying degrees, often used in biology. To do so, I will enlist the sparrow data set we handled in our first exercise.
 
 # Preparing Our Procedure
 To ensure others can reproduce our analysis we run the following three lines of code at the beginning of our `R` coding file.
@@ -68,7 +67,7 @@ Data_df <- Data_df_base
 Index <- Data_df$Index
 Rows <- which(Index == "SI" | Index == "UK" | Index == "RE" | Index == "AU" )
 Data_df <- Data_df[Rows,]
-Data_df$Climate <- droplevels(Data_df$Climate)
+Data_df$Climate <- droplevels(factor(Data_df$Climate))
 ```
 
 ### Sparrow Weight
@@ -211,14 +210,14 @@ Data_df <- Data_df_base
 Index <- Data_df$Index
 Rows <- which(Index == "SI" | Index == "UK" | Index == "RE" | Index == "AU" )
 Data_df <- Data_df[Rows,]
-Data_df$Climate <- droplevels(Data_df$Climate)
+Data_df$Climate <- droplevels(factor(Data_df$Climate))
 ```
 
 To be able to use the `wilcox.test()` function on `Home Range`, we need to transform its elements into a numeric type. Luckily, this is as easy as using the `as.numeric()` function on the data since it will assign every factor level a number corresponding to its position in `levels()` as follows:
 ```{r UHomeRangeClimatePrepare, tidy=FALSE}
-levels(Data_df$Home.Range)
+levels(factor(Data_df$Home.Range))
 
-HR_vec <- as.numeric(Data_df$Home.Range)
+HR_vec <- as.numeric(factor((Data_df$Home.Range)))
 ```
 As you can see, the levels of `Home.Range` are ordered alphabetically. The `as.numeric()` command will thus transform every record of `"Large"` into `1`, every record of `"Medium"` into `2` and every record of `"Small"` into `3`.  
 
@@ -448,15 +447,15 @@ Yes, it does!
 Earlier in this practical, we have shown that home ranges of flocks of *Passer domesticus* are affected by the climate conditions they are experiencing. Let's see if our relocated sparrows have altered their behaviour:
 ```{r WHomeRangeClimate, tidy=FALSE}
 with(Data_df[which(Data_df$Index == "SI"),], 
-     wilcox.test(x = as.numeric(Home.Range), 
-                 y = as.numeric(Data_df_Resettled$Home.Range), 
+     wilcox.test(x = as.numeric(factor(Home.Range)), 
+                 y = as.numeric(factor(Data_df_Resettled$Home.Range)), 
                  paired = TRUE))
 ```
 
 ```{r p.val12, echo = FALSE}
-p.val <- with(Data_df[which(Data_df$Index == "SI"),], 
-     wilcox.test(x = as.numeric(Home.Range), 
-                 y = as.numeric(Data_df_Resettled$Home.Range), 
+with(Data_df[which(Data_df$Index == "SI"),], 
+     wilcox.test(x = as.numeric(factor(Home.Range)), 
+                 y = as.numeric(factor(Data_df_Resettled$Home.Range)), 
                  paired = TRUE))$p.value
 ```
 

@@ -514,8 +514,7 @@ summary {
 </div>
 
 
-<p>Welcome to our third practical experience in R. Throughout the following notes, I will introduce you to a couple statistical correlation approaches that might be useful to you and are, to varying degrees, often used in biology.<br />
-To do so, I will enlist the sparrow data set we handled in our first exercise.</p>
+<p>Welcome to our third practical experience in R. Throughout the following notes, I will introduce you to a couple statistical correlation approaches that might be useful to you and are, to varying degrees, often used in biology. To do so, I will enlist the sparrow data set we handled in our first exercise.</p>
 <div id="preparing-our-procedure" class="section level1">
 <h1>Preparing Our Procedure</h1>
 <p>To ensure others can reproduce our analysis we run the following three lines of code at the beginning of our <code>R</code> coding file.</p>
@@ -602,7 +601,7 @@ To do so, I will enlist the sparrow data set we handled in our first exercise.</
 <span id="cb24-5"><a href="#cb24-5"></a><span class="co"># climate type are held constant</span></span>
 <span id="cb24-6"><a href="#cb24-6"></a>Rows &lt;-<span class="st"> </span><span class="kw">which</span>(Index <span class="op">==</span><span class="st"> &quot;SI&quot;</span> <span class="op">|</span><span class="st"> </span>Index <span class="op">==</span><span class="st"> &quot;UK&quot;</span> <span class="op">|</span><span class="st"> </span>Index <span class="op">==</span><span class="st"> &quot;RE&quot;</span> <span class="op">|</span><span class="st"> </span>Index <span class="op">==</span><span class="st"> &quot;AU&quot;</span>)</span>
 <span id="cb24-7"><a href="#cb24-7"></a>Data_df &lt;-<span class="st"> </span>Data_df[Rows, ]</span>
-<span id="cb24-8"><a href="#cb24-8"></a>Data_df<span class="op">$</span>Climate &lt;-<span class="st"> </span><span class="kw">droplevels</span>(Data_df<span class="op">$</span>Climate)</span>
+<span id="cb24-8"><a href="#cb24-8"></a>Data_df<span class="op">$</span>Climate &lt;-<span class="st"> </span><span class="kw">droplevels</span>(<span class="kw">factor</span>(Data_df<span class="op">$</span>Climate))</span>
 <span id="cb24-9"><a href="#cb24-9"></a></span>
 <span id="cb24-10"><a href="#cb24-10"></a><span class="co"># analysis</span></span>
 <span id="cb24-11"><a href="#cb24-11"></a><span class="kw">table</span>(Data_df<span class="op">$</span>Sex, Data_df<span class="op">$</span>Climate)</span></code></pre></div>

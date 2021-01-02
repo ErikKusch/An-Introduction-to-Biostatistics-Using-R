@@ -514,8 +514,7 @@ summary {
 </div>
 
 
-<p>Welcome to our fourth practical experience in R. Throughout the following notes, I will introduce you to a couple statistical approaches for metric or ordinal data when wanting to compare two samples/populations that might be useful to you and are, to varying degrees, often used in biology.<br />
-To do so, I will enlist the sparrow data set we handled in our first exercise.</p>
+<p>Welcome to our fourth practical experience in R. Throughout the following notes, I will introduce you to a couple statistical approaches for metric or ordinal data when wanting to compare two samples/populations that might be useful to you and are, to varying degrees, often used in biology. To do so, I will enlist the sparrow data set we handled in our first exercise.</p>
 <div id="preparing-our-procedure" class="section level1">
 <h1>Preparing Our Procedure</h1>
 <p>To ensure others can reproduce our analysis we run the following three lines of code at the beginning of our <code>R</code> coding file.</p>
@@ -556,7 +555,7 @@ To do so, I will enlist the sparrow data set we handled in our first exercise.</
 <span id="cb5-3"><a href="#cb5-3"></a>Index &lt;-<span class="st"> </span>Data_df<span class="op">$</span>Index</span>
 <span id="cb5-4"><a href="#cb5-4"></a>Rows &lt;-<span class="st"> </span><span class="kw">which</span>(Index <span class="op">==</span><span class="st"> &quot;SI&quot;</span> <span class="op">|</span><span class="st"> </span>Index <span class="op">==</span><span class="st"> &quot;UK&quot;</span> <span class="op">|</span><span class="st"> </span>Index <span class="op">==</span><span class="st"> &quot;RE&quot;</span> <span class="op">|</span><span class="st"> </span>Index <span class="op">==</span><span class="st"> &quot;AU&quot;</span>)</span>
 <span id="cb5-5"><a href="#cb5-5"></a>Data_df &lt;-<span class="st"> </span>Data_df[Rows, ]</span>
-<span id="cb5-6"><a href="#cb5-6"></a>Data_df<span class="op">$</span>Climate &lt;-<span class="st"> </span><span class="kw">droplevels</span>(Data_df<span class="op">$</span>Climate)</span></code></pre></div>
+<span id="cb5-6"><a href="#cb5-6"></a>Data_df<span class="op">$</span>Climate &lt;-<span class="st"> </span><span class="kw">droplevels</span>(<span class="kw">factor</span>(Data_df<span class="op">$</span>Climate))</span></code></pre></div>
 <div id="sparrow-weight" class="section level3">
 <h3>Sparrow Weight</h3>
 <p>Let’s start with the weight of <em>Passer domesticus</em> individuals as grouped by the climate type present at the site weights have been recorded at:</p>
@@ -670,11 +669,11 @@ To do so, I will enlist the sparrow data set we handled in our first exercise.</
 <span id="cb25-3"><a href="#cb25-3"></a>Index &lt;-<span class="st"> </span>Data_df<span class="op">$</span>Index</span>
 <span id="cb25-4"><a href="#cb25-4"></a>Rows &lt;-<span class="st"> </span><span class="kw">which</span>(Index <span class="op">==</span><span class="st"> &quot;SI&quot;</span> <span class="op">|</span><span class="st"> </span>Index <span class="op">==</span><span class="st"> &quot;UK&quot;</span> <span class="op">|</span><span class="st"> </span>Index <span class="op">==</span><span class="st"> &quot;RE&quot;</span> <span class="op">|</span><span class="st"> </span>Index <span class="op">==</span><span class="st"> &quot;AU&quot;</span>)</span>
 <span id="cb25-5"><a href="#cb25-5"></a>Data_df &lt;-<span class="st"> </span>Data_df[Rows, ]</span>
-<span id="cb25-6"><a href="#cb25-6"></a>Data_df<span class="op">$</span>Climate &lt;-<span class="st"> </span><span class="kw">droplevels</span>(Data_df<span class="op">$</span>Climate)</span></code></pre></div>
+<span id="cb25-6"><a href="#cb25-6"></a>Data_df<span class="op">$</span>Climate &lt;-<span class="st"> </span><span class="kw">droplevels</span>(<span class="kw">factor</span>(Data_df<span class="op">$</span>Climate))</span></code></pre></div>
 <p>To be able to use the <code>wilcox.test()</code> function on <code>Home Range</code>, we need to transform its elements into a numeric type. Luckily, this is as easy as using the <code>as.numeric()</code> function on the data since it will assign every factor level a number corresponding to its position in <code>levels()</code> as follows:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">levels</span>(Data_df<span class="op">$</span>Home.Range)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">levels</span>(<span class="kw">factor</span>(Data_df<span class="op">$</span>Home.Range))</span></code></pre></div>
 <pre><code>## [1] &quot;Large&quot;  &quot;Medium&quot; &quot;Small&quot;</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>HR_vec &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(Data_df<span class="op">$</span>Home.Range)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>HR_vec &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">factor</span>((Data_df<span class="op">$</span>Home.Range)))</span></code></pre></div>
 <p>As you can see, the levels of <code>Home.Range</code> are ordered alphabetically. The <code>as.numeric()</code> command will thus transform every record of <code>&quot;Large&quot;</code> into <code>1</code>, every record of <code>&quot;Medium&quot;</code> into <code>2</code> and every record of <code>&quot;Small&quot;</code> into <code>3</code>.</p>
 <p>We are ready to run the analysis:</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co"># Analysis</span></span>
@@ -872,21 +871,22 @@ To this end, presume we have taken the entire <em>Passer domesticus</em> populat
 <p><strong>Do home ranges of Passer domesticus depend on climate?</strong></p>
 <p>Earlier in this practical, we have shown that home ranges of flocks of <em>Passer domesticus</em> are affected by the climate conditions they are experiencing. Let’s see if our relocated sparrows have altered their behaviour:</p>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a><span class="kw">with</span>(Data_df[<span class="kw">which</span>(Data_df<span class="op">$</span>Index <span class="op">==</span><span class="st"> &quot;SI&quot;</span>),], </span>
-<span id="cb67-2"><a href="#cb67-2"></a>     <span class="kw">wilcox.test</span>(<span class="dt">x =</span> <span class="kw">as.numeric</span>(Home.Range), </span>
-<span id="cb67-3"><a href="#cb67-3"></a>                 <span class="dt">y =</span> <span class="kw">as.numeric</span>(Data_df_Resettled<span class="op">$</span>Home.Range), </span>
+<span id="cb67-2"><a href="#cb67-2"></a>     <span class="kw">wilcox.test</span>(<span class="dt">x =</span> <span class="kw">as.numeric</span>(<span class="kw">factor</span>(Home.Range)), </span>
+<span id="cb67-3"><a href="#cb67-3"></a>                 <span class="dt">y =</span> <span class="kw">as.numeric</span>(<span class="kw">factor</span>(Data_df_Resettled<span class="op">$</span>Home.Range)), </span>
 <span id="cb67-4"><a href="#cb67-4"></a>                 <span class="dt">paired =</span> <span class="ot">TRUE</span>))</span></code></pre></div>
 <pre><code>## 
 ##  Wilcoxon signed rank test with continuity correction
 ## 
-## data:  as.numeric(Home.Range) and as.numeric(Data_df_Resettled$Home.Range)
-## V = 629, p-value = 0.9365
+## data:  as.numeric(factor(Home.Range)) and as.numeric(factor(Data_df_Resettled$Home.Range))
+## V = 348.5, p-value = 0.002891
 ## alternative hypothesis: true location shift is not equal to 0</code></pre>
-<p>However, they haven’t! Given the p-value of 0.9364549, we <strong>accept the null hypothesis</strong> and conclude that home ranges of our flocks of sparrows have not changed significantly after the relocation to the UK.</p>
+<pre><code>## [1] 0.002890788</code></pre>
+<p>However, they haven’t! Given the p-value of 7.404014510^{-5}, we <strong>accept the null hypothesis</strong> and conclude that home ranges of our flocks of sparrows have not changed significantly after the relocation to the UK.</p>
 <p>Due to our earlier analysis, we would expect smaller home ranges of sparrows in the UK when compared to their previous home ranges in Siberia. Before testing this, remember that, when converted to numeric records, low values indicate larger home ranges:</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1"></a>HR_Sib &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(Data_df<span class="op">$</span>Home.Range[<span class="kw">which</span>(Data_df<span class="op">$</span>Index <span class="op">==</span><span class="st"> &quot;SI&quot;</span>)])</span>
-<span id="cb69-2"><a href="#cb69-2"></a>HR_UK &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(Data_df_Resettled<span class="op">$</span>Home.Range)</span>
-<span id="cb69-3"><a href="#cb69-3"></a></span>
-<span id="cb69-4"><a href="#cb69-4"></a><span class="kw">median</span>(HR_Sib, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">&lt;</span><span class="st"> </span><span class="kw">median</span>(HR_UK, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a>HR_Sib &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(Data_df<span class="op">$</span>Home.Range[<span class="kw">which</span>(Data_df<span class="op">$</span>Index <span class="op">==</span><span class="st"> &quot;SI&quot;</span>)])</span>
+<span id="cb70-2"><a href="#cb70-2"></a>HR_UK &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(Data_df_Resettled<span class="op">$</span>Home.Range)</span>
+<span id="cb70-3"><a href="#cb70-3"></a></span>
+<span id="cb70-4"><a href="#cb70-4"></a><span class="kw">median</span>(HR_Sib, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">&lt;</span><span class="st"> </span><span class="kw">median</span>(HR_UK, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>We were right! The assignment of home ranges did shift to accommodate smaller home ranges in the coastal climate of the UK it is just not intense enough for statistical significance - this will be further evaluated in our next seminar.</p>
 </div>
