@@ -688,10 +688,10 @@ To do so, I will enlist the sparrow data set we handled in our last exercise.</p
 <span id="cb28-9"><a href="#cb28-9"></a>CochColour &lt;-<span class="st"> </span><span class="kw">droplevels</span>(CochColour)</span>
 <span id="cb28-10"><a href="#cb28-10"></a></span>
 <span id="cb28-11"><a href="#cb28-11"></a><span class="co"># Predator Presence</span></span>
-<span id="cb28-12"><a href="#cb28-12"></a>CochPredator.Presence &lt;-<span class="st"> </span>Data_df_base<span class="op">$</span>Predator.Presence</span>
+<span id="cb28-12"><a href="#cb28-12"></a>CochPredator.Presence &lt;-<span class="st"> </span><span class="kw">factor</span>(Data_df_base<span class="op">$</span>Predator.Presence)</span>
 <span id="cb28-13"><a href="#cb28-13"></a></span>
 <span id="cb28-14"><a href="#cb28-14"></a><span class="co"># Sex</span></span>
-<span id="cb28-15"><a href="#cb28-15"></a>CochSex &lt;-<span class="st"> </span>Data_df_base<span class="op">$</span>Sex</span>
+<span id="cb28-15"><a href="#cb28-15"></a>CochSex &lt;-<span class="st"> </span><span class="kw">factor</span>(Data_df_base<span class="op">$</span>Sex)</span>
 <span id="cb28-16"><a href="#cb28-16"></a></span>
 <span id="cb28-17"><a href="#cb28-17"></a><span class="co"># Making vectors into a matrix</span></span>
 <span id="cb28-18"><a href="#cb28-18"></a>CochMatrix &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(CochColour, CochPredator.Presence, CochSex), <span class="dt">ncol =</span> <span class="dv">3</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span>

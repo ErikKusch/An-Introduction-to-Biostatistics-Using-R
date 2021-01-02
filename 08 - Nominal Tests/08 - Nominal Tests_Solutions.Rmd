@@ -174,10 +174,10 @@ CochColour[which(CochColour == "Black")] <- "Camouflage"
 CochColour <- droplevels(CochColour) 
 
 # Predator Presence
-CochPredator.Presence <- Data_df_base$Predator.Presence
+CochPredator.Presence <- factor(Data_df_base$Predator.Presence)
 
 # Sex
-CochSex <- Data_df_base$Sex
+CochSex <- factor(Data_df_base$Sex)
 
 # Making vectors into a matrix
 CochMatrix <- matrix(c(CochColour, CochPredator.Presence, CochSex), ncol = 3) - 1
